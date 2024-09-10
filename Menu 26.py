@@ -1,12 +1,12 @@
 import pygame, sys
 from button import Button
-
+import random
 pygame.init()
 
 SCREEN = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Videojuego")
 player = pygame.Rect((300, 250, 50, 50))
-
+pixel = 64
 def get_font(size):
     return pygame.font.Font("font.ttf", size)
 
@@ -89,11 +89,11 @@ def main_menu():
                     sys.exit()
 
         pygame.display.update()
-def level():
-
+def level():   
  while True:
     
     SCREEN.fill("black")
+
 
     pygame.draw.rect(SCREEN, (255, 0, 0), player)
     
@@ -106,7 +106,8 @@ def level():
         player.move_ip(0, -1)    
     elif key[pygame.K_s] == True:
         player.move_ip(0, 1)    
-        
+     
+
     for event in pygame.event.get():
         if event.type ==pygame.QUIT:
             pygame.quit()
@@ -117,10 +118,11 @@ def level():
             #ESCAPE
     if key[pygame.K_ESCAPE] == True:
         play()      
+        
 #El bucle se mantiene siempre true hasta darle salir que se vuelve false
     pygame.display.update()
     #actualiza la pantalla       
-def level_two():   
+def level_two(): 
 
  while True:
     
@@ -177,4 +179,6 @@ def level_tres():
     pygame.display.update()
     #actualiza la pantalla             
  c
+
+
 main_menu()
