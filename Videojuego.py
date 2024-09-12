@@ -1,5 +1,5 @@
 import pygame
-
+#prueba de commit cris
 pygame.init()
 
 screen_width = 800
