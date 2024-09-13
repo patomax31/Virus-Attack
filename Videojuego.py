@@ -4,7 +4,6 @@ pygame.init()
 
 screen_width = 800
 screen_height = 600
-
 screen = pygame.display.set_mode((screen_width, screen_height))
 #en screen_width y height pude haber puesto directamente 800 y 600 pero es mejor tenerlo en variables
 player= pygame.Rect((300, 250, 50, 50))
