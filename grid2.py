@@ -1,6 +1,8 @@
 import pygame
 import sys
 
+# ayudaAAAAAAASHGGG
+
 # Configuraciones basicas
 SCREEN_WIDTH, SCREEN_HEIGHT = 1280, 720  # Dimensiones de la ventana del juego
 TILE_SIZE = 32  # Tamaño de cada cuadro en la cuadrícula del juego
