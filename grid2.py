@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-# ayudaAAAAAAASHGGG
+# ayudaAAAAAAAS
 
 # Configuraciones basicas
 SCREEN_WIDTH, SCREEN_HEIGHT = 1280, 720  # Dimensiones de la ventana del juego
@@ -21,10 +21,10 @@ clock = pygame.time.Clock()  # Reloj para controlar la tasa de actualización de
 last_move_time = 0 # Controla el tiempo del ultimo movimiento
 
 # Cargamos los sprites en variables y almacenamos los archivos
-sprite_up = pygame.image.load("medicUp.png").convert_alpha()
-sprite_down = pygame.image.load("medicDown.png").convert_alpha()
-sprite_left = pygame.image.load("medicLeft.png").convert_alpha()
-sprite_right = pygame.image.load("medicRight.png").convert_alpha()
+sprite_up = pygame.image.load("assets/sprites/medicUp.png").convert_alpha()
+sprite_down = pygame.image.load("assets/sprites/medicDown.png").convert_alpha()
+sprite_left = pygame.image.load("assets/sprites/medicLeft.png").convert_alpha()
+sprite_right = pygame.image.load("assets/sprites/medicRight.png").convert_alpha()
 
 # Inicializacion de las variables que controlan las direcciones del movimiento
 move_up = move_down = move_left = move_right = False
