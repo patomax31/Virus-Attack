@@ -1,5 +1,5 @@
 import pygame
-from settings import TILE_SIZE# Importa las configuraciones necesarias
+from settings import TILE_SIZE # Importa las configuraciones necesarias
 
 # Clase Player para manejar al jugadorr
 class Player:
@@ -8,8 +8,7 @@ class Player:
         self.x = x # Posicion actual del jugador en el eje x
         self.y = y # Posicion acutal edl jugador en el eje y
         self.target_x = self.x # Posicion objetivo en el eje x
-         # Posicion objetivo en el eje y
-        self.target_y = self.y
+        self.target_y = self.y # Posicion objetivo en el eje y
         self.speed = 4 # velocida de movimiento
         self.moving = False # Maraca para verificar si el jugador se esta moviento
 
@@ -28,23 +27,39 @@ class Player:
         self.sprite_right = pygame.image.load("assets/sprites/medicRight.png").convert_alpha()
         self.current_sprite = self.sprite_down # sprite inicial 
 
-    def move(self, direction):
+    def move(self, direction, obstacles):
         #Esto de aqui mueve al jugador en la direccion especificadaa 
         if not self.moving: # Esto de aqui evita inicar un nuevo movimiento si ya esta en uno
             if direction == "UP":
-                self.target_y -= TILE_SIZE # Mueve la posicion del objetivohacia arriba
-                self.current_sprite = self.sprite_up
+                new_y = self.target_y - TILE_SIZE
+                if not self.check_collision(self.target_x, new_y, obstacles): # Verifica colisiones
+                    self.target_y = new_y
+                    self.current_sprite = self.sprite_up
             elif direction == "DOWN":
-                self.target_y += TILE_SIZE # Mueve la posicion del objetivo hacia abajo
-                self.current_sprite = self.sprite_down
+                new_y = self.target_y + TILE_SIZE
+                if not self.check_collision(self.target_x, new_y, obstacles): # Verifica colisiones
+                    self.target_y = new_y
+                    self.current_sprite = self.sprite_down
             elif direction == "LEFT":
-                self.target_x -= TILE_SIZE # Mueve la posicion del objetivo a la izquierda
-                self.current_sprite = self.sprite_left
+                new_x = self.target_x - TILE_SIZE
+                if not self.check_collision(new_x, self.target_y, obstacles): # Verifica colisiones
+                    self.target_x = new_x
+                    self.current_sprite = self.sprite_left
             elif direction == "RIGHT":
-                self.target_x += TILE_SIZE # Mueve la posicion del objetivo a la derecha
-                self.current_sprite = self.sprite_right
+                new_x = self.target_x + TILE_SIZE
+                if not self.check_collision(new_x, self.target_y, obstacles): # Verifica colisiones
+                    self.target_x = new_x
+                    self.current_sprite = self.sprite_right
             self.moving = True
     
+    def check_collision(self, new_x, new_y, obstacles):
+        # COmprueba si la nueva colision que se registre choca con algun obstaculo
+        player_rect = pygame.Rect(new_x, new_y, TILE_SIZE, TILE_SIZE)
+        for obstacle in obstacles:
+            if player_rect.colliderect(obstacle):
+                return True
+        return False
+
     def update(self):
         # Aqui se actualiza la posicion del jugador
         # Movimiento suave en el eje x
