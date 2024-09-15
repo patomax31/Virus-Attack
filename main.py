@@ -97,3 +97,4 @@ while running:
 # Finalizamos pygame chido
 pygame.quit() # Cierra pygame de manera segura y finaliza el bucle
 sys.exit() # Controla que el videojuego se cierre de manera correcta
+#linea 100
