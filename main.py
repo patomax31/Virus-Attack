@@ -2,6 +2,7 @@ import pygame
 import sys
 from player import Player # Importamos la clase Player
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE, TILE_SIZE # Importamos configuraciones
+from bubble import Bubble
 
 # Inicializamos pygame
 pygame.init()
@@ -46,6 +47,9 @@ for row_idx, row in enumerate(map_data):
 player = Player(400, 400) # Posicion inicial del jugador en la cuadricula
 player.load_sprites() # Cargamos los sprites despues de inicializar la pantalla
 
+# Inicializamos el grupo de burbujas
+all_bubbles = pygame.sprite.Group()
+
 # Bucle principal del juego
 running = True
 keys_pressed = None
@@ -55,6 +59,22 @@ while running:
     for event in pygame.event.get(): # Revisa todos los enventos que ocurren en Pygame
         if event.type == pygame.QUIT: # Si se cierra la venta esto detiene el bucle
             running = False
+
+        current_direction = "DOWN" # Direccion por default 
+
+        # Detectamos cuando se presiona la barra espaciadora para disparar
+        if event.type == pygame.KEYDOWN: # Detecta si se presiona una tecla
+            if event.key == pygame.K_w:
+                current_direction = "UP" # Cambia la direccion cuando se presiona la telca W
+            elif event.key == pygame.K_s:
+                current_direction = "DOWN" # Cambia la direccion cuando se presiona la tecla S
+            elif event.key == pygame.K_s:
+                current_direction = "LEFT" # Cambia la didreccion cuando se presiona la tecla S
+            elif event.key == pygame.K_s:
+                current_direction = "RIGHT" # Cambia la direccion cuando se presiona la tecla S
+
+            if event.key == pygame.K_j: # Verifica si la telca presionada es el espacio
+                player.shoot(all_bubbles)
         
     # Manejo de eventos
     keys = pygame.key.get_pressed() # Detecta si las teclas estan presionadas
@@ -78,6 +98,7 @@ while running:
     
     # Actualizamos el jugador
     player.update()
+    all_bubbles.update()
 
     BG = pygame.image.load("background1.png") # Cargamos la imagen del fondo para el nivel 1 en una variable almacenada
 
@@ -85,6 +106,7 @@ while running:
     screen.fill(WHITE) # Limpia la pantalla llenandola de color blanco
     screen.blit(BG, (0, 0)) # Sobreponemos el fondo sobre el fondo blanco
     player.draw(screen) # Renderizamos al jugador
+    all_bubbles.draw(screen)
     pygame.display.flip()
 
     #Disminuye el cooldown
