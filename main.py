@@ -6,8 +6,8 @@ from bubble import Bubble
 
 # Inicializamos pygame
 pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-clock = pygame.time.Clock()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Creamos la ventana con sus medidas
+clock = pygame.time.Clock() # Creamos est amadre que es para controlar los FPS
 
 # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
 map_data = [
@@ -36,12 +36,12 @@ map_data = [
 ]
 
 # Convertimos el mapa en una lista de rectángulos que representan las colisiones
-obstacles = []
-for row_idx, row in enumerate(map_data):
-    for col_idx, cell in enumerate(row):
-        if cell == 1:
-            obstacle_rect = pygame.Rect(col_idx * TILE_SIZE, row_idx * TILE_SIZE, TILE_SIZE, TILE_SIZE)
-            obstacles.append(obstacle_rect)
+obstacles = [] # Esta es la lista donde almacenamoslos obstaculos del mapa
+for row_idx, row in enumerate(map_data): # Recorre cada fila del mapa y la indexa
+    for col_idx, cell in enumerate(row): # Recorre cada columna de la fila
+        if cell == 1: # Si la celda es igual a 1 (osea un obstaculo) crae un rectangulo
+            obstacle_rect = pygame.Rect(col_idx * TILE_SIZE, row_idx * TILE_SIZE, TILE_SIZE, TILE_SIZE) # Crea el rectangulo para el obstaculo
+            obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
 
 # Creamos la instancia del jugador
 player = Player(400, 400) # Posicion inicial del jugador en la cuadricula
@@ -51,14 +51,14 @@ player.load_sprites() # Cargamos los sprites despues de inicializar la pantalla
 all_bubbles = pygame.sprite.Group()
 
 # Bucle principal del juego
-running = True
-keys_pressed = None
+running = True # Creamos esta variable que controla is el juego esta corriendo
+keys_pressed = None # Creamos esta variable que almacena las teclas precionadas en ella
 movement_cooldown = 0 # Temporizador para que el jugador no se mueva demasiado rapido
 
 while running:
     for event in pygame.event.get(): # Revisa todos los enventos que ocurren en Pygame
         if event.type == pygame.QUIT: # Si se cierra la venta esto detiene el bucle
-            running = False
+            running = False # Detiene la ejecucion del juego
 
         current_direction = "DOWN" # Direccion por default 
 
@@ -74,7 +74,7 @@ while running:
                 current_direction = "RIGHT" # Cambia la direccion cuando se presiona la tecla S
 
             if event.key == pygame.K_j: # Verifica si la telca presionada es el espacio
-                player.shoot(all_bubbles)
+                player.shoot(all_bubbles) # Llamamos a la funcion shoot del archivo player y agregamos burbujas al grupo
         
     # Manejo de eventos
     keys = pygame.key.get_pressed() # Detecta si las teclas estan presionadas
@@ -93,12 +93,10 @@ while running:
             movement_cooldown = 0
         # Con esto validamos que si no se esta presionando alguna tecla nosotros vamos a ejecutar el metodo snap_to_grid
         elif not (keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]):
-            player.snap_to_grid() # Alinea al jugador hacia la casilla de mas cercana
+            player.snap_to_grid() # LLamamos a la funcion snap_to_grid del archivo player para alinear al jugador hacia la casilla de mas cercana
 
-    
-    # Actualizamos el jugador
-    player.update()
-    all_bubbles.update()
+    player.update() # ACtualizamos el estado del jugador
+    all_bubbles.update() # Actualizamos el estado de todas las burbujas
 
     BG = pygame.image.load("background1.png") # Cargamos la imagen del fondo para el nivel 1 en una variable almacenada
 
@@ -106,12 +104,12 @@ while running:
     screen.fill(WHITE) # Limpia la pantalla llenandola de color blanco
     screen.blit(BG, (0, 0)) # Sobreponemos el fondo sobre el fondo blanco
     player.draw(screen) # Renderizamos al jugador
-    all_bubbles.draw(screen)
-    pygame.display.flip()
+    all_bubbles.draw(screen) # Renderizamos a las burbujas del gruppo
+    pygame.display.flip() # Esta madre actualiza la pantalla con nuevos graficoss
 
     #Disminuye el cooldown
-    if movement_cooldown > 0:
-        movement_cooldown -= 1
+    if movement_cooldown > 0: # Si el cooldown es mayor que 0:
+        movement_cooldown -= 1 # Se disminuye el cooldown en 1
 
     # Controlamos los FPS
     clock.tick(FPS)
@@ -119,4 +117,4 @@ while running:
 # Finalizamos pygame chido
 pygame.quit() # Cierra pygame de manera segura y finaliza el bucle
 sys.exit() # Controla que el videojuego se cierre de manera correcta
-#linea 100
+#Tiren paro
