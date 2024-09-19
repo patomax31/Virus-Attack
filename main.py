@@ -3,6 +3,8 @@ import sys
 from player import Player # Importamos la clase Player
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE, TILE_SIZE # Importamos configuraciones
 from bubble import Bubble
+from contador import tiempo
+import time
 
 # Inicializamos pygame
 pygame.init()
@@ -55,9 +57,14 @@ running = True # Creamos esta variable que controla is el juego esta corriendo
 keys_pressed = None # Creamos esta variable que almacena las teclas precionadas en ella
 movement_cooldown = 0 # Temporizador para que el jugador no se mueva demasiado rapido
 
+start_time = pygame.time.get_ticks() # Marca el tiempo al inicios
+
 while running:
+    # Calculamos el tiempo transcurrido
+    elapsed_time = (pygame.time.get_ticks() - start_time) // 1000 # Hacemos la conversiona segundos
+    time_left = max(0, 10 - elapsed_time) # Tiempo restante en segundoss
     for event in pygame.event.get(): # Revisa todos los enventos que ocurren en Pygame
-        if event.type == pygame.QUIT: # Si se cierra la venta esto detiene el bucle
+        if event.type == pygame.QUIT or time_left == 0: # Si se cierra la venta esto detiene el bucle
             running = False # Detiene la ejecucion del juego
 
         current_direction = "DOWN" # Direccion por default 
@@ -100,11 +107,15 @@ while running:
 
     BG = pygame.image.load("background1.png") # Cargamos la imagen del fondo para el nivel 1 en una variable almacenada
 
+
+
     # Renederizamos la pantalla
     screen.fill(WHITE) # Limpia la pantalla llenandola de color blanco
     screen.blit(BG, (0, 0)) # Sobreponemos el fondo sobre el fondo blanco
     player.draw(screen) # Renderizamos al jugador
     all_bubbles.draw(screen) # Renderizamos a las burbujas del gruppo
+    player.draw_health_bar(screen) # Renderizamos la barra de vida del jugador
+    tiempo.draw_timer(screen, time_left)
     pygame.display.flip() # Esta madre actualiza la pantalla con nuevos graficoss
 
     #Disminuye el cooldown
@@ -113,6 +124,8 @@ while running:
 
     # Controlamos los FPS
     clock.tick(FPS)
+
+    
 
 # Finalizamos pygame chido
 pygame.quit() # Cierra pygame de manera segura y finaliza el bucle

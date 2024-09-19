@@ -1,4 +1,5 @@
 import pygame
+import pygame.image
 from settings import TILE_SIZE # Importa las configuraciones necesarias
 from bubble import Bubble
 
@@ -6,7 +7,7 @@ from bubble import Bubble
 class Player:
     def __init__(self, x, y):
         super().__init__()
-        # Inicializa las posiciones iniciales del jugador y la posicion que desea alcanzar
+        # Inicializa las propiedades del jugador
         self.x = x # Posicion actual del jugador en el eje x
         self.y = y # Posicion acutal edl jugador en el eje y
         self.target_x = self.x # Posicion objetivo en el eje x
@@ -14,7 +15,11 @@ class Player:
         self.speed = 4 # velocida de movimiento
         self.moving = False # Maraca para verificar si el jugador se esta moviento
         self.direction = "Down"
-
+        self.shoot_cooldown = 800 # Cooldonn wn milisegundoss
+        self.last_shot_time = pygame.time.get_ticks() # Registra el ultimo tiempo de disparo
+        self.health = 3 # Vida del jugador
+        
+        self.load_health_sprites()
         self.load_sprites()
 
         # Cargar las imágenes (sprites)
@@ -34,6 +39,13 @@ class Player:
         # Establecemos el sprite actual y el rectangulo de colision
         self.image = self.sprite_down # sprite inicial 
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
+
+    def load_health_sprites(self):
+        self.health_images = [
+            pygame.image.load("assets/sprites/health_3.png").convert_alpha(),
+            pygame.image.load("assets/sprites/health_2.png").convert_alpha(),
+            pygame.image.load("assets/sprites/health_1.png").convert_alpha()
+        ]
 
     def move(self, direction, obstacles):
         # Esto mueve al jugador en la dirección especificada
@@ -112,7 +124,15 @@ class Player:
     def draw(self, surface):
         # Dibuja al jugasdor
         surface.blit(self.image, self.rect)
+    
+    def draw_health_bar(self, surface):
+        if self.health > 0:
+            health_image = self.health_images[self.health - 1] # selecciona la imagen correspondiente a la vida
+            surface.blit(health_image, (10, 10)) # Dibuja la barra de vida en las coordenadas
 
     def shoot(self, all_bubbles):
-        bubble = Bubble(self.rect.centerx, self.rect.centery, self.direction) # Craemos una instancia de la burbuja  en la posicion actual del jugador (el centro de su sprite)
-        all_bubbles.add (bubble) # Añade la burbuja recien creada al grupo de burbujas para que se actualice y se dibuje en pantalla
+        current_time = pygame.time.get_ticks() # Con esto obtenemos el tiempo actual
+        if current_time - self.last_shot_time >= self.shoot_cooldown: # Si ha pasado el cooldwon
+            bubble = Bubble(self.rect.centerx, self.rect.centery, self.direction) # Craemos una instancia de la burbuja  en la posicion actual del jugador (el centro de su sprite)
+            all_bubbles.add (bubble) # Añade la burbuja recien creada al grupo de burbujas para que se actualice y se dibuje en pantalla
+            self.last_shot_time = current_time # Reiniciamos el contadorr
