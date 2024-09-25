@@ -3,7 +3,10 @@ import sys
 from player import Player # Importamos la clase Player
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE, TILE_SIZE # Importamos configuraciones
 from bubble import Bubble
-
+from contador import tiempo
+from pauseButton import PauseButton
+from button import Button
+from enemy import Enemy
 # Inicializamos pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Creamos la ventana con sus medidas
@@ -47,74 +50,232 @@ for row_idx, row in enumerate(map_data): # Recorre cada fila del mapa y la index
 player = Player(400, 400) # Posicion inicial del jugador en la cuadricula
 player.load_sprites() # Cargamos los sprites despues de inicializar la pantalla
 
+#Enemy
+#enemy = Enemy(400, 500)
+#enemy.enemy_load_sprites()
+
 # Inicializamos el grupo de burbujas
 all_bubbles = pygame.sprite.Group()
 
-# Bucle principal del juego
-running = True # Creamos esta variable que controla is el juego esta corriendo
-keys_pressed = None # Creamos esta variable que almacena las teclas precionadas en ella
-movement_cooldown = 0 # Temporizador para que el jugador no se mueva demasiado rapido
+#FONDO
+bg= pygame.image.load("assets/sprites/Fondo.jpeg")
+#Fuentes de texto
+def get_font(size):
+    return pygame.font.Font("font.ttf", size)
 
-while running:
-    for event in pygame.event.get(): # Revisa todos los enventos que ocurren en Pygame
-        if event.type == pygame.QUIT: # Si se cierra la venta esto detiene el bucle
-            running = False # Detiene la ejecucion del juego
 
-        current_direction = "DOWN" # Direccion por default 
+def main_menu():
+    #IMAGENES DE LOS BOTONES
+    Play=pygame.image.load("assets/sprites/Play.png")
+    Play = pygame.transform.scale(Play, (200, 200))
 
-        # Detectamos cuando se presiona la barra espaciadora para disparar
-        if event.type == pygame.KEYDOWN: # Detecta si se presiona una tecla
-            if event.key == pygame.K_w:
-                current_direction = "UP" # Cambia la direccion cuando se presiona la telca W
-            elif event.key == pygame.K_s:
-                current_direction = "DOWN" # Cambia la direccion cuando se presiona la tecla S
-            elif event.key == pygame.K_s:
-                current_direction = "LEFT" # Cambia la didreccion cuando se presiona la tecla S
-            elif event.key == pygame.K_s:
-                current_direction = "RIGHT" # Cambia la direccion cuando se presiona la tecla S
+    Quit=pygame.image.load("assets/sprites/Quit.png")
+    Quit = pygame.transform.scale(Quit, (200, 200))
 
-            if event.key == pygame.K_j: # Verifica si la telca presionada es el espacio
-                player.shoot(all_bubbles) # Llamamos a la funcion shoot del archivo player y agregamos burbujas al grupo
+    Options = pygame.image.load("assets/sprites/Options.png")
+    Options = pygame.transform.scale(Options, (200, 200))
+    
+    title = pygame.image.load("assets/sprites/Title.png")
+    title = pygame.transform.scale(title, (1300, 1000))
+    while True:
+        screen.fill((0, 0, 100,))
+
+
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+        #MENU_TEXT = get_font(60).render("VIRUS ATTACK", True, "#f57842")
+        #MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
+
+        PLAY_BUTTON = Button(image=Play, pos=(640, 350), 
+                            text_input=None, font=get_font(75), base_color="green", hovering_color="White")
+       
+        QUIT_BUTTON = Button(image=Quit, pos=(1000, 350), 
+                            text_input=None, font=get_font(75), base_color="black", hovering_color="white")
+
+        OPTIONS_BUTTON = Button(image=Options, pos=(250, 350), 
+                                    text_input=None, font=get_font(75), base_color="black", hovering_color="white")
+        #Muestra el fondo y el titulo del videojuego
+        screen.blit(bg, (0, 0))
+        screen.blit(title, (0, 0))
+      #  screen.blit(MENU_TEXT, MENU_RECT)
         
-    # Manejo de eventos
-    keys = pygame.key.get_pressed() # Detecta si las teclas estan presionadas
-    if movement_cooldown == 0:  # Solo permite el movimiento cuando cooldown es 0
-        if keys[pygame.K_w]:
-            player.move('UP', obstacles)
-            movement_cooldown = 0  # Pequeño retraso entre movimientos
-        elif keys[pygame.K_s]:
-            player.move('DOWN', obstacles)
-            movement_cooldown = 0
-        elif keys[pygame.K_a]:
-            player.move('LEFT', obstacles)
-            movement_cooldown = 0
-        elif keys[pygame.K_d]:
-            player.move('RIGHT', obstacles)
-            movement_cooldown = 0
-        # Con esto validamos que si no se esta presionando alguna tecla nosotros vamos a ejecutar el metodo snap_to_grid
-        elif not (keys[pygame.K_w] or keys[pygame.K_s] or keys[pygame.K_a] or keys[pygame.K_d]):
-            player.snap_to_grid() # LLamamos a la funcion snap_to_grid del archivo player para alinear al jugador hacia la casilla de mas cercana
+        
+        for button in [PLAY_BUTTON, QUIT_BUTTON, OPTIONS_BUTTON]:
+            button.changeColor(MENU_MOUSE_POS)
+       #     button.update(screen=pygame.image.load("Quit.png"))
+            button.update(screen)
 
-    player.update() # ACtualizamos el estado del jugador
-    all_bubbles.update() # Actualizamos el estado de todas las burbujas
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    lv_selector()
+                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    pygame.quit()
+                    sys.exit()
 
-    BG = pygame.image.load("background1.png") # Cargamos la imagen del fondo para el nivel 1 en una variable almacenada
+        pygame.display.update()    
+def lv_selector():
+   while True:
+        PLAY_MOUSE_POS = pygame.mouse.get_pos()
+        
+        screen.fill("black")
+        screen.blit(bg, (0, 0))
 
-    # Renederizamos la pantalla
-    screen.fill(WHITE) # Limpia la pantalla llenandola de color blanco
-    screen.blit(BG, (0, 0)) # Sobreponemos el fondo sobre el fondo blanco
-    player.draw(screen) # Renderizamos al jugador
-    all_bubbles.draw(screen) # Renderizamos a las burbujas del gruppo
-    pygame.display.flip() # Esta madre actualiza la pantalla con nuevos graficoss
+        PLAY_TEXT = get_font(45).render(" ", True, "White")
+        PLAY_RECT = PLAY_TEXT.get_rect(center=(640, 260))
+        screen.blit(PLAY_TEXT, PLAY_RECT)
 
-    #Disminuye el cooldown
-    if movement_cooldown > 0: # Si el cooldown es mayor que 0:
-        movement_cooldown -= 1 # Se disminuye el cooldown en 1
+        PLAY_BACK = Button(image=None, pos=(640, 460), 
+                            text_input="BACK", font=get_font(50), base_color="red", hovering_color="Green")
+        Level = Button(image=None, pos=(250, 250), 
+                            text_input="NIVEL", font=get_font(50), base_color="red", hovering_color="Green")
+        Level_two = Button(image=None, pos=(600, 250), 
+                            text_input="NIVEL", font=get_font(50), base_color="red", hovering_color="Green")
+        Level_tres = Button(image=None, pos=(1000, 250), 
+                            text_input="NIVEL", font=get_font(50), base_color="red", hovering_color="Green")    
+        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
+        PLAY_BACK.update(screen)
+        Level.changeColor(PLAY_MOUSE_POS)
+        Level.update(screen)
+        Level_two.changeColor(PLAY_MOUSE_POS)
+        Level_two.update(screen)
+        Level_tres.changeColor(PLAY_MOUSE_POS)
+        Level_tres.update(screen)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if Level.checkForInput(PLAY_MOUSE_POS):
+                    lv_1()    
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if Level_two.checkForInput(PLAY_MOUSE_POS):
+                    lv_1()         
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if Level_tres.checkForInput(PLAY_MOUSE_POS):
+                    lv_1()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
+                    main_menu()
+            
 
-    # Controlamos los FPS
-    clock.tick(FPS)
+        pygame.display.update()    
 
-# Finalizamos pygame chido
-pygame.quit() # Cierra pygame de manera segura y finaliza el bucle
-sys.exit() # Controla que el videojuego se cierre de manera correcta
-#Tiren paro
+
+def lv_1():
+    running = True # Creamos esta variable que controla is el juego esta corriendo
+    paused = False # Estado del juego (si esta pausado o no)
+    pause_button = PauseButton() # Almacenamos la instancia del boton de pausa
+    keys_pressed = None # Creamos esta variable que almacena las teclas precionadas en ella
+    start_time = pygame.time.get_ticks() # Marca el tiempo al inicios
+
+    while running:
+        # Calculamos el tiempo transcurrido
+        if not paused:
+            elapsed_time = (pygame.time.get_ticks() - start_time) // 1000  # Hacemos la conversión a segundos
+        else:
+            start_time = pygame.time.get_ticks() - (elapsed_time * 1000)  # Ajustamos el tiempo cuando se reanuda
+        time_left = max(0, 100 - elapsed_time)  # Tiempo restante en segundos
+
+        for event in pygame.event.get():  # Revisa todos los eventos que ocurren en Pygame
+            if event.type == pygame.QUIT or time_left == 0:  # Si se cierra la ventana esto detiene el bucle
+                running = False  # Detiene la ejecución del juego
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pause_button.is_clicked(event.pos):
+                    paused = not paused  # Si le damos click al botón se cambia el estado de la pausa
+
+            current_direction = "DOWN" # Direccion por default 
+
+            if not paused:
+                # Detectamos cuando se presiona la barra espaciadora para disparar
+                if event.type == pygame.KEYDOWN:  # Detecta si se presiona una tecla
+                    if event.key == pygame.K_w:
+                        current_direction = "UP"  # Cambia la dirección cuando se presiona la tecla W
+                    elif event.key == pygame.K_s:
+                        current_direction = "DOWN"  # Cambia la dirección cuando se presiona la tecla S
+                    elif event.key == pygame.K_a:
+                        current_direction = "LEFT"  # Cambia la dirección cuando se presiona la tecla A
+                    elif event.key == pygame.K_d:
+                        current_direction = "RIGHT"  # Cambia la dirección cuando se presiona la tecla D
+
+                    if event.key == pygame.K_j:  # Verifica si la tecla presionada es J
+                        player.shoot(all_bubbles)  # Llamamos a la función shoot del archivo player y agregamos burbujas al grupo
+
+                    if event.key == pygame.K_ESCAPE:
+                        paused = not paused  # Cambiamos el estado de la pausa si presionamos escape
+
+                    if event.key == pygame.K_z:
+                        player.change_health()  # Cambiamos la vida del jugador si presionamos Z
+            
+        if not paused:
+            # Manejo de eventos
+            keys = pygame.key.get_pressed()  # Detecta si las teclas están presionadas
+            if keys[pygame.K_w]:
+                player.move('UP', obstacles)
+            elif keys[pygame.K_s]:
+                player.move('DOWN', obstacles)
+            elif keys[pygame.K_a]:
+                player.move('LEFT', obstacles)
+            elif keys[pygame.K_d]:
+                player.move('RIGHT', obstacles)
+            else:
+                player.snap_to_grid()  # Llamamos a la función snap_to_grid del archivo player para alinear al jugador hacia la casilla más cercana
+
+        
+
+            player.update() # ACtualizamos el estado del jugador
+            all_bubbles.update() # Actualizamos el estado de todas las burbujas
+
+        BG = pygame.image.load("background1.png") # Cargamos la imagen del fondo para el nivel 1 en una variable almacenada
+
+
+
+        # Renederizamos la pantalla
+        screen.blit(BG, (0, 0)) # Sobreponemos el fondo sobre el fondo blanco
+        player.draw(screen) # Renderizamos al jugador
+        all_bubbles.draw(screen) # Renderizamos a las burbujas del gruppo
+        player.draw_health_bar(screen) # Renderizamos la barra de vida del jugador
+        tiempo.draw_timer(screen, time_left) # Renderizamos el temporizadorr
+        pause_button.draw(screen) # Renderizamos el btoin de pausea
+        pygame.display.flip() # Esta madre actualiza la pantalla con nuevos graficoss
+
+        if paused:  # si el estado de paused es verdadero
+            # Dibujamos una pantalla semitransparente de mientras
+            overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+            overlay.fill((0, 0, 0))  # pintamos color negro a la roña
+            overlay.set_alpha(128)  # Le ponemos transparencia (la transparencia se mide del 0 al 255 donde el 0 es completamente transparente)
+            screen.blit(overlay, (0, 0))
+
+            # Dibujamos el botón de pausa mientras el juego está en pausa
+            pause_button.draw(screen)
+            pygame.display.flip()  # actualizamos la pantalla
+            while paused:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        running = False
+                        paused = False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if pause_button.is_clicked(event.pos):
+                            paused = not paused
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:
+                            paused = not paused
+                        if event.key ==pygame.K_p:
+                          lv_selector()
+                            
+                clock.tick(FPS)
+            continue  # saltamos el resto del bucle para que nada más se mueva
+
+        # Controlamos los FPS
+        clock.tick(FPS)
+        
+    # Finalizamos pygame chido
+    pygame.quit() # Cierra pygame de manera segura y finaliza el bucle
+    sys.exit() # Controla que el videojuego se cierre de manera correcta
+    #Tiren paro
+main_menu()
