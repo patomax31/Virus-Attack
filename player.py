@@ -1,5 +1,6 @@
 import pygame
 import pygame.image
+import sys
 from settings import TILE_SIZE # Importa las configuraciones necesarias
 from bubble import Bubble
 
@@ -31,13 +32,21 @@ class Player:
 
     # Cargamos los sprites dle jugador
     def load_sprites(self):
+        scale_factor = 0.5  # Factor de escala (ajusta según sea necesario)
+
         self.sprite_up = pygame.image.load("assets/sprites/medicUp.png").convert_alpha()
         self.sprite_down = pygame.image.load("assets/sprites/medicDown.png").convert_alpha()
         self.sprite_left = pygame.image.load("assets/sprites/medicLeft.png").convert_alpha()
         self.sprite_right = pygame.image.load("assets/sprites/medicRight.png").convert_alpha()
 
-        # Establecemos el sprite actual y el rectangulo de colision
-        self.image = self.sprite_down # sprite inicial 
+        # Escalar los sprites
+        self.sprite_up = pygame.transform.scale(self.sprite_up, (int(self.sprite_up.get_width() * scale_factor), int(self.sprite_up.get_height() * scale_factor)))
+        self.sprite_down = pygame.transform.scale(self.sprite_down, (int(self.sprite_down.get_width() * scale_factor), int(self.sprite_down.get_height() * scale_factor)))
+        self.sprite_left = pygame.transform.scale(self.sprite_left, (int(self.sprite_left.get_width() * scale_factor), int(self.sprite_left.get_height() * scale_factor)))
+        self.sprite_right = pygame.transform.scale(self.sprite_right, (int(self.sprite_right.get_width() * scale_factor), int(self.sprite_right.get_height() * scale_factor)))
+
+        # Establecemos el sprite actual y el rectángulo de colisión
+        self.image = self.sprite_down  # sprite inicial 
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
 
     def load_health_sprites(self):
@@ -46,6 +55,16 @@ class Player:
             pygame.image.load("assets/sprites/health_2.png").convert_alpha(),
             pygame.image.load("assets/sprites/health_1.png").convert_alpha()
         ]
+
+    def change_health(self): # Metodo para cambiar la vida del jugador
+        self.health -= 1 # Resta 1 a la vida del jugador
+        if self.health < 1: # Si la vida es menor a 1
+            pygame.quit()
+            sys.exit()
+        self.update_health_sprite() # Actualiza la imagen de la vida
+
+    def update_health_sprite(self): # Metodo para actualizar la imagen de la vida
+        self.health_sprite = self.health_images[self.health - 1] # Selecciona la imagen correspondiente a la vida
 
     def move(self, direction, obstacles):
         # Esto mueve al jugador en la dirección especificada
@@ -124,6 +143,7 @@ class Player:
     def draw(self, surface):
         # Dibuja al jugasdor
         surface.blit(self.image, self.rect)
+        self.draw_health_bar(surface)
     
     def draw_health_bar(self, surface):
         if self.health > 0:
