@@ -51,7 +51,7 @@ player = Player(400, 400) # Posicion inicial del jugador en la cuadricula
 player.load_sprites() # Cargamos los sprites despues de inicializar la pantalla
 
 enemy = Enemy(1000, 500) # Posicion inicial del enemigo en la cuadricula
-
+enemy.enemy_load_sprites()
 #Enemy
 #enemy = Enemy(400, 500)
 #enemy.enemy_load_sprites()
@@ -227,8 +227,10 @@ def lv_1():
                 player.move('RIGHT', obstacles)
             else:
                 player.snap_to_grid()  # Llamamos a la función snap_to_grid del archivo player para alinear al jugador hacia la casilla más cercana
-
         
+            if enemy_mov="":
+            enemy.enemy_move('UP', obstacles)
+
 
             player.update() # ACtualizamos el estado del jugador
             all_bubbles.update() # Actualizamos el estado de todas las burbujas
