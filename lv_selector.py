@@ -1,68 +1,70 @@
 import pygame
 import sys
-from settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE, TILE_SIZE
 from button import Button
-import lv_1
-import main
 
-def mainmenu():
-    main.main_menu()
-def level1():
-    lv_1.level_1()
-
-def level_selector():
-    running = True
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    clock = pygame.time.Clock()
-    bg = pygame.image.load("assets/sprites/Fondo.jpeg")
-    
-    def get_font(size): # Funcion para obtener la fuente de texto
-        return pygame.font.Font("font.ttf", size) # Devuelve la fuente de texto con el tamaño especificado
-    
-    pygame.init()
-    
-    while True:
-        PLAY_MOUSE_POS = pygame.mouse.get_pos()
+class LevelSelector:
+    def __init__(self, state_manager):
+        # Datos de pantalla
+        self.state_manager = state_manager
+        self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
+        self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         
-        screen.fill("black")
-        screen.blit(bg, (0, 0))
-
-        PLAY_TEXT = get_font(45).render(" ", True, "White")
-        PLAY_RECT = PLAY_TEXT.get_rect(center=(640, 260))
-        screen.blit(PLAY_TEXT, PLAY_RECT)
-
-        PLAY_BACK = Button(image=None, pos=(640, 460), 
-                            text_input="BACK", font=get_font(50), base_color="red", hovering_color="Green")
-        Level = Button(image=None, pos=(250, 250), 
-                            text_input="NIVEL", font=get_font(50), base_color="red", hovering_color="Green")
-        Level_two = Button(image=None, pos=(600, 250), 
-                            text_input="NIVEL", font=get_font(50), base_color="red", hovering_color="Green")
-        Level_tres = Button(image=None, pos=(1000, 250), 
-                            text_input="NIVEL", font=get_font(50), base_color="red", hovering_color="Green")    
-        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
-        PLAY_BACK.update(screen)
-        Level.changeColor(PLAY_MOUSE_POS)
-        Level.update(screen)
-        Level_two.changeColor(PLAY_MOUSE_POS)
-        Level_two.update(screen)
-        Level_tres.changeColor(PLAY_MOUSE_POS)
-        Level_tres.update(screen)
+        # Carga de recursos
+        self.background = pygame.image.load("assets/sprites/Fondo.jpeg")
+        self.level1_image = pygame.image.load("assets/sprites/level1.png")
+        
+        # Escalar los recursos
+        self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
+        
+        # Crear btnes
+        self.level1_button = Button(self.level1_image, (213, 360), "", self.get_font(25), "Black", "Green")
+        self.level2_button = Button(self.level1_image, (640, 360), "", self.get_font(25), "Black", "Green")
+        self.level3_button = Button(self.level1_image, (1067, 360), "", self.get_font(25), "Black", "Green")
+        self.back_button = Button(None, (640, 600), "Back", self.get_font(25), "Black", "Green")   
+        
+        # Estado de selección del nivel
+        self.selected_level = None
+    
+    def get_font(self, size):
+        return pygame.font.Font("font.ttf", size)
+    
+    def update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if Level.checkForInput(PLAY_MOUSE_POS):
-                    level1()    
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if Level_two.checkForInput(PLAY_MOUSE_POS):
-                    level1()         
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if Level_tres.checkForInput(PLAY_MOUSE_POS):
-                    level1()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
-                    mainmenu()
-            
-
-        pygame.display.update()  
+                if self.level1_button.checkForInput(pygame.mouse.get_pos()):
+                    self.selected_level = "level1"
+                    self.state_manager.set_state("level1")
+                if self.level2_button.checkForInput(pygame.mouse.get_pos()):
+                    self.selected_level = "level2"
+                    self.state_manager.set_state("level2")
+                if self.level3_button.checkForInput(pygame.mouse.get_pos()):
+                    self.selected_level = "level3"
+                    self.state_manager.set_state("level3")
+                if self.back_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("main_menu")
+                
+    def draw(self, screen):
+        screen.fill((0, 0, 0))
+        
+        # Creacion de las columnas
+        column_width = self.screen.get_width() // 3
+        for i in range(3):
+            rect = pygame.Rect(i * column_width, 0, column_width, self.screen.get_height())
+            if self.selected_level == f"level{i+1}":
+                screen.blit(getattr(self, f"level{i+1}_image"), rect.topleft)
+            elif rect.collidepoint(pygame.mouse.get_pos()):
+                dark_surface = pygame.Surface((column_width, self.screen.get_height()))
+                dark_surface.set_alpha(128)
+                dark_surface.fill((255, 255, 255))
+                screen.blit(dark_surface, rect.topleft)
+                
+        # Dibujar botones
+        self.level1_button.update(screen)
+        self.level2_button.update(screen)
+        self.level3_button.update(screen)
+        self.back_button.update(screen)
+        
+        pygame.display.flip()
