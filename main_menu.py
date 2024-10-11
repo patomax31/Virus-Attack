@@ -11,22 +11,22 @@ class MainMenu:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         
         # Carga de recursos
-        self.background = pygame.image.load("assets/sprites/background1.png")
+        self.background = pygame.image.load("assets/sprites/Fondo.jpeg")
         self.play_image = pygame.image.load("assets/sprites/play.png")
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
         self.title_image = pygame.image.load("assets/sprites/title.png")
         
         # Escalar los recursos
-        self.play_image = pygame.transform.scale(self.play_image, (200, 200))
+        self.play_image = pygame.transform.scale(self.play_image, (250, 250))
         self.quit_image = pygame.transform.scale(self.quit_image, (200, 200))
         self.options_image = pygame.transform.scale(self.options_image, (200, 200))
         self.title_image = pygame.transform.scale(self.title_image, (1300, 1000))
         
         # Creacion de los btones
-        self.play_button = Button(self.play_image, (640, 300), "PLAY", self.get_font(25), "Black", "Green")
-        self.options_button = Button(self.options_image, (640, 400), "OPTIONS", self.get_font(25), "Black", "Green")
-        self.quit_button = Button(self.quit_image, (640, 500), "QUIT", self.get_font(25), "Black", "Green")
+        self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
+        self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
+        self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
         
         # Inicializacion de la futura msica
         
@@ -41,8 +41,6 @@ class MainMenu:
             if event.type == pygame.MOUSEBUTTONDOWN: # Si se presiona el mouse
                 if self.play_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("levels") # Cambia el estado a levels
-                if self.options_button.checkForInput(pygame.mouse.get_pos()):
-                    self.state_manager.set_state("options") # Cambia el estado a options
                 if self.quit_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.quit()
                     sys.exit()
