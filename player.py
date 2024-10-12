@@ -24,30 +24,22 @@ class Player:
         self.load_sprites()
 
         # Cargar las imágenes (sprites)
-        self.sprite_up = None
-        self.sprite_down = None
-        self.sprite_left = None
-        self.sprite_right = None
-        self.image = None
+        self.image = self.sprite_down  # sprite inicial 
+        self.rect = self.image.get_rect(topleft=(self.x, self.y))
 
     # Cargamos los sprites dle jugador
     def load_sprites(self):
-        scale_factor = 0.5  # Factor de escala (ajusta según sea necesario)
-
         self.sprite_up = pygame.image.load("assets/sprites/medicUp.png").convert_alpha()
         self.sprite_down = pygame.image.load("assets/sprites/medicDown.png").convert_alpha()
         self.sprite_left = pygame.image.load("assets/sprites/medicLeft.png").convert_alpha()
         self.sprite_right = pygame.image.load("assets/sprites/medicRight.png").convert_alpha()
 
-        # Escalar los sprites
-        self.sprite_up = pygame.transform.scale(self.sprite_up, (int(self.sprite_up.get_width() * scale_factor), int(self.sprite_up.get_height() * scale_factor)))
-        self.sprite_down = pygame.transform.scale(self.sprite_down, (int(self.sprite_down.get_width() * scale_factor), int(self.sprite_down.get_height() * scale_factor)))
-        self.sprite_left = pygame.transform.scale(self.sprite_left, (int(self.sprite_left.get_width() * scale_factor), int(self.sprite_left.get_height() * scale_factor)))
-        self.sprite_right = pygame.transform.scale(self.sprite_right, (int(self.sprite_right.get_width() * scale_factor), int(self.sprite_right.get_height() * scale_factor)))
-
         # Establecemos el sprite actual y el rectángulo de colisión
         self.image = self.sprite_down  # sprite inicial 
-        self.rect = self.image.get_rect(topleft=(self.x, self.y))
+        self.sprite_up = pygame.transform.scale(self.sprite_up, (int(self.sprite_up.get_width() * 0.5), int(self.sprite_up.get_height() * 0.5)))
+        self.sprite_down = pygame.transform.scale(self.sprite_down, (int(self.sprite_down.get_width() * 0.5), int(self.sprite_down.get_height() * 0.5)))
+        self.sprite_left = pygame.transform.scale(self.sprite_left, (int(self.sprite_left.get_width() * 0.5), int(self.sprite_left.get_height() * 0.5)))
+        self.sprite_right = pygame.transform.scale(self.sprite_right, (int(self.sprite_right.get_width() * 0.5), int(self.sprite_right.get_height() * 0.5)))
 
     def load_health_sprites(self):
         self.health_images = [
