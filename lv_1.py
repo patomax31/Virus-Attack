@@ -1,180 +1,173 @@
 import pygame
 import sys
 from player import Player
-from settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, WHITE, TILE_SIZE # Importamos configuraciones
+from button import Button
 from contador import tiempo
-from pauseButton import PauseButton
-from enemy import Enemy
-import lv_selector
 
-def levels():
-    lv_selector.lv_selector()
+class Level1:
+    def __init__(self, state_manager):
+        # Datos de pantalla
+        self.state_manager = state_manager
+        self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
+        self.clock = pygame.time.Clock() # Reloj para controlar los FPS
+        self.TILE_SIZE = 32
+        self.player = Player(400, 400)
+        self.paused = False
+        self.keys_pressed = None
+        self.timer = tiempo()  # Initialize timer
+        self.start_time = pygame.time.get_ticks()
+        self.time_left = 100
+        self.all_bubbles = pygame.sprite.Group()  # Define all_bubbles as a sprite group
+        
+        # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
+        self.map_data = [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
+            [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1], 
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ]
+        
+        # Convertimos el mapa en una lista de rectángulos que representan las colisiones
+        self.obstacles = [] # Esta es la lista donde almacenamoslos obstaculos del mapa
+        for row_idx, row in enumerate(self.map_data): # Recorre cada fila del mapa y la indexa
+            for col_idx, cell in enumerate(row): # Recorre cada columna de la fila
+                if cell == 1: # Si la celda es igual a 1 (osea un obstaculo) crae un rectangulo
+                    obstacle_rect = pygame.Rect(col_idx * self.TILE_SIZE, row_idx * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE) # Crea el rectangulo para el obstaculo
+                    self.obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
 
-def level_1():
-    # Inicializamos pygame
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Creamos la ventana con sus medidas
-    clock = pygame.time.Clock() # Creamos est amadre que es para controlar los FPS
-
-    # Creamos la instancia del jugador
-    player = Player(400, 400) # Posicion inicial del jugador en la cuadricula
-    player.load_sprites() # Cargamos los sprites despues de inicializar la pantalla
-
-    enemy = Enemy(1000, 500) # Posicion inicial del enemigo en la cuadricula
-
-    # Inicializamos el grupo de burbujas
-    all_bubbles = pygame.sprite.Group()
-
-    #FONDO
-    bg= pygame.image.load("assets/sprites/Fondo.jpeg")
-    #Fuentes de texto
-    def get_font(size): # Funcion para obtener la fuente de texto
-        return pygame.font.Font("font.ttf", size) # Devuelve la fuente de texto con el tamaño especificado
-
-    running = True # Creamos esta variable que controla is el juego esta corriendo
-    paused = False # Estado del juego (si esta pausado o no)
-    pause_button = PauseButton() # Almacenamos la instancia del boton de pausa
-    keys_pressed = None # Creamos esta variable que almacena las teclas precionadas en ella
-    start_time = pygame.time.get_ticks() # Marca el tiempo al inicios
+        # Carga de recursos
+        self.background = pygame.image.load("assets/sprites/level1.png")
+        self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
+        
+        # Escalar los recursos
+        
+        # Crear botones
+        self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
+        
+    def get_font(self, size):
+        return pygame.font.Font("font.ttf", size)
     
-    # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
-    map_data = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
-        [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-        [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1], 
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
-        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    ]
-
-    # Convertimos el mapa en una lista de rectángulos que representan las colisiones
-    obstacles = [] # Esta es la lista donde almacenamoslos obstaculos del mapa
-    for row_idx, row in enumerate(map_data): # Recorre cada fila del mapa y la indexa
-        for col_idx, cell in enumerate(row): # Recorre cada columna de la fila
-            if cell == 1: # Si la celda es igual a 1 (osea un obstaculo) crae un rectangulo
-                obstacle_rect = pygame.Rect(col_idx * TILE_SIZE, row_idx * TILE_SIZE, TILE_SIZE, TILE_SIZE) # Crea el rectangulo para el obstaculo
-                obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
-
+    def draw_overlay(self):
+        overlay = pygame.Surface((1280, 720))
+        overlay.fill((0, 0, 0))
+        overlay.set_alpha(128)
+        self.screen.blit(overlay, (0, 0))
+    
+    def update(self):
+        if not self.paused:
+            elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
         
-    while running:
-        # Calculamos el tiempo transcurrido
-        if not paused:
-            elapsed_time = (pygame.time.get_ticks() - start_time) // 1000  # Hacemos la conversión a segundos
         else:
-            start_time = pygame.time.get_ticks() - (elapsed_time * 1000)  # Ajustamos el tiempo cuando se reanuda
-        time_left = max(0, 100 - elapsed_time)  # Tiempo restante en segundos
+            self.start_time = pygame.time.get_ticks() - (elapsed_time * 1000)
+        self.time_left = max(0, 100 - elapsed_time)
 
-        for event in pygame.event.get():  # Revisa todos los eventos que ocurren en Pygame
-            if event.type == pygame.QUIT or time_left == 0:  # Si se cierra la ventana esto detiene el bucle
-                running = False  # Detiene la ejecución del juego
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if pause_button.is_clicked(event.pos):
-                    paused = not paused  # Si le damos click al botón se cambia el estado de la pausa
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or self.time_left == 0:
+                pygame.quit()
+                sys.exit()
 
-            current_direction = "DOWN" # Direccion por default 
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.pause_button.checkForInput(pygame.mouse.get_pos()):
+                    self.paused = not self.paused
+                    if self.paused:
+                        self.draw_overlay()
 
-            if not paused:
-                # Detectamos cuando se presiona la barra espaciadora para disparar
-                if event.type == pygame.KEYDOWN:  # Detecta si se presiona una tecla
+            elif event.type == pygame.KEYDOWN:
+                if not self.paused:
                     if event.key == pygame.K_w:
-                        current_direction = "UP"  # Cambia la dirección cuando se presiona la tecla W
+                        self.player.move('UP', self.obstacles)
                     elif event.key == pygame.K_s:
-                        current_direction = "DOWN"  # Cambia la dirección cuando se presiona la tecla S
+                        self.player.move('DOWN', self.obstacles)
                     elif event.key == pygame.K_a:
-                        current_direction = "LEFT"  # Cambia la dirección cuando se presiona la tecla A
+                        self.player.move('LEFT', self.obstacles)
                     elif event.key == pygame.K_d:
-                        current_direction = "RIGHT"  # Cambia la dirección cuando se presiona la tecla D
+                        self.player.move('RIGHT', self.obstacles)
+                    elif event.key == pygame.K_z:
+                        self.player.change_health()
+                        
+                    if event.key == pygame.K_j:
+                        self.player.shoot(self.all_bubbles)
 
-                    if event.key == pygame.K_j:  # Verifica si la tecla presionada es J
-                        player.shoot(all_bubbles)  # Llamamos a la función shoot del archivo player y agregamos burbujas al grupo
+                if event.key == pygame.K_ESCAPE:
+                    self.paused = not self.paused
+                    if self.paused:
+                        self.draw_overlay()
+                        
+                if event.key == pygame.K_p and self.paused:
+                    self.state_manager.set_state("levels")
+                    self.reset_game_state()
 
-                    if event.key == pygame.K_ESCAPE:
-                        paused = not paused  # Cambiamos el estado de la pausa si presionamos escape
-
-                    if event.key == pygame.K_z:
-                        player.change_health()  # Cambiamos la vida del jugador si presionamos Z
-            
-        if not paused:
-            # Manejo de eventos
-            keys = pygame.key.get_pressed()  # Detecta si las teclas están presionadas
+        keys = pygame.key.get_pressed()
+        if not self.paused:
             if keys[pygame.K_w]:
-                player.move('UP', obstacles)
-            elif keys[pygame.K_s]:
-                player.move('DOWN', obstacles)
-            elif keys[pygame.K_a]:
-                player.move('LEFT', obstacles)
-            elif keys[pygame.K_d]:
-                player.move('RIGHT', obstacles)
+                self.player.move('UP', self.obstacles)
+            if keys[pygame.K_s]:
+                self.player.move('DOWN', self.obstacles)
+            if keys[pygame.K_a]:
+                self.player.move('LEFT', self.obstacles)
+            if keys[pygame.K_d]:
+                self.player.move('RIGHT', self.obstacles)
             else:
-                player.snap_to_grid()  # Llamamos a la función snap_to_grid del archivo player para alinear al jugador hacia la casilla más cercana
+                self.player.snap_to_grid()
 
-        
+            self.player.update()
+            self.all_bubbles.update()
 
-            player.update() # ACtualizamos el estado del jugador
-            all_bubbles.update() # Actualizamos el estado de todas las burbujas
-
-        BG = pygame.image.load("background1.png") # Cargamos la imagen del fondo para el nivel 1 en una variable almacenada
-
-
-
-        # Renederizamos la pantalla
-        screen.blit(BG, (0, 0)) # Sobreponemos el fondo sobre el fondo blanco
-        player.draw(screen) # Renderizamos al jugador
-        enemy.enemy_draw(screen)
-        all_bubbles.draw(screen) # Renderizamos a las burbujas del gruppo
-        player.draw_health_bar(screen) # Renderizamos la barra de vida del jugador
-        tiempo.draw_timer(screen, time_left) # Renderizamos el temporizadorr
-        pause_button.draw(screen) # Renderizamos el btoin de pausea
-        pygame.display.flip() # Esta madre actualiza la pantalla con nuevos graficoss
-
-        if paused:  # si el estado de paused es verdadero
-            # Dibujamos una pantalla semitransparente de mientras
-            overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-            overlay.fill((0, 0, 0))  # pintamos color negro a la roña
-            overlay.set_alpha(128)  # Le ponemos transparencia (la transparencia se mide del 0 al 255 donde el 0 es completamente transparente)
-            screen.blit(overlay, (0, 0))
-
-            # Dibujamos el botón de pausa mientras el juego está en pausa
-            pause_button.draw(screen)
-            pygame.display.flip()  # actualizamos la pantalla
-            while paused:
+        if self.paused:
+            self.draw_overlay()
+            pygame.display.flip()
+            while self.paused:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        running = False
-                        paused = False
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        if pause_button.is_clicked(event.pos):
-                            paused = not paused
-                    if event.type == pygame.KEYDOWN:
+                        self.running = False
+                        self.paused = False
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        if self.pause_button.checkForInput(pygame.mouse.get_pos()):
+                            self.paused = not self.paused
+                    elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
-                            paused = not paused
-                        if event.key ==pygame.K_p:
-                            levels()
-                            
-                clock.tick(FPS)
-            continue  # saltamos el resto del bucle para que nada más se mueva
-
-        # Controlamos los FPS
-        clock.tick(FPS)
+                            self.paused = not self.paused
+                        elif event.key == pygame.K_p:
+                            self.paused = not self.paused
+                            self.reset_game_state()
+                            self.state_manager.set_state("levels")
+                self.clock.tick(60)
+                continue
         
-    # Finalizamos pygame chido
-    pygame.quit() # Cierra pygame de manera segura y finaliza el bucle
-    sys.exit() # Controla que el videojuego se cierre de manera correcta
-    #Tiren paro
+        pygame.display.flip()
+        self.clock.tick(60)
+        
+    def reset_game_state(self):
+        self.player = Player(400, 400)
+        self.paused = False
+        self.keys_pressed = None
+        self.timer = tiempo()
+        self.start_time = pygame.time.get_ticks()
+        self.time_left = 100
+        self.all_bubbles.empty()
+            
+    def draw(self, screen):
+        self.screen.blit(self.background, (0, 0))
+        self.player.draw(screen)
+        self.all_bubbles.draw(screen)
+        tiempo.draw_timer(screen, self.time_left)
+        self.pause_button.update(screen)
