@@ -70,11 +70,11 @@ class Level1:
         overlay.fill((0, 0, 0))
         overlay.set_alpha(128)
         self.screen.blit(overlay, (0, 0))
+        pygame.display.flip()
     
     def update(self):
         if not self.paused:
             elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
-        
         else:
             self.start_time = pygame.time.get_ticks() - (elapsed_time * 1000)
         self.time_left = max(0, 100 - elapsed_time)
@@ -90,6 +90,8 @@ class Level1:
                     self.paused = not self.paused
                     if self.paused:
                         self.draw_overlay()
+                    else:
+                        self.redraw_screen()
 
             elif event.type == pygame.KEYDOWN:
                 if not self.paused:
@@ -111,10 +113,6 @@ class Level1:
                     self.paused = not self.paused
                     if self.paused:
                         self.draw_overlay()
-                        
-                if event.key == pygame.K_p and self.paused:
-                    self.state_manager.set_state("levels")
-                    self.reset_game_state()
 
         keys = pygame.key.get_pressed()
         if not self.paused:
@@ -149,6 +147,10 @@ class Level1:
                         elif event.key == pygame.K_p:
                             self.paused = not self.paused
                             self.reset_game_state()
+                            
+                            self.screen.fill((0, 0, 0))
+                            pygame.display.flip()
+                            
                             self.state_manager.set_state("levels")
                 self.clock.tick(60)
                 continue
@@ -163,7 +165,10 @@ class Level1:
         self.timer = tiempo()
         self.start_time = pygame.time.get_ticks()
         self.time_left = 100
+        self.obstacles = []
         self.all_bubbles.empty()
+        self.screen.fill((0, 0, 0))  # Limpiar la pantalla al resetear el estado
+        pygame.display.flip()
             
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))

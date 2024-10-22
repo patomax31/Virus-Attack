@@ -20,7 +20,7 @@ class LevelSelector:
         self.level1_button = Button(self.level1_image, (213, 360), "", self.get_font(25), "Black", "Green")
         self.level2_button = Button(self.level1_image, (640, 360), "", self.get_font(25), "Black", "Green")
         self.level3_button = Button(self.level1_image, (1067, 360), "", self.get_font(25), "Black", "Green")
-        self.back_button = Button(None, (640, 600), "Back", self.get_font(25), "Black", "Green")   
+        self.back_button = Button(None, (640, 600), "Back", self.get_font(25), "White", "Green")   
         
         # Estado de selección del nivel
         self.selected_level = None
@@ -47,20 +47,7 @@ class LevelSelector:
                     self.state_manager.set_state("main_menu")
                 
     def draw(self, screen):
-        screen.fill((0, 0, 0))
-        
-        # Creacion de las columnas
-        column_width = self.screen.get_width() // 3
-        for i in range(3):
-            rect = pygame.Rect(i * column_width, 0, column_width, self.screen.get_height())
-            if self.selected_level == f"level{i+1}":
-                screen.blit(getattr(self, f"level{i+1}_image"), rect.topleft)
-            elif rect.collidepoint(pygame.mouse.get_pos()):
-                dark_surface = pygame.Surface((column_width, self.screen.get_height()))
-                dark_surface.set_alpha(128)
-                dark_surface.fill((255, 255, 255))
-                screen.blit(dark_surface, rect.topleft)
-                
+        self.screen.fill((0, 0, 0))
         # Dibujar botones
         self.level1_button.update(screen)
         self.level2_button.update(screen)
