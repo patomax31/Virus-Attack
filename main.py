@@ -9,7 +9,6 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
     clock = pygame.time.Clock()
-    running = True
     
     state_manager = StateManager()
     state_manager.add_state("main_menu", MainMenu(state_manager))
@@ -20,6 +19,7 @@ def main():
     while True:
         state_manager.update()
         state_manager.draw(screen)
+        pygame.display.flip()
         clock.tick(60)
         
 if __name__ == "__main__":
