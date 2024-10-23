@@ -13,12 +13,15 @@ class Player:
         self.y = y # Posicion acutal edl jugador en el eje y
         self.target_x = self.x # Posicion objetivo en el eje x
         self.target_y = self.y # Posicion objetivo en el eje y
-        self.speed = 4 # velocida de movimiento
+        self.speed = 1.5 # velocida de movimiento
         self.moving = False # Maraca para verificar si el jugador se esta moviento
         self.direction = "Down"
         self.shoot_cooldown = 800 # Cooldonn wn milisegundoss
         self.last_shot_time = pygame.time.get_ticks() # Registra el ultimo tiempo de disparo
         self.health = 3 # Vida del jugador
+        self.last_position = (self.x // TILE_SIZE, self.y // TILE_SIZE) # Posicion anterior del jugador
+        
+        self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3") # Carga el sonido de caminar
         
         self.load_health_sprites()
         self.load_sprites()
@@ -67,24 +70,28 @@ class Player:
                     self.target_y = new_y
                     self.image = self.sprite_up
                     self.direction = "UP"  # Actualiza la dirección
+                    self.check_and_play_walk_sound()
             elif direction == "DOWN":
                 new_y = self.target_y + TILE_SIZE
                 if not self.check_collision(self.target_x, new_y, obstacles):  # Verifica colisiones
                     self.target_y = new_y
                     self.image = self.sprite_down
                     self.direction = "DOWN"
+                    self.check_and_play_walk_sound()
             elif direction == "LEFT":
                 new_x = self.target_x - TILE_SIZE
                 if not self.check_collision(new_x, self.target_y, obstacles):  # Verifica colisiones
                     self.target_x = new_x
                     self.image = self.sprite_left
                     self.direction = "LEFT"
+                    self.check_and_play_walk_sound()
             elif direction == "RIGHT":
                 new_x = self.target_x + TILE_SIZE
                 if not self.check_collision(new_x, self.target_y, obstacles):  # Verifica colisiones
                     self.target_x = new_x
                     self.image = self.sprite_right
                     self.direction = "RIGHT"
+                    self.check_and_play_walk_sound()
             self.moving = True
 
     
@@ -95,6 +102,12 @@ class Player:
             if player_rect.colliderect(obstacle):
                 return True
         return False
+    
+    def check_and_play_walk_sound(self):
+        current_position = (self.x // TILE_SIZE, self.y // TILE_SIZE)
+        if current_position != self.last_position:
+            self.walk_sound.play()
+            self.last_position = current_position
 
     def update(self):
         # Aqui se actualiza la posicion del jugador

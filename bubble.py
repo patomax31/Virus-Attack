@@ -11,7 +11,7 @@ class Bubble(pygame.sprite.Sprite):
         self.speed = 10 # Velocidad de la burbuja
         self.direction = direction # Con esto almacenamos la direccion en la que se movera la burbuja
 
-    def update(self):
+    def update(self, obstacles, enemies):
         # Movemos la burbuja segun su direccion
         if self.direction == "UP": # Si la direccion de lanzamiento es hacia arriba reducimos el valor de Y para mover la burbuja hacia arriba
             self.rect.y -= self.speed
@@ -25,3 +25,14 @@ class Bubble(pygame.sprite.Sprite):
         # Elimina la burbuja si sale de la pantalla
         if self.rect.bottom < 0 or self.rect.top > SCREEN_HEIGHT or self.rect.right < 0 or self.rect.left > SCREEN_WIDTH:
             self.kill()
+            
+        for obstacle in obstacles:
+            if self.rect.colliderect(obstacle):
+                self.kill()
+                break
+            
+        for enemy in enemies:
+            if self.rect.colliderect(enemy.rect):
+                enemy.kill()
+                self.kill()
+                break
