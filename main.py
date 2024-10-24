@@ -37,7 +37,7 @@ map_data = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
-
+#chaaaavos
 # Convertimos el mapa en una lista de rectángulos que representan las colisiones
 obstacles = [] # Esta es la lista donde almacenamoslos obstaculos del mapa
 for row_idx, row in enumerate(map_data): # Recorre cada fila del mapa y la indexa
@@ -226,27 +226,33 @@ def lv_1():
             elif keys[pygame.K_d]:
                 player.move('RIGHT', obstacles)
             else:
-                player.snap_to_grid()  # Llamamos a la función snap_to_grid del archivo player para alinear al jugador hacia la casilla más cercana
-        
-            if enemy_mov="":
-            enemy.enemy_move('UP', obstacles)
+                player.snap_to_grid()  # Llamamos a la función snap_to_grid del archivo player para alinear al jugador hacia la casilla más cercana      
+       
+       # if player.moving_left:
+       #         player.x += player.speed  # Revertimos el movimiento hacia la izquierda
+       # elif player.move_right:
+       #     player.x -= player.speed  # Revertimos el movimiento hacia la derecha
+       # elif player.moving_up:
+       #         player.y += player.speed  # Revertimos el movimiento hacia arriba
+       # elif player.moving_down:
+       #     player.y -= player.speed  # Revertimos el movimiento hacia abajo
 
 
-            player.update() # ACtualizamos el estado del jugador
-            all_bubbles.update() # Actualizamos el estado de todas las burbujas
-
+        enemy.enemy_update(obstacles)
+        player.update() # ACtualizamos el estado del jugador
+        all_bubbles.update() # Actualizamos el estado de todas las burbujas
         BG = pygame.image.load("background1.png") # Cargamos la imagen del fondo para el nivel 1 en una variable almacenada
-
-
 
         # Renederizamos la pantalla
         screen.blit(BG, (0, 0)) # Sobreponemos el fondo sobre el fondo blanco
         player.draw(screen) # Renderizamos al jugador
-        enemy.enemy_draw(screen)
+
+        enemy.enemy_draw(screen) # Renderizamos al enemigo
+        
         all_bubbles.draw(screen) # Renderizamos a las burbujas del gruppo
         player.draw_health_bar(screen) # Renderizamos la barra de vida del jugador
         tiempo.draw_timer(screen, time_left) # Renderizamos el temporizadorr
-        pause_button.draw(screen) # Renderizamos el btoin de pausea
+        pause_button.draw(screen) # Renderizamos el boton de pausea
         pygame.display.flip() # Esta madre actualiza la pantalla con nuevos graficoss
 
         if paused:  # si el estado de paused es verdadero

@@ -15,6 +15,8 @@ class Player:
         self.target_y = self.y # Posicion objetivo en el eje y
         self.speed = 4 # velocida de movimiento
         self.moving = False # Maraca para verificar si el jugador se esta moviento
+        self.width = TILE_SIZE
+        self.height = TILE_SIZE
         self.direction = "Down"
         self.shoot_cooldown = 800 # Cooldonn wn milisegundoss
         self.last_shot_time = pygame.time.get_ticks() # Registra el ultimo tiempo de disparo
@@ -48,6 +50,12 @@ class Player:
         # Establecemos el sprite actual y el rectángulo de colisión
         self.image = self.sprite_down  # sprite inicial 
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
+    
+    def check_player_enemy_collision(self, player_rect, enemies):
+        for enemy in enemies:
+            if player_rect.colliderect(enemy.rect):
+             return True  # Hay colisión
+        return False  
 
     def load_health_sprites(self):
         self.health_images = [
@@ -103,7 +111,12 @@ class Player:
             if player_rect.colliderect(obstacle):
                 return True
         return False
-
+    def check_player_enemy_collision(self, enemy, player_rect, enemy_rect, enemies):
+        for enemy in enemies:
+            if enemy_rect.colliderect(player_rect):
+             return True  # Hay colisión
+        return False  
+    
     def update(self):
         # Aqui se actualiza la posicion del jugador
         # Movimiento suave en el eje x
@@ -149,6 +162,10 @@ class Player:
         if self.health > 0:
             health_image = self.health_images[self.health - 1] # selecciona la imagen correspondiente a la vida
             surface.blit(health_image, (10, 10)) # Dibuja la barra de vida en las coordenadas
+            
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)
+
 
     def shoot(self, all_bubbles):
         current_time = pygame.time.get_ticks() # Con esto obtenemos el tiempo actual
