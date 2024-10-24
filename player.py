@@ -15,6 +15,8 @@ class Player:
         self.target_y = self.y # Posicion objetivo en el eje y
         self.speed = 2 # velocida de movimiento
         self.moving = False # Maraca para verificar si el jugador se esta moviento
+        self.width = TILE_SIZE
+        self.height = TILE_SIZE
         self.direction = "Down"
         self.shoot_cooldown = 800 # Cooldonn wn milisegundoss
         self.last_shot_time = pygame.time.get_ticks() # Registra el ultimo tiempo de disparo
@@ -154,6 +156,10 @@ class Player:
         if self.health > 0:
             health_image = self.health_images[self.health - 1] # selecciona la imagen correspondiente a la vida
             surface.blit(health_image, (10, 10)) # Dibuja la barra de vida en las coordenadas
+            
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)
+
 
     def shoot(self, all_bubbles):
         current_time = pygame.time.get_ticks() # Con esto obtenemos el tiempo actual
