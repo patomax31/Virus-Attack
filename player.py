@@ -13,7 +13,7 @@ class Player:
         self.y = y # Posicion acutal edl jugador en el eje y
         self.target_x = self.x # Posicion objetivo en el eje x
         self.target_y = self.y # Posicion objetivo en el eje y
-        self.speed = 1.5 # velocida de movimiento
+        self.speed = 2 # velocida de movimiento
         self.moving = False # Maraca para verificar si el jugador se esta moviento
         self.direction = "Down"
         self.shoot_cooldown = 800 # Cooldonn wn milisegundoss

@@ -11,12 +11,15 @@ class Enemy(pygame.sprite.Sprite):
         self.target_y = self.y
         self.speed = 1  # Asegúrate de que la velocidad sea un divisor exacto de TILE_SIZE
         self.moving = False
+        
         self.enemy_load_sprites()
+
+        self.image = self.current_sprite
+        self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def enemy_load_sprites(self):
         self.current_sprite = pygame.image.load("assets/sprites/enemy_3.png").convert_alpha()
         self.current_sprite = pygame.transform.scale(self.current_sprite, (int(self.current_sprite.get_width() * 0.5), int(self.current_sprite.get_height() * 0.5)))
-        self.rect = self.current_sprite.get_rect(center=(self.x, self.y))
 
     def draw(self, surface):
         surface.blit(self.current_sprite, self.rect)
