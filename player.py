@@ -13,7 +13,7 @@ class Player:
         self.y = y # Posicion acutal edl jugador en el eje y
         self.target_x = self.x # Posicion objetivo en el eje x
         self.target_y = self.y # Posicion objetivo en el eje y
-        self.speed = 4 # velocida de movimiento
+        self.speed = 2 # velocida de movimiento
         self.moving = False # Maraca para verificar si el jugador se esta moviento
         self.width = TILE_SIZE
         self.height = TILE_SIZE
@@ -21,41 +21,30 @@ class Player:
         self.shoot_cooldown = 800 # Cooldonn wn milisegundoss
         self.last_shot_time = pygame.time.get_ticks() # Registra el ultimo tiempo de disparo
         self.health = 3 # Vida del jugador
+        self.last_position = (self.x // TILE_SIZE, self.y // TILE_SIZE) # Posicion anterior del jugador
+        
+        self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3") # Carga el sonido de caminar
         
         self.load_health_sprites()
         self.load_sprites()
 
         # Cargar las imágenes (sprites)
-        self.sprite_up = None
-        self.sprite_down = None
-        self.sprite_left = None
-        self.sprite_right = None
-        self.image = None
+        self.image = self.sprite_down  # sprite inicial 
+        self.rect = self.image.get_rect(topleft=(self.x, self.y))
 
     # Cargamos los sprites dle jugador
     def load_sprites(self):
-        scale_factor = 0.5  # Factor de escala (ajusta según sea necesario)
-
         self.sprite_up = pygame.image.load("assets/sprites/medicUp.png").convert_alpha()
         self.sprite_down = pygame.image.load("assets/sprites/medicDown.png").convert_alpha()
         self.sprite_left = pygame.image.load("assets/sprites/medicLeft.png").convert_alpha()
         self.sprite_right = pygame.image.load("assets/sprites/medicRight.png").convert_alpha()
 
-        # Escalar los sprites
-        self.sprite_up = pygame.transform.scale(self.sprite_up, (int(self.sprite_up.get_width() * scale_factor), int(self.sprite_up.get_height() * scale_factor)))
-        self.sprite_down = pygame.transform.scale(self.sprite_down, (int(self.sprite_down.get_width() * scale_factor), int(self.sprite_down.get_height() * scale_factor)))
-        self.sprite_left = pygame.transform.scale(self.sprite_left, (int(self.sprite_left.get_width() * scale_factor), int(self.sprite_left.get_height() * scale_factor)))
-        self.sprite_right = pygame.transform.scale(self.sprite_right, (int(self.sprite_right.get_width() * scale_factor), int(self.sprite_right.get_height() * scale_factor)))
-
         # Establecemos el sprite actual y el rectángulo de colisión
         self.image = self.sprite_down  # sprite inicial 
-        self.rect = self.image.get_rect(topleft=(self.x, self.y))
-    
-    def check_player_enemy_collision(self, player_rect, enemies):
-        for enemy in enemies:
-            if player_rect.colliderect(enemy.rect):
-             return True  # Hay colisión
-        return False  
+        self.sprite_up = pygame.transform.scale(self.sprite_up, (int(self.sprite_up.get_width() * 0.5), int(self.sprite_up.get_height() * 0.5)))
+        self.sprite_down = pygame.transform.scale(self.sprite_down, (int(self.sprite_down.get_width() * 0.5), int(self.sprite_down.get_height() * 0.5)))
+        self.sprite_left = pygame.transform.scale(self.sprite_left, (int(self.sprite_left.get_width() * 0.5), int(self.sprite_left.get_height() * 0.5)))
+        self.sprite_right = pygame.transform.scale(self.sprite_right, (int(self.sprite_right.get_width() * 0.5), int(self.sprite_right.get_height() * 0.5)))
 
     def load_health_sprites(self):
         self.health_images = [
@@ -83,24 +72,28 @@ class Player:
                     self.target_y = new_y
                     self.image = self.sprite_up
                     self.direction = "UP"  # Actualiza la dirección
+                    self.check_and_play_walk_sound()
             elif direction == "DOWN":
                 new_y = self.target_y + TILE_SIZE
                 if not self.check_collision(self.target_x, new_y, obstacles):  # Verifica colisiones
                     self.target_y = new_y
                     self.image = self.sprite_down
                     self.direction = "DOWN"
+                    self.check_and_play_walk_sound()
             elif direction == "LEFT":
                 new_x = self.target_x - TILE_SIZE
                 if not self.check_collision(new_x, self.target_y, obstacles):  # Verifica colisiones
                     self.target_x = new_x
                     self.image = self.sprite_left
                     self.direction = "LEFT"
+                    self.check_and_play_walk_sound()
             elif direction == "RIGHT":
                 new_x = self.target_x + TILE_SIZE
                 if not self.check_collision(new_x, self.target_y, obstacles):  # Verifica colisiones
                     self.target_x = new_x
                     self.image = self.sprite_right
                     self.direction = "RIGHT"
+                    self.check_and_play_walk_sound()
             self.moving = True
 
     
@@ -111,12 +104,13 @@ class Player:
             if player_rect.colliderect(obstacle):
                 return True
         return False
-    def check_player_enemy_collision(self, enemy, player_rect, enemy_rect, enemies):
-        for enemy in enemies:
-            if enemy_rect.colliderect(player_rect):
-             return True  # Hay colisión
-        return False  
     
+    def check_and_play_walk_sound(self):
+        current_position = (self.x // TILE_SIZE, self.y // TILE_SIZE)
+        if current_position != self.last_position:
+            self.walk_sound.play()
+            self.last_position = current_position
+
     def update(self):
         # Aqui se actualiza la posicion del jugador
         # Movimiento suave en el eje x
