@@ -21,8 +21,7 @@ class MainMenu:
         self.play_image = pygame.transform.scale(self.play_image, (250, 250))
         self.quit_image = pygame.transform.scale(self.quit_image, (200, 200))
         self.options_image = pygame.transform.scale(self.options_image, (200, 200))
-        self.title_image = pygame.transform.scale(self.title_image, (1300, 1000))
-        
+                
         # Creacion de los btones
         self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
