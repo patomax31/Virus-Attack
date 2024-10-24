@@ -11,11 +11,16 @@ class Enemy(pygame.sprite.Sprite):
         self.target_y = self.y
         self.speed = 1  # Asegúrate de que la velocidad sea un divisor exacto de TILE_SIZE
         self.moving = False
+        self.direction = self.get_random_direction()
         
         self.enemy_load_sprites()
 
         self.image = self.current_sprite
         self.rect = self.image.get_rect(center=(self.x, self.y))
+        
+    def get_random_direction(self):
+        directions = ["UP", "DOWN", "LEFT", "RIGHT"]
+        return random.choice(directions)
 
     def enemy_load_sprites(self):
         self.current_sprite = pygame.image.load("assets/sprites/enemy_3.png").convert_alpha()
@@ -25,10 +30,30 @@ class Enemy(pygame.sprite.Sprite):
         surface.blit(self.current_sprite, self.rect)
     
     def update(self, player_rect, obstacles):
-        if not self.moving:
-            self.move_random(obstacles)
-        self.move()
-        self.handle_collisions(player_rect, obstacles)
+        if self.direction == "UP":
+            new_y = self.rect.y - self.speed
+            if not self.check_collision(self.rect.x, new_y, obstacles):
+                self.rect.y = new_y
+            else:
+                self.direction = self.get_random_direction()
+        elif self.direction == "DOWN":
+            new_y = self.rect.y + self.speed
+            if not self.check_collision(self.rect.x, new_y, obstacles):
+                self.rect.y = new_y
+            else:
+                self.direction = self.get_random_direction()
+        elif self.direction == "LEFT":
+            new_x = self.rect.x - self.speed
+            if not self.check_collision(new_x, self.rect.y, obstacles):
+                self.rect.x = new_x
+            else:
+                self.direction = self.get_random_direction()
+        elif self.direction == "RIGHT":
+            new_x = self.rect.x + self.speed
+            if not self.check_collision(new_x, self.rect.y, obstacles):
+                self.rect.x = new_x
+            else:
+                self.direction = self.get_random_direction()
         
     def move_random(self, obstacles):
         directions = [(0, -TILE_SIZE), (0, TILE_SIZE), (-TILE_SIZE, 0), (TILE_SIZE, 0)]
@@ -76,7 +101,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.rect.y -= self.dy
 
     def check_collision(self, new_x, new_y, obstacles):
-        enemy_rect = pygame.Rect(new_x, new_y, TILE_SIZE, TILE_SIZE)
+        enemy_rect = pygame.Rect(new_x, new_y, self.rect.width, self.rect.height)
         for obstacle in obstacles:
             if enemy_rect.colliderect(obstacle):
                 return True
