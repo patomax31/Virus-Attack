@@ -179,7 +179,7 @@ class Level1:
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
         self.player.draw(screen)
-        self.enemy.draw(screen)
+        self.all_enemies.draw(screen)
         self.all_bubbles.draw(screen)
         tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
