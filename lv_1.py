@@ -14,7 +14,6 @@ class Level1:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
         self.player = Player(400, 400)
-        self.enemy = Enemy(960, 400)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -22,6 +21,7 @@ class Level1:
         self.time_left = 100
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
+        self.enemy = Enemy(900, 400)
         self.all_enemies.add(self.enemy)
         
         # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
@@ -57,6 +57,16 @@ class Level1:
                 if cell == 1: # Si la celda es igual a 1 (osea un obstaculo) crae un rectangulo
                     obstacle_rect = pygame.Rect(col_idx * self.TILE_SIZE, row_idx * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE) # Crea el rectangulo para el obstaculo
                     self.obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
+
+        enemy_positions = [
+            (960, 400),
+            (1060, 400),
+            (1160, 400)
+        ]
+        
+        for pos in enemy_positions:
+            enemy = Enemy(pos[0], pos[1])
+            self.all_enemies.add(enemy)
 
         # Carga de sonidos
         self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3")
@@ -127,7 +137,8 @@ class Level1:
             self.check_collision()
             self.check_player_enemy_collision()
 
-            self.all_enemies.update(self.player.rect, self.obstacles)
+            for enemy in self.all_enemies:
+                enemy.update(self.player.rect, self.obstacles)
             self.all_bubbles.update(self.obstacles, self.all_enemies)
             
             pygame.display.flip()
