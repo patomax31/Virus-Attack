@@ -12,6 +12,8 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Creamos la ventana con sus medidas
 clock = pygame.time.Clock() # Creamos est amadre que es para controlar los FPS
 
+
+
 # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
 map_data = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -174,6 +176,20 @@ def lv_1():
     pause_button = PauseButton() # Almacenamos la instancia del boton de pausa
     keys_pressed = None # Creamos esta variable que almacena las teclas precionadas en ella
     start_time = pygame.time.get_ticks() # Marca el tiempo al inicios
+    font = pygame.font.Font("font.ttf", 35)
+    fondo1_1= pygame.image.load("assets/sprites/fondo1_1.png")
+    fondo1_1 = pygame.transform.scale(fondo1_1, (560, 600)) 
+    # boton de reanudar
+    botonR_1 = pygame.image.load("assets/sprites/botonR.png")
+    botonR_1 = pygame.transform.scale(botonR_1, (300, 70)) 
+    resume_button = Button(botonR_1,(642, 300), "Reanudar", get_font(25), "Black", "Green")
+    #boton de salir 
+    botonS_1 = pygame.image.load("assets/sprites/botonS.png")
+    botonS_1 = pygame.transform.scale(botonS_1, (300, 70)) 
+    go_out_button = Button(botonS_1,(642, 450), "Salir", get_font(25), "Black", "Green")
+    #texto
+    texto1 = font.render("pause", True, "white")
+    texto1_rect = texto1.get_rect(center = (642, 130))
 
     while running:
         # Calculamos el tiempo transcurrido
@@ -189,6 +205,7 @@ def lv_1():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pause_button.is_clicked(event.pos):
+                
                     paused = not paused  # Si le damos click al botón se cambia el estado de la pausa
 
             current_direction = "DOWN" # Direccion por default 
@@ -216,6 +233,7 @@ def lv_1():
             
         if not paused:
             # Manejo de eventos
+            
             keys = pygame.key.get_pressed()  # Detecta si las teclas están presionadas
             if keys[pygame.K_w]:
                 player.move('UP', obstacles)
@@ -251,8 +269,15 @@ def lv_1():
             # Dibujamos una pantalla semitransparente de mientras
             overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
             overlay.fill((0, 0, 0))  # pintamos color negro a la roña
-            overlay.set_alpha(128)  # Le ponemos transparencia (la transparencia se mide del 0 al 255 donde el 0 es completamente transparente)
+            overlay.set_alpha(128)  # Le ponemos transparencia (la transparencia se mide del 0 al 255 donde el 0 es completamente transparente)  
             screen.blit(overlay, (0, 0))
+            screen.blit(fondo1_1, (365, 50))
+            resume_button.update(screen)
+            go_out_button.update(screen)
+            screen.blit(texto1, texto1_rect)
+            pygame.display.flip()
+            
+
 
             # Dibujamos el botón de pausa mientras el juego está en pausa
             pause_button.draw(screen)
@@ -264,7 +289,9 @@ def lv_1():
                         paused = False
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if pause_button.is_clicked(event.pos):
-                            paused = not paused
+                         Reanudar = pygame.image.load("assets/sprites/Reanudar.png")
+                         Salir = pygame.image.load("assets/sprites/Salir.png")
+                        paused = not paused
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             paused = not paused
