@@ -38,8 +38,8 @@ class LevelSelector:
                     self.selected_level = "level1"
                     self.state_manager.set_state("level1")
                 if self.level2_button.checkForInput(pygame.mouse.get_pos()):
-                    self.selected_level = "level2"
-                    self.state_manager.set_state("level2")
+                    self.selected_level = "Tutorial"
+                    self.state_manager.set_state("Tutorial")
                 if self.level3_button.checkForInput(pygame.mouse.get_pos()):
                     self.selected_level = "level3"
                     self.state_manager.set_state("level3")
