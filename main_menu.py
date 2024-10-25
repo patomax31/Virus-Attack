@@ -60,6 +60,8 @@ class MainMenu:
                 if self.quit_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.quit()
                     sys.exit()
+                if self.options_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("settings")    
                     
     def draw(self, screen):
         screen.blit(self.background, (0, 0))

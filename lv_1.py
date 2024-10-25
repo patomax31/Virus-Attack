@@ -73,11 +73,24 @@ class Level1:
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/level1.png")
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
-        
+        self.font = pygame.font.Font("font.ttf", 35)
+        self.fondo1_1= pygame.image.load("assets/sprites/fondo1_1.png")
+        self.botonR_1 = pygame.image.load("assets/sprites/botonR.png")
+        self.botonS_1 = pygame.image.load("assets/sprites/botonS.png")
+
         # Escalar los recursos
-        
+        self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (560, 600))
+        self.botonR_1 = pygame.transform.scale(self.botonR_1, (300, 70)) 
+        self.botonS_1 = pygame.transform.scale(self.botonS_1, (300, 70)) 
+
         # Crear botones
         self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
+        self.resume_button = Button(self.botonR_1,(642, 300), "Reanudar", self.get_font(25), "Black", "Green")
+        self.go_out_button = Button(self.botonS_1,(642, 450), "Salir", self.get_font(25), "Black", "Green")
+
+        # Texto
+        self.texto1 = self.font.render("pause", True, "white")
+        self.texto1_rect = self.texto1.get_rect(center = (642, 130))    
     
     def create_enemies(self):
         self.all_enemies.empty()  # Vacía el grupo de enemigos
@@ -93,6 +106,10 @@ class Level1:
         overlay.fill((0, 0, 0))
         overlay.set_alpha(128)
         self.screen.blit(overlay, (0, 0))
+        self.screen.blit(self.fondo1_1, (365, 50))
+        self.resume_button.update(self.screen)
+        self.go_out_button.update(self.screen)
+        self.screen.blit(self.texto1, self.texto1_rect)
         self.pause_button.update(self.screen)
         pygame.display.flip()
     
@@ -160,6 +177,14 @@ class Level1:
                         if self.pause_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
+                        elif self.resume_button.checkForInput(pygame.mouse.get_pos()):
+                            self.paused = False
+                            self.start_time += pygame.time.get_ticks() - self.pause_start_time
+                        elif self.go_out_button.checkForInput(pygame.mouse.get_pos()):
+                            self.paused = False
+                            self.reset_game_state()
+                            self.state_manager.set_state("levels")    
+                            
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.paused = False
@@ -169,6 +194,9 @@ class Level1:
                             self.reset_game_state()
                             self.state_manager.set_state("levels")
                 self.clock.tick(60)
+                if self.player.is_dead:
+                    self.reset_game_state()
+                    self.state_manager.set_state("lose_menu")
 
         pygame.display.flip()
         self.clock.tick(60)
@@ -176,7 +204,7 @@ class Level1:
     def check_player_enemy_collision(self):
         for enemy in self.all_enemies:
             if self.player.rect.colliderect(enemy.rect):
-                self.player.change_health()
+                self.player.change_health(-1)
                 self.move_enemy_away(enemy)
                 
     def move_enemy_away(self, enemy):
