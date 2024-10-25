@@ -21,8 +21,16 @@ class Level1:
         self.time_left = 100
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
-        self.enemy = Enemy(900, 400)
-        self.all_enemies.add(self.enemy)
+
+        # Posiciones iniciales de los enemigos
+        self.enemy_positions = [
+            (900, 400),
+            (960, 400),
+            (1060, 400),
+            (1160, 400)
+        ]
+        
+        self.create_enemies()
         
         # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
         self.map_data = [
@@ -58,15 +66,6 @@ class Level1:
                     obstacle_rect = pygame.Rect(col_idx * self.TILE_SIZE, row_idx * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE) # Crea el rectangulo para el obstaculo
                     self.obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
 
-        enemy_positions = [
-            (960, 400),
-            (1060, 400),
-            (1160, 400)
-        ]
-        
-        for pos in enemy_positions:
-            enemy = Enemy(pos[0], pos[1])
-            self.all_enemies.add(enemy)
 
         # Carga de sonidos
         self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3")
@@ -79,6 +78,12 @@ class Level1:
         
         # Crear botones
         self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
+    
+    def create_enemies(self):
+        self.all_enemies.empty()  # Vacía el grupo de enemigos
+        for pos in self.enemy_positions:
+            enemy = Enemy(pos[0], pos[1])
+            self.all_enemies.add(enemy)    
         
     def get_font(self, size):
         return pygame.font.Font("font.ttf", size)
@@ -192,13 +197,13 @@ class Level1:
         
     def reset_game_state(self):
         self.player = Player(400, 400)
-        self.enemy = Enemy(900, 400)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
         self.start_time = pygame.time.get_ticks()
         self.time_left = 100
         self.all_bubbles.empty()
+        self.create_enemies()
         self.screen.fill((0, 0, 0))  # Limpiar la pantalla al resetear el estado
         pygame.display.flip()
         

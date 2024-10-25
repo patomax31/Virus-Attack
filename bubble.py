@@ -8,7 +8,7 @@ class Bubble(pygame.sprite.Sprite):
         self.image = pygame.image.load("assets/sprites/bubble1.png").convert_alpha() # Cargamos la imagen
         self.rect = self .image.get_rect() # Con esto obtenemos el rectangulo que envuelve a la burbuja (para proximamente la colision y ademas su posicion)
         self.rect.center = (x, y) # Posicionas la burbuja en las cordenadas (x, y) que son la posicion inicial del disparo y ademas la posicion del personaje
-        self.speed = 10 # Velocidad de la burbuja
+        self.speed = 5 # Velocidad de la burbuja
         self.direction = direction # Con esto almacenamos la direccion en la que se movera la burbuja
 
     def update(self, obstacles, enemies):
