@@ -17,7 +17,7 @@ class Player:
         self.moving = False # Maraca para verificar si el jugador se esta moviento
         self.width = TILE_SIZE
         self.height = TILE_SIZE
-        self.direction = "Down"
+        self.direction = "DOWN"
         self.shoot_cooldown = 800 # Cooldonn wn milisegundoss
         self.last_shot_time = pygame.time.get_ticks() # Registra el ultimo tiempo de disparo
         self.health = 3 # Vida del jugador
