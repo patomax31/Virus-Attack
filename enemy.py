@@ -23,9 +23,17 @@ class Enemy(pygame.sprite.Sprite):
         return random.choice(directions)
 
     def enemy_load_sprites(self):
-        self.current_sprite = pygame.image.load("assets/sprites/enemy_3.png").convert_alpha()
-        self.current_sprite = pygame.transform.scale(self.current_sprite, (int(self.current_sprite.get_width() * 0.5), int(self.current_sprite.get_height() * 0.5)))
+        if self.direction == "UP":
+            self.current_sprite = pygame.image.load("assets/sprites/enemy_up.png").convert_alpha()
+        elif self.direction == "DOWN":
+            self.current_sprite = pygame.image.load("assets/sprites/enemy_down.png").convert_alpha()
+        elif self.direction == "LEFT":
+            self.current_sprite = pygame.image.load("assets/sprites/enemy_left.png").convert_alpha()
+        elif self.direction == "RIGHT":
+            self.current_sprite = pygame.image.load("assets/sprites/enemy_right.png").convert_alpha()
 
+        self.current_sprite = pygame.transform.scale(self.current_sprite, (int(self.current_sprite.get_width() * 0.5), int(self.current_sprite.get_height() * 0.5)))
+    
     def draw(self, surface):
         surface.blit(self.current_sprite, self.rect)
     
