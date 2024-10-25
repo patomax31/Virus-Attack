@@ -5,9 +5,6 @@ from enemy import Enemy
 from button import Button
 from contador import tiempo
 
-soap = pygame.image.load("assets/sprites/soap.png")
-Soap = soap.get_rect()
-
 
 
 class Tutorial:

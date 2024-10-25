@@ -4,6 +4,7 @@ from player import Player
 from enemy import Enemy
 from button import Button
 from contador import tiempo
+import random
 
 class Level1:
     def __init__(self, state_manager):
@@ -13,7 +14,6 @@ class Level1:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
         self.player = Player(400, 400)
-        self.enemy = Enemy(960, 400)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -21,17 +21,18 @@ class Level1:
         self.time_left = 100
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
+        self.enemy = Enemy(900, 400)
         self.all_enemies.add(self.enemy)
         
         # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
         self.map_data = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1],
-            [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1], 
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
             [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -56,6 +57,16 @@ class Level1:
                 if cell == 1: # Si la celda es igual a 1 (osea un obstaculo) crae un rectangulo
                     obstacle_rect = pygame.Rect(col_idx * self.TILE_SIZE, row_idx * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE) # Crea el rectangulo para el obstaculo
                     self.obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
+
+        enemy_positions = [
+            (960, 400),
+            (1060, 400),
+            (1160, 400)
+        ]
+        
+        for pos in enemy_positions:
+            enemy = Enemy(pos[0], pos[1])
+            self.all_enemies.add(enemy)
 
         # Carga de sonidos
         self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3")
@@ -124,8 +135,10 @@ class Level1:
 
             self.player.update()
             self.check_collision()
+            self.check_player_enemy_collision()
 
-            self.all_enemies.update(self.player.rect, self.obstacles)
+            for enemy in self.all_enemies:
+                enemy.update(self.player.rect, self.obstacles)
             self.all_bubbles.update(self.obstacles, self.all_enemies)
             
             pygame.display.flip()
@@ -155,6 +168,28 @@ class Level1:
         pygame.display.flip()
         self.clock.tick(60)
         
+    def check_player_enemy_collision(self):
+        for enemy in self.all_enemies:
+            if self.player.rect.colliderect(enemy.rect):
+                self.player.change_health()
+                self.move_enemy_away(enemy)
+                
+    def move_enemy_away(self, enemy):
+        max_attempts = 100  # Número máximo de intentos para encontrar una posición válida
+        attempts = 0
+        while attempts < max_attempts:
+            new_x = random.randint(0, self.screen.get_width() - enemy.rect.width)
+            new_y = random.randint(0, self.screen.get_height() - enemy.rect.height)
+            new_rect = pygame.Rect(new_x, new_y, enemy.rect.width, enemy.rect.height)
+            if not self.player.rect.colliderect(new_rect) and not any(obstacle.colliderect(new_rect) for obstacle in self.obstacles):
+                enemy.rect.topleft = (new_x, new_y)
+                enemy.get_random_direction()  # Asignar un nuevo rumbo aleatorio
+                break
+            attempts += 1
+        else:
+            # Si no se encuentra una posición válida, mantener al enemigo en su posición actual
+            print("No se encontró una posición válida para alejar al enemigo.")
+        
     def reset_game_state(self):
         self.player = Player(400, 400)
         self.enemy = Enemy(900, 400)
@@ -179,7 +214,7 @@ class Level1:
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
         self.player.draw(screen)
-        self.enemy.draw(screen)
+        self.all_enemies.draw(screen)
         self.all_bubbles.draw(screen)
         tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
