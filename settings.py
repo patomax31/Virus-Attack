@@ -6,5 +6,3 @@ FPS = 60
 
 # Colores
 WHITE = (255, 255, 255)
-
-# Hace sueño a la roña
