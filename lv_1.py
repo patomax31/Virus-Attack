@@ -256,3 +256,5 @@ class Level1:
         self.pause_button.update(screen)
         self.enemy_count_text = self.font2.render(f"Enemigos: {self.enemy_count}", True, "white")
         self.screen.blit(self.enemy_count_text, (1140, 50))
+        
+        #tiren paro
