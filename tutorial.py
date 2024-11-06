@@ -4,7 +4,7 @@ from player import Player
 from enemy import Enemy
 from button import Button
 from contador import tiempo
-
+from Soap import soap
 
 
 class Tutorial:
@@ -18,6 +18,7 @@ class Tutorial:
         self.TILE_SIZE = 32
         self.player = Player(400, 400)
         self.enemy = Enemy(960, 400)
+   #     self.soap = soap(500, 200)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -149,7 +150,9 @@ class Tutorial:
             
         #Moverse al jabon
         
-
+        #Disparar al enemigo
+        
+        #Salir del mapa
 
         if self.paused:
             self.draw_overlay()
@@ -171,6 +174,7 @@ class Tutorial:
                             self.paused = False
                             self.reset_game_state()
                             self.state_manager.set_state("levels")
+                            
                 self.clock.tick(60)
 
         pygame.display.flip()
@@ -205,8 +209,12 @@ class Tutorial:
         self.screen.blit(self.d, (100, 250))
         self.screen.blit(self.space, (100, 300))
         self.player.draw(screen)
-        self.enemy.draw(screen)
+       
+       
+       # self.enemy.draw(screen)
+       
         self.all_bubbles.draw(screen)
+   #     self.soap.draw(screen)
                # tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
-
+ 
