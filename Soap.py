@@ -2,10 +2,9 @@ import pygame
 import pygame.image
 import sys
 from settings import TILE_SIZE # Importa las configuraciones necesarias
-from bubble import Bubble
-
+from player import Player
 # Clase Player para manejar al jugadorr
-class Soap:
+class soap:
     def __init__(self, x, y):
         super().__init__()
         # Inicializa las propiedades del jugador
@@ -19,15 +18,17 @@ class Soap:
         self.height = TILE_SIZE
         self.direction = "Down"
         # Cargar las imágenes (sprites)
-        self.image = self.sprite_down  # sprite inicial 
-        self.rect = self.image.get_rect(topleft=(self.x, self.y))
+        self.image = self.rect 
+        self.rect = self.get_rect(topleft=(self.x, self.y))
 
+    def load_sprites(self):
+        self.sprite_soap= pygame.image.load("assets/sprites/soap.png").convert_alpha()
 
-    def check_collision(self, new_x, new_y, obstacles):
+    def check_collision(self, obstacles,Player_rect):
         # COmprueba si la nueva colision que se registre choca con algun obstaculo
-        player_rect = pygame.Rect(new_x, new_y, TILE_SIZE, TILE_SIZE)
+        soap_rect = pygame.Rect(TILE_SIZE, TILE_SIZE)
         for obstacle in obstacles:
-            if player_rect.colliderect(obstacle):
+            if soap_rect.colliderect(Player_rect):
                 return True
         return False
     
@@ -50,18 +51,5 @@ class Soap:
         surface.blit(self.image, self.rect)
         self.draw_health_bar(surface)
     
-    def draw_health_bar(self, surface):
-        if self.health > 0:
-            health_image = self.health_images[self.health - 1] # selecciona la imagen correspondiente a la vida
-            surface.blit(health_image, (10, 10)) # Dibuja la barra de vida en las coordenadas
-            
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
-
-
-    def shoot(self, all_bubbles):
-        current_time = pygame.time.get_ticks() # Con esto obtenemos el tiempo actual
-        if current_time - self.last_shot_time >= self.shoot_cooldown: # Si ha pasado el cooldwon
-            bubble = Bubble(self.rect.centerx, self.rect.centery, self.direction) # Craemos una instancia de la burbuja  en la posicion actual del jugador (el centro de su sprite)
-            all_bubbles.add (bubble) # Añade la burbuja recien creada al grupo de burbujas para que se actualice y se dibuje en pantalla
-            self.last_shot_time = current_time # Reiniciamos el contadorr
