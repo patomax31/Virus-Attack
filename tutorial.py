@@ -67,6 +67,11 @@ class Tutorial:
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/tutorial_bg.png")
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
+        self.w = pygame.image.load("assets/sprites/tecla_w.png")
+        self.a = pygame.image.load("assets/sprites/tecla_a.png")
+        self.s = pygame.image.load("assets/sprites/tecla_s.png")
+        self.d = pygame.image.load("assets/sprites/tecla_d.png")
+        self.space = pygame.image.load("assets/sprites/tecla_space.png")
         
         # Escalar los recursos
         
@@ -198,6 +203,11 @@ class Tutorial:
             
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
+        self.screen.blit(self.w, (100, 100))
+        self.screen.blit(self.a, (100, 150))
+        self.screen.blit(self.s, (100, 200))
+        self.screen.blit(self.d, (100, 250))
+        self.screen.blit(self.space, (100, 300))
         self.player.draw(screen)
        
        

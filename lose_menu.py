@@ -2,7 +2,7 @@ import pygame
 import sys
 from button import Button
 
-class LevelSelector:
+class LoseMenu:
     def __init__(self, state_manager):
         # Datos de pantalla
         self.state_manager = state_manager
@@ -16,9 +16,13 @@ class LevelSelector:
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
+        font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
         
         # Carga de texto
-        self.name = font_game.render("Select a level", True, (59, 170, 143))
+        self.name = font_game.render("Settings", True, (59, 170, 143))
+        self.language = font_screen_title.render("Language", True, (78, 248, 71))
+        self.sound = font_screen_title.render("Sound", True, (78, 248, 71))
+        self.difficulty = font_screen_title.render("Difficulty", True, (78, 248, 71))
         
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
@@ -29,10 +33,7 @@ class LevelSelector:
         self.back_image = pygame.transform.flip(self.back_image, True, False)
         
         # Crear btnes
-        self.level1_button = Button(self.level1_image, (390, 300), "", self.get_font(25), "Black", "Green")
-        self.level2_button = Button(self.level1_image, (650, 300), "", self.get_font(25), "Black", "Green")
-        self.level3_button = Button(self.level1_image, (910, 300), "", self.get_font(25), "Black", "Green")
-        self.back_button = Button(self.back_image, (190, 620), "", self.get_font(25), "White", "Green")   
+        self.back_button = Button(None, (190, 620), "", self.get_font(25), "White", "Green")   
         
         # Estado de selección del nivel
         self.selected_level = None
@@ -46,15 +47,6 @@ class LevelSelector:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.level1_button.checkForInput(pygame.mouse.get_pos()):
-                    self.selected_level = "level1"
-                    self.state_manager.set_state("player_selector", self.selected_level)
-                if self.level2_button.checkForInput(pygame.mouse.get_pos()):
-                    self.selected_level = "Tutorial"
-                    self.state_manager.set_state("Tutorial", self.selected_level)
-                if self.level3_button.checkForInput(pygame.mouse.get_pos()):
-                    self.selected_level = "level3"
-                    self.state_manager.set_state("level3", self.selected_level)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
                 
@@ -62,11 +54,10 @@ class LevelSelector:
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.dock, (0, 0))
         # Dibujar botones
-        self.level1_button.update(screen)
-        self.level2_button.update(screen)
-        self.level3_button.update(screen)
         self.back_button.update(screen)
         # Dibujar texto
         self.screen.blit(self.name, self.name.get_rect(center=(640, 50)))
-        
+        self.screen.blit(self.language, self.language.get_rect(center=(390, 200)))
+        self.screen.blit(self.sound, self.sound.get_rect(center=(640, 200)))
+        self.screen.blit(self.difficulty, self.difficulty.get_rect(center=(890, 200)))        
         pygame.display.flip()

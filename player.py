@@ -17,11 +17,12 @@ class Player:
         self.moving = False # Maraca para verificar si el jugador se esta moviento
         self.width = TILE_SIZE
         self.height = TILE_SIZE
-        self.direction = "Down"
+        self.direction = "DOWN"
         self.shoot_cooldown = 800 # Cooldonn wn milisegundoss
         self.last_shot_time = pygame.time.get_ticks() # Registra el ultimo tiempo de disparo
         self.health = 3 # Vida del jugador
         self.last_position = (self.x // TILE_SIZE, self.y // TILE_SIZE) # Posicion anterior del jugador
+        self.is_dead = False
         
         self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3") # Carga el sonido de caminar
         
@@ -53,12 +54,12 @@ class Player:
             pygame.image.load("assets/sprites/health_1.png").convert_alpha()
         ]
 
-    def change_health(self): # Metodo para cambiar la vida del jugador
-        self.health -= 1 # Resta 1 a la vida del jugador
-        if self.health < 1: # Si la vida es menor a 1
-            pygame.quit()
-            sys.exit()
-        self.update_health_sprite() # Actualiza la imagen de la vida
+    def change_health(self, amount): # Metodo para cambiar la vida del jugador
+        self.health += amount
+        self.health = max(0, min(self.health, 3))
+        self.update_health_sprite()
+        if self.health < 1:
+            self.is_dead = True
 
     def update_health_sprite(self): # Metodo para actualizar la imagen de la vida
         self.health_sprite = self.health_images[self.health - 1] # Selecciona la imagen correspondiente a la vida
