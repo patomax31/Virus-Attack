@@ -74,6 +74,7 @@ class Level1:
         self.background = pygame.image.load("assets/sprites/level1.png")
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
         self.font = pygame.font.Font("font.ttf", 35)
+        self.font2 = pygame.font.Font("font.ttf", 10)
         self.fondo1_1= pygame.image.load("assets/sprites/fondo1_1.png")
         self.botonR_1 = pygame.image.load("assets/sprites/botonR.png")
         self.botonS_1 = pygame.image.load("assets/sprites/botonS.png")
@@ -90,7 +91,6 @@ class Level1:
 
         # Texto
         self.texto1 = self.font.render("pause", True, "white")
-        self.enemy_count_text = self.font.render(f"Enemigos restantes: {self.enemy_count}", True, "white")
         self.texto1_rect = self.texto1.get_rect(center = (642, 130))    
     
     def create_enemies(self):
@@ -115,6 +115,7 @@ class Level1:
         pygame.display.flip()
     
     def update(self):
+        self.check_collision()
         if not self.paused:
             elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
             self.time_left = max(0, 100 - elapsed_time)
@@ -242,6 +243,7 @@ class Level1:
             if enemy_hit_list:
                 bubble.kill()
                 for enemy in enemy_hit_list:
+                    self.enemy_count -= 1
                     self.all_enemies.remove(enemy)
                     self.screen.blit(self.background, enemy.rect, enemy.rect)
             
@@ -252,4 +254,7 @@ class Level1:
         self.all_bubbles.draw(screen)
         tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
-        self.screen.blit(self.enemy_count_text, (10, 10))
+        self.enemy_count_text = self.font2.render(f"Enemigos: {self.enemy_count}", True, "white")
+        self.screen.blit(self.enemy_count_text, (1140, 50))
+        
+        #tiren paro
