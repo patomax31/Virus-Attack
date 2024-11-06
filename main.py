@@ -1,5 +1,4 @@
 import pygame
-import sys
 from state_manager import StateManager
 from main_menu import MainMenu
 from lv_selector import LevelSelector

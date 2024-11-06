@@ -29,7 +29,7 @@ class Level1:
             (1060, 400),
             (1160, 400)
         ]
-        
+        self.enemy_count = len(self.enemy_positions)
         self.create_enemies()
         
         # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
@@ -90,6 +90,7 @@ class Level1:
 
         # Texto
         self.texto1 = self.font.render("pause", True, "white")
+        self.enemy_count_text = self.font.render(f"Enemigos restantes: {self.enemy_count}", True, "white")
         self.texto1_rect = self.texto1.get_rect(center = (642, 130))    
     
     def create_enemies(self):
@@ -251,3 +252,4 @@ class Level1:
         self.all_bubbles.draw(screen)
         tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
+        self.screen.blit(self.enemy_count_text, (10, 10))
