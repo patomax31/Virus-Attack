@@ -4,12 +4,14 @@ from player import Player
 from enemy import Enemy
 from button import Button
 from contador import tiempo
-from Soap import soap
+from objects import soap
 
 
 class Tutorial:
     def __init__(self, state_manager):
         # Datos de pantalla
+        font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
+        font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
         
        
         self.state_manager = state_manager
@@ -18,7 +20,7 @@ class Tutorial:
         self.TILE_SIZE = 32
         self.player = Player(400, 400)
         self.enemy = Enemy(960, 400)
-   #     self.soap = soap(500, 200)
+        self.soap = soap(500, 400)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -27,6 +29,7 @@ class Tutorial:
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
         self.all_enemies.add(self.enemy)
+        
         # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
         self.map_data = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -74,9 +77,11 @@ class Tutorial:
         self.space = pygame.image.load("assets/sprites/tecla_space.png")
         
         # Escalar los recursos
+        self.difficulty = font_screen_title.render("Press to move", True, (78, 248, 71))
+        
         
         # Crear botones
-        self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
+        self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(15), "Black", "Green")
         
     def get_font(self, size):
         return pygame.font.Font("font.ttf", size)
@@ -88,7 +93,7 @@ class Tutorial:
         self.screen.blit(overlay, (0, 0))
         self.pause_button.update(self.screen)
         pygame.display.flip()
-    
+        #BUCLE
     def update(self):
         if not self.paused:
             elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
@@ -138,12 +143,11 @@ class Tutorial:
 
             self.player.update()
             self.check_collision()
-
+            self.soap.check_object_collision(self.obstacles, self.player.rect)
+            
             self.all_enemies.update(self.player.rect, self.obstacles)
             self.all_bubbles.update(self.obstacles, self.all_enemies)
-            
-           # soap.blit(Soap, (0,0))
-            
+                        
             pygame.display.flip()
 
             
@@ -153,7 +157,7 @@ class Tutorial:
         #Disparar al enemigo
         
         #Salir del mapa
-
+        #PAUSA
         if self.paused:
             self.draw_overlay()
             pygame.display.flip()
@@ -182,7 +186,6 @@ class Tutorial:
         
     def reset_game_state(self):
         self.player = Player(400, 400)
-        self.enemy = Enemy(900, 400)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -200,16 +203,21 @@ class Tutorial:
                 for enemy in enemy_hit_list:
                     self.all_enemies.remove(enemy)
                     self.screen.blit(self.background, enemy.rect, enemy.rect)
-            
+     #   for soap in object:
+     #       soap= pygame.sprite.spritecollide(self.player.rect)
+     #       if soap:
+     #           soap.kill()
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
-        self.screen.blit(self.w, (100, 100))
-        self.screen.blit(self.a, (100, 150))
-        self.screen.blit(self.s, (100, 200))
-        self.screen.blit(self.d, (100, 250))
+        self.screen.blit(self.w, (100, 200))
+        self.screen.blit(self.a, (50, 250))
+        self.screen.blit(self.s, (100, 250))
+        self.screen.blit(self.d, (150, 250))
         self.screen.blit(self.space, (100, 300))
+        self.screen.blit(self.difficulty, self.difficulty.get_rect(center=(120, 160)))      
+
+        self.soap.draw(screen)        
         self.player.draw(screen)
-       
        
        # self.enemy.draw(screen)
        
