@@ -1,0 +1,22 @@
+{
+  "es": {
+    "settings": "Configuracion",
+    "language": "Idioma",
+    "sound": "Sonido",
+    "difficulty": "Dificultad",
+    "beginner": "Principiante",
+    "advanced": "Avanzado",
+    "select a level": "Selecciona un nivel",
+    "select your character": "Selecciona tu personaje"
+  },
+  "en": {
+    "settings": "Settings",
+    "language": "Language",
+    "sound": "Sound",
+    "difficulty": "Difficulty",
+    "beginner": "Beginner",
+    "advanced": "Advanced",
+    "select a level": "Select a level",
+    "select your character": "Select your character"
+  }
+}
