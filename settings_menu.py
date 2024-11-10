@@ -1,11 +1,15 @@
 import pygame
 import sys
 from button import Button
+from Localization_manager import localization
+
+
 
 class SettingsMenu:
     def __init__(self, state_manager):
         # Datos de pantalla
         self.state_manager = state_manager
+        
         self.selected_level = None
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
@@ -46,9 +50,21 @@ class SettingsMenu:
         
         # Estado de selección del nivel
         self.selected_level = None
+
+        #Cargar textos iniciales
+        self.update_texts()
+       
     
     def get_font(self, size):
         return pygame.font.Font("assets/fonts/SCREEN.TTF", size)
+    
+    def update_texts(self):
+        # Usar localization para obtener los textos actuales según el idioma
+        self.name = self.get_font(50).render(localization.get_text("settings"), True, (59, 170, 143))
+        self.language = self.get_font(40).render(localization.get_text("language"), True, (78, 248, 71))
+        self.sound = self.get_font(40).render(localization.get_text("sound"), True, (78, 248, 71))
+        self.difficulty = self.get_font(40).render(localization.get_text("difficulty"), True, (78, 248, 71))
+        # También puedes actualizar otros botones de nivel de dificultad, si cambian con el idioma
     
     def update(self):
         for event in pygame.event.get():
@@ -58,7 +74,15 @@ class SettingsMenu:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
-                
+                elif self.english_button.checkForInput(pygame.mouse.get_pos()):
+                    localization.set_language("en")
+                    self.update_texts()  # Actualizar los textos al cambiar de idioma
+                    
+                elif self.spanish_button.checkForInput(pygame.mouse.get_pos()):
+                    localization.set_language("es")
+                    self.update_texts()  # Actualizar los textos al cambiar de idioma
+                    
+                  
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.dock, (0, 0))

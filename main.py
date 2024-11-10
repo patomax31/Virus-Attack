@@ -22,7 +22,7 @@ def main():
     state_manager.add_state("settings", SettingsMenu(state_manager))
     state_manager.add_state("lose_menu", LoseMenu(state_manager))
     state_manager.set_state("main_menu")
-    
+  
     while True:
         state_manager.update()
         state_manager.draw(screen)
