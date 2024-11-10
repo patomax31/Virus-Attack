@@ -21,8 +21,16 @@ class Level1:
         self.time_left = 100
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
-        self.enemy = Enemy(900, 400)
-        self.all_enemies.add(self.enemy)
+
+        # Posiciones iniciales de los enemigos
+        self.enemy_positions = [
+            (900, 400),
+            (960, 400),
+            (1060, 400),
+            (1160, 400)
+        ]
+        self.enemy_count = len(self.enemy_positions)
+        self.create_enemies()
         
         # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
         self.map_data = [
@@ -58,15 +66,6 @@ class Level1:
                     obstacle_rect = pygame.Rect(col_idx * self.TILE_SIZE, row_idx * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE) # Crea el rectangulo para el obstaculo
                     self.obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
 
-        enemy_positions = [
-            (960, 400),
-            (1060, 400),
-            (1160, 400)
-        ]
-        
-        for pos in enemy_positions:
-            enemy = Enemy(pos[0], pos[1])
-            self.all_enemies.add(enemy)
 
         # Carga de sonidos
         self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3")
@@ -74,11 +73,31 @@ class Level1:
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/level1.png")
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
-        
+        self.font = pygame.font.Font("font.ttf", 35)
+        self.font2 = pygame.font.Font("font.ttf", 10)
+        self.fondo1_1= pygame.image.load("assets/sprites/fondo1_1.png")
+        self.botonR_1 = pygame.image.load("assets/sprites/botonR.png")
+        self.botonS_1 = pygame.image.load("assets/sprites/botonS.png")
+
         # Escalar los recursos
-        
+        self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (560, 600))
+        self.botonR_1 = pygame.transform.scale(self.botonR_1, (300, 70)) 
+        self.botonS_1 = pygame.transform.scale(self.botonS_1, (300, 70)) 
+
         # Crear botones
         self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
+        self.resume_button = Button(self.botonR_1,(642, 300), "Reanudar", self.get_font(25), "Black", "Green")
+        self.go_out_button = Button(self.botonS_1,(642, 450), "Salir", self.get_font(25), "Black", "Green")
+
+        # Texto
+        self.texto1 = self.font.render("pause", True, "white")
+        self.texto1_rect = self.texto1.get_rect(center = (642, 130))    
+    
+    def create_enemies(self):
+        self.all_enemies.empty()  # Vacía el grupo de enemigos
+        for pos in self.enemy_positions:
+            enemy = Enemy(pos[0], pos[1])
+            self.all_enemies.add(enemy)    
         
     def get_font(self, size):
         return pygame.font.Font("font.ttf", size)
@@ -88,10 +107,15 @@ class Level1:
         overlay.fill((0, 0, 0))
         overlay.set_alpha(128)
         self.screen.blit(overlay, (0, 0))
+        self.screen.blit(self.fondo1_1, (365, 50))
+        self.resume_button.update(self.screen)
+        self.go_out_button.update(self.screen)
+        self.screen.blit(self.texto1, self.texto1_rect)
         self.pause_button.update(self.screen)
         pygame.display.flip()
     
     def update(self):
+        self.check_collision()
         if not self.paused:
             elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
             self.time_left = max(0, 100 - elapsed_time)
@@ -155,6 +179,14 @@ class Level1:
                         if self.pause_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
+                        elif self.resume_button.checkForInput(pygame.mouse.get_pos()):
+                            self.paused = False
+                            self.start_time += pygame.time.get_ticks() - self.pause_start_time
+                        elif self.go_out_button.checkForInput(pygame.mouse.get_pos()):
+                            self.paused = False
+                            self.reset_game_state()
+                            self.state_manager.set_state("levels")    
+                            
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.paused = False
@@ -164,6 +196,9 @@ class Level1:
                             self.reset_game_state()
                             self.state_manager.set_state("levels")
                 self.clock.tick(60)
+                if self.player.is_dead:
+                    self.reset_game_state()
+                    self.state_manager.set_state("lose_menu")
 
         pygame.display.flip()
         self.clock.tick(60)
@@ -171,7 +206,7 @@ class Level1:
     def check_player_enemy_collision(self):
         for enemy in self.all_enemies:
             if self.player.rect.colliderect(enemy.rect):
-                self.player.change_health()
+                self.player.change_health(-1)
                 self.move_enemy_away(enemy)
                 
     def move_enemy_away(self, enemy):
@@ -192,13 +227,13 @@ class Level1:
         
     def reset_game_state(self):
         self.player = Player(400, 400)
-        self.enemy = Enemy(900, 400)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
         self.start_time = pygame.time.get_ticks()
         self.time_left = 100
         self.all_bubbles.empty()
+        self.create_enemies()
         self.screen.fill((0, 0, 0))  # Limpiar la pantalla al resetear el estado
         pygame.display.flip()
         
@@ -208,6 +243,7 @@ class Level1:
             if enemy_hit_list:
                 bubble.kill()
                 for enemy in enemy_hit_list:
+                    self.enemy_count -= 1
                     self.all_enemies.remove(enemy)
                     self.screen.blit(self.background, enemy.rect, enemy.rect)
             
@@ -218,3 +254,7 @@ class Level1:
         self.all_bubbles.draw(screen)
         tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
+        self.enemy_count_text = self.font2.render(f"Enemigos: {self.enemy_count}", True, "white")
+        self.screen.blit(self.enemy_count_text, (1140, 50))
+        
+        #tiren paro

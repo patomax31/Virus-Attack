@@ -15,14 +15,22 @@ class MainMenu:
         self.play_image = pygame.image.load("assets/sprites/play.png")
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
-        self.title_image = pygame.image.load("assets/sprites/title.png")
+        
+        # Carga de imágenes de la animación del título
+        self.title_frames = [
+            pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE3.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE5.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE7.png"), (900, 500))
+        ]
+        self.current_frame = 0
+        self.animation_timer = 0
+        self.animation_speed = 200  # Velocidad de la animación en milisegundos
         
         # Escalar los recursos
         self.play_image = pygame.transform.scale(self.play_image, (250, 250))
         self.quit_image = pygame.transform.scale(self.quit_image, (200, 200))
         self.options_image = pygame.transform.scale(self.options_image, (200, 200))
-        self.title_image = pygame.transform.scale(self.title_image, (1300, 1000))
-        
+                
         # Creacion de los btones
         self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
@@ -33,7 +41,15 @@ class MainMenu:
     def get_font(self, size):
         return pygame.font.Font("font.ttf", size) # Devuelve la fuente de texto con el tamaño especificado
     
+    def update_animation(self, dt):
+        self.animation_timer += dt
+        if self.animation_timer >= self.animation_speed:
+            self.animation_timer = 0
+            self.current_frame = (self.current_frame + 1) % len(self.title_frames)
+    
     def update(self):
+        dt = self.clock.tick(60)
+        self.update_animation(dt)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -44,10 +60,15 @@ class MainMenu:
                 if self.quit_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.quit()
                     sys.exit()
+                if self.options_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("settings")    
                     
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
-        screen.blit(self.title_image, (0, 0))
+        # Dibujar el frame actual de la animación del título
+        title_image = self.title_frames[self.current_frame]
+        title_rect = title_image.get_rect(center=(640, 240))
+        self.screen.blit(title_image, title_rect)
         self.play_button.update(screen)
         self.options_button.update(screen)
         self.quit_button.update(screen)
