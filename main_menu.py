@@ -35,6 +35,7 @@ class MainMenu:
         self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
         self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
+        self.credits_button = Button(None, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
         
         # Inicializacion de la futura msica
         
@@ -61,7 +62,9 @@ class MainMenu:
                     pygame.quit()
                     sys.exit()
                 if self.options_button.checkForInput(pygame.mouse.get_pos()):
-                    self.state_manager.set_state("settings")    
+                    self.state_manager.set_state("settings")
+                if self.credits_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("credits")   
                     
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
@@ -72,4 +75,5 @@ class MainMenu:
         self.play_button.update(screen)
         self.options_button.update(screen)
         self.quit_button.update(screen)
+        self.credits_button.update(screen)
         pygame.display.flip()
