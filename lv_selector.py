@@ -41,6 +41,7 @@ class LevelSelector:
         self.selected_level = None
 
         self.update_texts()
+        
     def get_font(self, size):
         return pygame.font.Font("font.ttf", size)
     

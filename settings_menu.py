@@ -81,7 +81,6 @@ class SettingsMenu:
                 elif self.spanish_button.checkForInput(pygame.mouse.get_pos()):
                     localization.set_language("es")
                     self.update_texts()  # Actualizar los textos al cambiar de idioma
-                    
                   
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))

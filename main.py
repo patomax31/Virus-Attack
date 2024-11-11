@@ -7,6 +7,7 @@ from tutorial import Tutorial
 from settings_menu import SettingsMenu
 from player_selector import PlayerSelector
 from lose_menu import LoseMenu
+from win_menu import WinMenu
 
 def main():
     pygame.init()
@@ -21,6 +22,7 @@ def main():
     state_manager.add_state("player_selector", PlayerSelector(state_manager))
     state_manager.add_state("settings", SettingsMenu(state_manager))
     state_manager.add_state("lose_menu", LoseMenu(state_manager))
+    state_manager.add_state("win_menu", WinMenu(state_manager))
     state_manager.set_state("main_menu")
   
     while True:
