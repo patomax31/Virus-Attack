@@ -2,7 +2,7 @@ import pygame
 import sys
 from button import Button
 
-class LoseMenu:
+class WinMenu:
     def __init__(self, state_manager):
         # Datos de pantalla
         self.state_manager = state_manager
@@ -19,7 +19,7 @@ class LoseMenu:
         font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
         
         # Carga de texto
-        self.name = font_game.render("Echale mas ganas we", True, (59, 170, 143))
+        self.name = font_game.render("Bien hecho!", True, (59, 170, 143))
         
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))

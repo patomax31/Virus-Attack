@@ -5,6 +5,7 @@ from enemy import Enemy
 from button import Button
 from contador import tiempo
 import random
+from progress import set_current_level
 
 class Level1:
     def __init__(self, state_manager):
@@ -21,6 +22,17 @@ class Level1:
         self.time_left = 100
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
+        self.score = 0
+
+         # Obtener la dificultad del state_manager
+        self.difficulty = self.state_manager.get_difficulty()
+        print(f"Level1 initialized with difficulty: {self.difficulty}")  # Añade esta línea para depurar
+
+        # Ajustar puntos por enemigo según la dificultad
+        if self.difficulty == "Beginner":
+            self.points_per_enemy = 5
+        elif self.difficulty == "Advanced":
+            self.points_per_enemy = 15
 
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
@@ -29,8 +41,8 @@ class Level1:
             (1060, 400),
             (1160, 400)
         ]
-        self.enemy_count = len(self.enemy_positions)
         self.create_enemies()
+        self.enemy_count = len(self.all_enemies)
         
         # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
         self.map_data = [
@@ -91,13 +103,15 @@ class Level1:
 
         # Texto
         self.texto1 = self.font.render("pause", True, "white")
-        self.texto1_rect = self.texto1.get_rect(center = (642, 130))    
-    
+        self.texto1_rect = self.texto1.get_rect(center = (642, 130))  
+          
     def create_enemies(self):
         self.all_enemies.empty()  # Vacía el grupo de enemigos
         for pos in self.enemy_positions:
             enemy = Enemy(pos[0], pos[1])
-            self.all_enemies.add(enemy)    
+            self.all_enemies.add(enemy)
+        self.enemy_count = len(self.all_enemies)
+        self.all_enemies.add(enemy)    
         
     def get_font(self, size):
         return pygame.font.Font("font.ttf", size)
@@ -121,7 +135,7 @@ class Level1:
             self.time_left = max(0, 100 - elapsed_time)
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT or self.time_left == 0:
+                if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -143,7 +157,7 @@ class Level1:
                     elif event.key == pygame.K_z:
                         self.player.change_health()
                     elif event.key == pygame.K_j:
-                        self.player.shoot(self.all_bubbles)
+                        self.player.shoot(self.all_bubbles, self.difficulty)
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
@@ -163,9 +177,16 @@ class Level1:
 
             for enemy in self.all_enemies:
                 enemy.update(self.player.rect, self.obstacles)
-            self.all_bubbles.update(self.obstacles, self.all_enemies)
-            
+            self.all_bubbles.update(self.obstacles, self.all_enemies, self)
+        
             pygame.display.flip()
+            
+        if self.time_left == 0 or self.player.is_dead:
+            self.state_manager.set_state("lose_menu")
+            
+        if len(self.all_enemies) == 0:
+            self.state_manager.set_state("win_menu")
+            set_current_level(2)
 
         if self.paused:
             self.draw_overlay()
@@ -196,9 +217,6 @@ class Level1:
                             self.reset_game_state()
                             self.state_manager.set_state("levels")
                 self.clock.tick(60)
-                if self.player.is_dead:
-                    self.reset_game_state()
-                    self.state_manager.set_state("lose_menu")
 
         pygame.display.flip()
         self.clock.tick(60)
@@ -244,6 +262,7 @@ class Level1:
                 bubble.kill()
                 for enemy in enemy_hit_list:
                     self.enemy_count -= 1
+                    self.score += self.points_per_enemy
                     self.all_enemies.remove(enemy)
                     self.screen.blit(self.background, enemy.rect, enemy.rect)
             
@@ -254,7 +273,11 @@ class Level1:
         self.all_bubbles.draw(screen)
         tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
+        
         self.enemy_count_text = self.font2.render(f"Enemigos: {self.enemy_count}", True, "white")
         self.screen.blit(self.enemy_count_text, (1140, 50))
+        
+        self.score_text = self.font2.render(f"Puntaje: {self.score}", True, "white")
+        self.screen.blit(self.score_text, (1140, 80))
         
         #tiren paro
