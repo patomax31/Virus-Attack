@@ -7,6 +7,7 @@ from tutorial import Tutorial
 from settings_menu import SettingsMenu
 from player_selector import PlayerSelector
 from lose_menu import LoseMenu
+from lv_2 import Level2
 
 def main():
     pygame.init()
@@ -18,11 +19,13 @@ def main():
     state_manager.add_state("main_menu", MainMenu(state_manager))
     state_manager.add_state("levels", LevelSelector(state_manager))
     state_manager.add_state("level1", Level1(state_manager))
+    state_manager.add_state("level2", Level2(state_manager))
+
     state_manager.add_state("player_selector", PlayerSelector(state_manager))
     state_manager.add_state("settings", SettingsMenu(state_manager))
     state_manager.add_state("lose_menu", LoseMenu(state_manager))
     state_manager.set_state("main_menu")
-    
+  
     while True:
         state_manager.update()
         state_manager.draw(screen)
