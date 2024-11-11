@@ -1,6 +1,7 @@
 import pygame
 import sys
 from button import Button
+from Localization_manager import localization
 
 class PlayerSelector:
     def __init__(self, state_manager):
@@ -24,7 +25,7 @@ class PlayerSelector:
         self.current_pj_index = 0
         self.pj = self.render_multiline_text(self.pj_text[self.current_pj_index], font_screen, (78, 248, 71))
         # Rectangulo del texto
-        self.name_rect = self.name.get_rect(center=(640, 50))
+        self.name_rect = self.name.get_rect(center=(595, 50))
         self.pj_rect = self.pj.get_rect(center=(490, 330))
         
         # Escalar los recursos
@@ -51,7 +52,7 @@ class PlayerSelector:
             pygame.transform.scale(pygame.image.load("assets/sprites/OPCIONPERSONAJEPELIRROJA.png"), (700, 400)),
         ]
         self.current_character_index = 0
-        
+        self.update_text
     def render_multiline_text(self, text, font, color):
         lines = text.split('\n')
         surfaces = [font.render(line, True, color) for line in lines]
@@ -64,11 +65,15 @@ class PlayerSelector:
             y_offset += surface.get_height()
         return text_surface
     
+    def get_font(self, size):
+        return pygame.font.Font("font.ttf", size)
+    
     def update_text(self):
         font_screen = pygame.font.Font("assets/fonts/SCREEN.TTF", 65)
         self.pj = self.render_multiline_text(self.pj_text[self.current_pj_index], font_screen, (78, 248, 71))
         self.pj_rect = self.pj.get_rect(center=(490, 330))
-    
+        self.name = self.get_font(45).render(localization.get_text("select your character"), True, (59, 170, 143))
+
     def get_font_game(self, size):
         return pygame.font.Font("assets/fonts/GAME.TTF", size)
     
@@ -100,7 +105,7 @@ class PlayerSelector:
                     self.current_character_index = (self.current_character_index + 1) % len(self.character_images)  
                     self.current_pj_index = (self.current_pj_index + 1) % len(self.pj_text)
                     self.update_text()
-                    
+            self.update_text()                 
                 
     def draw(self, screen):
         # Dibujar fondo

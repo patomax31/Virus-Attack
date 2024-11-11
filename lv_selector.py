@@ -1,6 +1,7 @@
 import pygame
 import sys
 from button import Button
+from Localization_manager import localization
 
 class LevelSelector:
     def __init__(self, state_manager):
@@ -16,9 +17,11 @@ class LevelSelector:
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
+
         
         # Carga de texto
-        self.name = font_game.render("Select a level", True, (59, 170, 143))
+        self.name = font_game.render(localization.get_text("Select a level"), True, (59, 170, 143))
+        
         
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
@@ -36,10 +39,17 @@ class LevelSelector:
         
         # Estado de selección del nivel
         self.selected_level = None
-    
+
+        self.update_texts()
     def get_font(self, size):
         return pygame.font.Font("font.ttf", size)
     
+    def update_texts(self):
+        # Actualizar el texto del título según el idioma
+        self.name = self.get_font(45).render(localization.get_text("select a level"), True, (59, 170, 143))
+
+        
+
     def update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -57,7 +67,7 @@ class LevelSelector:
                     self.state_manager.set_state("level2", self.selected_level)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
-                
+            self.update_texts()  
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.dock, (0, 0))
