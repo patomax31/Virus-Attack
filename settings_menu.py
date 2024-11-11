@@ -29,7 +29,7 @@ class SettingsMenu:
         self.name = font_game.render("Settings", True, (59, 170, 143))
         self.language = font_screen_title.render("Language", True, (78, 248, 71))
         self.sound = font_screen_title.render("Sound", True, (78, 248, 71))
-        self.difficulty = font_screen_title.render("Difficulty", True, (78, 248, 71))
+        self.difficulty_text = font_screen_title.render("Difficulty", True, (78, 248, 71))
         
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
@@ -50,6 +50,9 @@ class SettingsMenu:
         
         # Estado de selección del nivel
         self.selected_level = None
+        
+        # Atributo de dificultad
+        self.difficulty = "Begginer"
 
         #Cargar textos iniciales
         self.update_texts()
@@ -63,7 +66,7 @@ class SettingsMenu:
         self.name = self.get_font(50).render(localization.get_text("settings"), True, (59, 170, 143))
         self.language = self.get_font(40).render(localization.get_text("language"), True, (78, 248, 71))
         self.sound = self.get_font(40).render(localization.get_text("sound"), True, (78, 248, 71))
-        self.difficulty = self.get_font(40).render(localization.get_text("difficulty"), True, (78, 248, 71))
+        self.difficulty_text = self.get_font(40).render(localization.get_text("difficulty"), True, (78, 248, 71))
         # También puedes actualizar otros botones de nivel de dificultad, si cambian con el idioma
     
     def update(self):
@@ -72,6 +75,12 @@ class SettingsMenu:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.begginer_button.checkForInput(pygame.mouse.get_pos()):
+                    self.difficulty = "Beginner"
+                    self.state_manager.set_difficulty(self.difficulty)
+                if self.advanced_button.checkForInput(pygame.mouse.get_pos()):
+                    self.difficulty = "Advanced"
+                    self.state_manager.set_difficulty(self.difficulty)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
                 elif self.english_button.checkForInput(pygame.mouse.get_pos()):
@@ -81,7 +90,6 @@ class SettingsMenu:
                 elif self.spanish_button.checkForInput(pygame.mouse.get_pos()):
                     localization.set_language("es")
                     self.update_texts()  # Actualizar los textos al cambiar de idioma
-                    
                   
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
@@ -97,5 +105,5 @@ class SettingsMenu:
         self.screen.blit(self.name, self.name.get_rect(center=(640, 50)))
         self.screen.blit(self.language, self.language.get_rect(center=(390, 200)))
         self.screen.blit(self.sound, self.sound.get_rect(center=(640, 200)))
-        self.screen.blit(self.difficulty, self.difficulty.get_rect(center=(890, 200)))        
+        self.screen.blit(self.difficulty_text, self.difficulty_text.get_rect(center=(890, 200)))        
         pygame.display.flip()

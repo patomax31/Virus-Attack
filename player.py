@@ -162,9 +162,9 @@ class Player:
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
 
-    def shoot(self, all_bubbles):
+    def shoot(self, all_bubbles, difficulty):
         current_time = pygame.time.get_ticks() # Con esto obtenemos el tiempo actual
         if current_time - self.last_shot_time >= self.shoot_cooldown: # Si ha pasado el cooldwon
-            bubble = Bubble(self.rect.centerx, self.rect.centery, self.direction) # Craemos una instancia de la burbuja  en la posicion actual del jugador (el centro de su sprite)
+            bubble = Bubble(self.rect.centerx, self.rect.centery, self.direction, difficulty) # Craemos una instancia de la burbuja  en la posicion actual del jugador (el centro de su sprite)
             all_bubbles.add (bubble) # Añade la burbuja recien creada al grupo de burbujas para que se actualice y se dibuje en pantalla
             self.last_shot_time = current_time # Reiniciamos el contadorr
