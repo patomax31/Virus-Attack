@@ -183,7 +183,7 @@ class Tutorial:
 
         pygame.display.flip()
         self.clock.tick(60)
-        
+        #end bucle
     def reset_game_state(self):
         self.player = Player(400, 400)
         self.paused = False
@@ -217,12 +217,10 @@ class Tutorial:
         self.screen.blit(self.difficulty, self.difficulty.get_rect(center=(120, 160)))      
 
         self.soap.draw(screen)        
-        self.player.draw(screen)
-       
+        self.player.draw(screen)  
        # self.enemy.draw(screen)
-       
         self.all_bubbles.draw(screen)
-   #     self.soap.draw(screen)
+   
                # tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
  
