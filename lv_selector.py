@@ -2,6 +2,7 @@ import pygame
 import sys
 from button import Button
 from Localization_manager import localization
+from progress import get_current_level
 
 class LevelSelector:
     def __init__(self, state_manager):
@@ -39,8 +40,18 @@ class LevelSelector:
         
         # Estado de selección del nivel
         self.selected_level = None
-
+        
         self.update_texts()
+        
+        # Desbloquear niveles segun progreso
+        self.current_level = get_current_level()
+        self.update_level_buttons()
+        
+    def update_level_buttons(self):
+        if self.current_level < 2:
+            self.level2_button.disabled = True
+        if self.current_level < 3:
+            self.level3_button.disabled = True
         
     def get_font(self, size):
         return pygame.font.Font("font.ttf", size)
@@ -60,12 +71,12 @@ class LevelSelector:
                 if self.level1_button.checkForInput(pygame.mouse.get_pos()):
                     self.selected_level = "level1"
                     self.state_manager.set_state("player_selector", self.selected_level)
-                if self.level2_button.checkForInput(pygame.mouse.get_pos()):
-                    self.selected_level = "Tutorial"
-                    self.state_manager.set_state("Tutorial", self.selected_level)
-                if self.level3_button.checkForInput(pygame.mouse.get_pos()):
+                if self.level2_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 2:
+                    self.selected_level = "level2"
+                    self.state_manager.set_state("player_selector", self.selected_level)
+                if self.level3_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 3:
                     self.selected_level = "level3"
-                    self.state_manager.set_state("level2", self.selected_level)
+                    self.state_manager.set_state("player_selector", self.selected_level)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
             self.update_texts()  
