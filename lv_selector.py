@@ -11,8 +11,9 @@ class LevelSelector:
         self.selected_level = None
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
-        
+
         # Carga de recursos
+        self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
         self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
         self.dock = pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
@@ -69,15 +70,19 @@ class LevelSelector:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.level1_button.checkForInput(pygame.mouse.get_pos()):
+                    self.select_sound.play()
                     self.selected_level = "level1"
                     self.state_manager.set_state("player_selector", self.selected_level)
                 if self.level2_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 2:
+                    self.select_sound.play()
                     self.selected_level = "level2"
-                    self.state_manager.set_state("player_selector", self.selected_level)
+                    self.state_manager.set_state("Tutorial", self.selected_level) #CAMBIAR
                 if self.level3_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 3:
+                    self.select_sound.play()
                     self.selected_level = "level3"
                     self.state_manager.set_state("player_selector", self.selected_level)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
+                    self.select_sound.play()
                     self.state_manager.set_state("main_menu")
             self.update_texts()  
     def draw(self, screen):

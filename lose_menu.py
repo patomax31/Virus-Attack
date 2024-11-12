@@ -9,8 +9,9 @@ class LoseMenu:
         self.selected_level = None
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
-        
+
         # Carga de recursos
+        self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
         self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
         self.dock = pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
@@ -20,13 +21,12 @@ class LoseMenu:
         
         # Carga de texto
         self.name = font_game.render("Echale mas ganas we", True, (59, 170, 143))
-        
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
         self.dock = pygame.transform.scale(self.dock, (1280, 720))
         
         # Efecto espejo
-        
+
         # Crear btnes 
         
         # Estado de selección del nivel
@@ -44,6 +44,7 @@ class LoseMenu:
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.dock, (0, 0))
+
         # Dibujar botones
         # Dibujar texto
         self.screen.blit(self.name, self.name.get_rect(center=(640, 50)))        

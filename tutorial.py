@@ -30,6 +30,9 @@ class Tutorial:
         self.all_enemies = pygame.sprite.Group()
         self.all_enemies.add(self.enemy)
         
+        
+        self.difficulty = self.state_manager.get_difficulty()
+        
         # Creamos el mapa de obstáculos (1 = obstáculo, 0 = espacio libre)
         self.map_data = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -94,7 +97,7 @@ class Tutorial:
         self.pause_button.update(self.screen)
         pygame.display.flip()
         #BUCLE
-    def update(self):
+    def update(self, difficulty):
         if not self.paused:
             elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
             self.time_left = max(0, 1000 - elapsed_time)
@@ -127,7 +130,7 @@ class Tutorial:
                     elif event.key == pygame.K_z:
                         self.player.change_health()
                     elif event.key == pygame.K_j:
-                        self.player.shoot(self.all_bubbles)
+                        self.player.shoot(self.all_bubbles, self.difficulty)
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
