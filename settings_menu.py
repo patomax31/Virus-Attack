@@ -24,7 +24,8 @@ class SettingsMenu:
         self.volumen_icon = pygame.image.load("assets/sprites/Volume.png")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
         font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
-        
+        self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
+
         # Carga de texto
         self.name = font_game.render("Settings", True, (59, 170, 143))
         self.language = font_screen_title.render("Language", True, (78, 248, 71))
@@ -52,7 +53,7 @@ class SettingsMenu:
         self.selected_level = None
         
         # Atributo de dificultad
-        self.difficulty = "Begginer"
+        self.difficulty = "Beginner"
 
         #Cargar textos iniciales
         self.update_texts()
@@ -77,10 +78,14 @@ class SettingsMenu:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.begginer_button.checkForInput(pygame.mouse.get_pos()):
                     self.difficulty = "Beginner"
+                    self.select_sound.play()
                     self.state_manager.set_difficulty(self.difficulty)
+                    
                 if self.advanced_button.checkForInput(pygame.mouse.get_pos()):
                     self.difficulty = "Advanced"
+                    self.select_sound.play()
                     self.state_manager.set_difficulty(self.difficulty)
+                    
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
                 elif self.english_button.checkForInput(pygame.mouse.get_pos()):

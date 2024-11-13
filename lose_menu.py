@@ -20,7 +20,7 @@ class LoseMenu:
         font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
         
         # Carga de texto
-        self.name = font_game.render("Echale mas ganas we", True, (59, 170, 143))
+        self.name = font_game.render("Perdiste", True, (59, 170, 143))
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
         self.dock = pygame.transform.scale(self.dock, (1280, 720))

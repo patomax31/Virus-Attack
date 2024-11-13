@@ -25,7 +25,8 @@ class Level1:
         self.score = 0
         self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
-
+        self.enemy_hurt_sound = pygame.mixer.Sound("assets/sounds/enemy_hurt.mp3")
+        self.win_sound = pygame.mixer.Sound("assets/sounds/victoria.mp3")
 
          # Obtener la dificultad del state_manager
         self.difficulty = self.state_manager.get_difficulty()
@@ -190,6 +191,7 @@ class Level1:
 
         if len(self.all_enemies) == 0:
             self.state_manager.set_state("win_menu")
+            self.win_sound.play()
             set_current_level(2)
 
         if self.paused:
@@ -270,6 +272,7 @@ class Level1:
             enemy_hit_list = pygame.sprite.spritecollide(bubble, self.all_enemies, True)
             if enemy_hit_list:
                 bubble.kill()
+                self.enemy_hurt_sound.play()
                 for enemy in enemy_hit_list:
                     self.enemy_count -= 1
                     self.score += self.points_per_enemy
