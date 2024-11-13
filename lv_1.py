@@ -6,7 +6,7 @@ from button import Button
 from contador import tiempo
 import random
 from progress import set_current_level
-
+from Localization_manager import localization
 class Level1:
     def __init__(self, state_manager):
         # Datos de pantalla
@@ -98,13 +98,18 @@ class Level1:
 
         # Crear botones
         self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
-        self.resume_button = Button(self.botonR_1,(642, 300), "Reanudar", self.get_font(25), "Black", "Green")
-        self.go_out_button = Button(self.botonS_1,(642, 450), "Salir", self.get_font(25), "Black", "Green")
+        self.resume_button = Button(self.botonR_1,(642, 300), "", self.get_font(25), "Black", "Green")
+        self.go_out_button = Button(self.botonS_1,(642, 450), "", self.get_font(25), "Black", "Green")
 
         # Texto
         self.texto1 = self.font.render("pause", True, "white")
-        self.texto1_rect = self.texto1.get_rect(center = (642, 130))  
-          
+        self.texto1_rect = self.texto1.get_rect(center = (642, 130))
+        self.resume_texto =  self.font.render("resume", True, "white")
+        self.resume_texto_rect = self.resume_texto.get_rect(center = (634,300))  
+        self.go_out_texto =  self.font.render("go out", True, "white")
+        self.go_out_texto_rect = self.go_out_texto.get_rect(center = (675,450)) 
+
+
     def create_enemies(self):
         self.all_enemies.empty()  # Vacía el grupo de enemigos
         for pos in self.enemy_positions:
@@ -125,9 +130,16 @@ class Level1:
         self.resume_button.update(self.screen)
         self.go_out_button.update(self.screen)
         self.screen.blit(self.texto1, self.texto1_rect)
+        self.screen.blit(self.resume_texto, self.resume_texto_rect)
+        self.screen.blit(self.go_out_texto, self.go_out_texto_rect)
         self.pause_button.update(self.screen)
         pygame.display.flip()
     
+    def update_text(self):
+        self.texto1 = self.get_font(40).render(localization.get_text("pause"), True,"white")
+        self.resume_texto = self.get_font(30).render(localization.get_text("resume"), True,"white")
+        self.go_out_texto = self.get_font(30).render(localization.get_text("go out"), True,"white")
+
     def update(self):
         self.check_collision()
         if not self.paused:
@@ -158,6 +170,7 @@ class Level1:
                         self.player.change_health()
                     elif event.key == pygame.K_j:
                         self.player.shoot(self.all_bubbles, self.difficulty)
+                self.update_text()
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:

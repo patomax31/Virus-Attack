@@ -25,7 +25,7 @@ def main():
     state_manager.add_state("settings", SettingsMenu(state_manager))
     state_manager.add_state("lose_menu", LoseMenu(state_manager))
     state_manager.add_state("win_menu", WinMenu(state_manager))
-    state_manager.add_state("credits", CreditsScreen(screen))
+    state_manager.add_state("credits", CreditsScreen(state_manager))
     
     # Cargar niveles según la dificultad
     difficulty = state_manager.get_difficulty()
