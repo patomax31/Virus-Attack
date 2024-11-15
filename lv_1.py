@@ -10,11 +10,13 @@ from Localization_manager import localization
 class Level1:
     def __init__(self, state_manager):
         # Datos de pantalla
-        self.state_manager = state_manager
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
-        self.player = Player(400, 400)
+        self.state_manager = state_manager
+        self.character_index = self.state_manager.get_selected_character()
+        print(f"Selected character index: {self.character_index}")
+        self.player = Player(400, 400, self.character_index)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -170,6 +172,8 @@ class Level1:
                         self.player.change_health()
                     elif event.key == pygame.K_j:
                         self.player.shoot(self.all_bubbles, self.difficulty)
+                    elif event.key == pygame.K_l:
+                        print(f"character_index: {self.player.character_index}")
                 self.update_text()
 
             keys = pygame.key.get_pressed()
@@ -257,7 +261,7 @@ class Level1:
             print("No se encontró una posición válida para alejar al enemigo.")
         
     def reset_game_state(self):
-        self.player = Player(400, 400)
+        self.player = Player(400, 400, self.character_index)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()

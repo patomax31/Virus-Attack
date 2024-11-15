@@ -45,14 +45,14 @@ class SettingsMenu:
         self.spanish_button = Button(self.mexico_flag, (390, 375), "", self.get_font(25), "White", "Green")
         self.english_button = Button(self.usa_flag, (390, 275), "", self.get_font(25), "White", "Green")
         self.volumen_button = Button(self.volumen_icon, (640, 350), "", self.get_font(25), "White", "Green")
-        self.begginer_button = Button(None, (890, 275), "Begginer", self.get_font(25), "White", "Green")
+        self.beginner_button = Button(None, (890, 275), "Beginner", self.get_font(25), "White", "Green")
         self.advanced_button = Button(None, (890, 325), "Advanced", self.get_font(25), "White", "Green")
         
         # Estado de selección del nivel
         self.selected_level = None
         
         # Atributo de dificultad
-        self.difficulty = "Begginer"
+        self.difficulty = "Beginner"
 
         #Cargar textos iniciales
         self.update_texts()
@@ -75,11 +75,12 @@ class SettingsMenu:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.begginer_button.checkForInput(pygame.mouse.get_pos()):
+                if self.beginner_button.checkForInput(pygame.mouse.get_pos()):
                     self.difficulty = "Beginner"
                     self.state_manager.set_difficulty(self.difficulty)
                 if self.advanced_button.checkForInput(pygame.mouse.get_pos()):
                     self.difficulty = "Advanced"
+                    print(self.difficulty)
                     self.state_manager.set_difficulty(self.difficulty)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
@@ -99,7 +100,7 @@ class SettingsMenu:
         self.spanish_button.update(screen)
         self.english_button.update(screen)
         self.volumen_button.update(screen)
-        self.begginer_button.update(screen)
+        self.beginner_button.update(screen)
         self.advanced_button.update(screen)
         # Dibujar texto
         self.screen.blit(self.name, self.name.get_rect(center=(640, 50)))
