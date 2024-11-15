@@ -69,14 +69,11 @@ class LevelSelector:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.level1_button.checkForInput(pygame.mouse.get_pos()):
-                    self.selected_level = "level1"
-                    self.state_manager.set_state("player_selector", self.selected_level)
-                if self.level2_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 2:
-                    self.selected_level = "level2"
-                    self.state_manager.set_state("player_selector", self.selected_level)
-                if self.level3_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 3:
-                    self.selected_level = "level3"
-                    self.state_manager.set_state("player_selector", self.selected_level)
+                    self.state_manager.set_state("level1")
+                if self.level2_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("level2")
+                if self.level3_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("level3")
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
             self.update_texts()  

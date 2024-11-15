@@ -14,7 +14,7 @@ class Level3:
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
-        self.player = Player(400, 400)
+        self.player = Player(400, 400, self.state_manager.get_selected_character())
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -22,6 +22,17 @@ class Level3:
         self.time_left = 100
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
+        self.score = 0
+
+         # Obtener la dificultad del state_manager
+        self.difficulty = self.state_manager.get_difficulty()
+        print(f"Level1 initialized with difficulty: {self.difficulty}")  # Añade esta línea para depurar
+
+        # Ajustar puntos por enemigo según la dificultad
+        if self.difficulty == "Beginner":
+            self.points_per_enemy = 5
+        elif self.difficulty == "Advanced":
+            self.points_per_enemy = 15
 
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
@@ -92,7 +103,8 @@ class Level3:
 
         # Texto
         self.texto1 = self.font.render("pause", True, "white")
-        self.texto1_rect = self.texto1.get_rect(center = (642, 130))    
+        self.texto1_rect = self.texto1.get_rect(center = (642, 130))  
+          
     def create_enemies(self):
         self.all_enemies.empty()  # Vacía el grupo de enemigos
         for pos in self.enemy_positions:
@@ -145,7 +157,7 @@ class Level3:
                     elif event.key == pygame.K_z:
                         self.player.change_health()
                     elif event.key == pygame.K_j:
-                        self.player.shoot(self.all_bubbles)
+                        self.player.shoot(self.all_bubbles, self.difficulty)
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
@@ -250,6 +262,7 @@ class Level3:
                 bubble.kill()
                 for enemy in enemy_hit_list:
                     self.enemy_count -= 1
+                    self.score += self.points_per_enemy
                     self.all_enemies.remove(enemy)
                     self.screen.blit(self.background, enemy.rect, enemy.rect)
             
@@ -263,5 +276,8 @@ class Level3:
         
         self.enemy_count_text = self.font2.render(f"Enemigos: {self.enemy_count}", True, "white")
         self.screen.blit(self.enemy_count_text, (1140, 50))
+        
+        self.score_text = self.font2.render(f"Puntaje: {self.score}", True, "white")
+        self.screen.blit(self.score_text, (1140, 80))
         
         #tiren paro

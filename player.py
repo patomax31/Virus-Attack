@@ -6,7 +6,7 @@ from bubble import Bubble
 
 # Clase Player para manejar al jugadorr
 class Player:
-    def __init__(self, x, y):
+    def __init__(self, x, y, character_index):
         super().__init__()
         # Inicializa las propiedades del jugador
         self.x = x # Posicion actual del jugador en el eje x
@@ -26,19 +26,41 @@ class Player:
         
         self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3") # Carga el sonido de caminar
         
+        self.character_index = character_index
+        print(f"Character index: {character_index}")
+        
         self.load_health_sprites()
-        self.load_sprites()
+        self.load_sprites(character_index)
 
         # Cargar las imágenes (sprites)
         self.image = self.sprite_down  # sprite inicial 
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
 
     # Cargamos los sprites dle jugador
-    def load_sprites(self):
-        self.sprite_up = pygame.image.load("assets/sprites/medicUp.png").convert_alpha()
-        self.sprite_down = pygame.image.load("assets/sprites/medicDown.png").convert_alpha()
-        self.sprite_left = pygame.image.load("assets/sprites/medicLeft.png").convert_alpha()
-        self.sprite_right = pygame.image.load("assets/sprites/medicRight.png").convert_alpha()
+    def load_sprites(self, character_index):
+        print(f"Loading sprites for character index: {character_index}")
+        if character_index == 0:
+            self.sprite_up = pygame.image.load("assets/sprites/medicUp.png").convert_alpha()
+            self.sprite_down = pygame.image.load("assets/sprites/medicDown.png").convert_alpha()
+            self.sprite_left = pygame.image.load("assets/sprites/medicLeft.png").convert_alpha()
+            self.sprite_right = pygame.image.load("assets/sprites/medicRight.png").convert_alpha()
+        elif character_index == 1:
+            self.sprite_up = pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png").convert_alpha()
+            self.sprite_down = pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png").convert_alpha()
+            self.sprite_left = pygame.image.load("assets/sprites/DOCTORACASTAÑAIZQUIERDA.png").convert_alpha()
+            self.sprite_right = pygame.image.load("assets/sprites/DOCTORACASTAÑADERECHA.png").convert_alpha()
+        elif character_index == 2:
+            self.sprite_up = pygame.image.load("assets/sprites/MEDICORUBIOFRENTE.png").convert_alpha()
+            self.sprite_down = pygame.image.load("assets/sprites/MEDICORUBIOATRAS.png").convert_alpha()
+            self.sprite_left = pygame.image.load("assets/sprites/MEDICORUBIOIZUQIERDA.png").convert_alpha()
+            self.sprite_right = pygame.image.load("assets/sprites/MEDICORUBIODERECHA.png").convert_alpha()
+        elif character_index == 3:
+            self.sprite_up = pygame.image.load("assets/sprites/DOCTORAVISTAFRENTE.png").convert_alpha()
+            self.sprite_down = pygame.image.load("assets/sprites/DOCOTRAVISTAATRAS.png").convert_alpha()
+            self.sprite_left = pygame.image.load("assets/sprites/DOCTORAIZQUIERDA.png").convert_alpha()
+            self.sprite_right = pygame.image.load("assets/sprites/DOCTORADERECHA.png").convert_alpha()
+        else:
+            raise ValueError("Invalid character index: {character_index}")
 
         # Establecemos el sprite actual y el rectángulo de colisión
         self.image = self.sprite_down  # sprite inicial 

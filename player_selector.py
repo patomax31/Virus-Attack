@@ -21,7 +21,7 @@ class PlayerSelector:
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
         # Carga de texto
         self.name = font_game.render("Select your character", True, (59, 170, 143))
-        self.pj_text = ["DR. JUAN\nHERNANDEZ", "DR. MARIA\nGARCIA"]  # Lista de textos
+        self.pj_text = ["DR. JUAN\nHERNANDEZ", "DR. MARIA\nGARCIA", "DR. PEDRO\nLOPEZ", "DR. ANA\nMARTINEZ"]  # Lista de textos
         self.current_pj_index = 0
         self.pj = self.render_multiline_text(self.pj_text[self.current_pj_index], font_screen, (78, 248, 71))
         # Rectangulo del texto
@@ -53,6 +53,7 @@ class PlayerSelector:
         ]
         self.current_character_index = 0
         self.update_text
+        
     def render_multiline_text(self, text, font, color):
         lines = text.split('\n')
         surfaces = [font.render(line, True, color) for line in lines]
@@ -88,24 +89,27 @@ class PlayerSelector:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.accept_button.checkForInput(pygame.mouse.get_pos()):
-                    self.selected_level = "level1"
-                    self.state_manager.set_state("level1", self.selected_level)
+                    self.state_manager.set_selected_character(self.current_character_index)
+                    self.state_manager.set_state("levels")  # Cambia al selector de niveles
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
-                    self.state_manager.set_state("levels")
+                    self.state_manager.set_state("main_menu")
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.state_manager.set_state("levels")
+                    self.state_manager.set_state("main_menu")
                 elif event.key == pygame.K_RETURN:
-                    self.state_manager.set_state("level1", self.current_pj_index)
+                    self.state_manager.set_selected_character(self.current_character_index)
+                    self.state_manager.set_state("levels")  # Cambia al selector de niveles
                 elif event.key == pygame.K_LEFT:
                     self.current_character_index = (self.current_character_index - 1) % len(self.character_images)
                     self.current_pj_index = (self.current_pj_index - 1) % len(self.pj_text)
+                    print(f"current_pj_index: {self.current_pj_index}, current_character_index: {self.current_character_index}")
                     self.update_text()
                 elif event.key == pygame.K_RIGHT:
-                    self.current_character_index = (self.current_character_index + 1) % len(self.character_images)  
+                    self.current_character_index = (self.current_character_index + 1) % len(self.character_images)
                     self.current_pj_index = (self.current_pj_index + 1) % len(self.pj_text)
+                    print(f"current_pj_index: {self.current_pj_index}, current_character_index: {self.current_character_index}")
                     self.update_text()
-            self.update_text()                 
+            self.update_text()                
                 
     def draw(self, screen):
         # Dibujar fondo

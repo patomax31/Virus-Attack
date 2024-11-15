@@ -20,11 +20,15 @@ class StateManager:
             self.selected_level = level
         if character_index is not None:
             self.selected_character = character_index
+        if hasattr(self.current_state, 'player'):
+            self.current_state.player.character_index = self.selected_character
 
     def get_selected_level(self):
         return self.selected_level
     
     def get_selected_character(self):
+        if self.selected_character is None:
+            return 0
         return self.selected_character
     
     def set_difficulty(self, difficulty):
@@ -32,6 +36,9 @@ class StateManager:
     
     def get_difficulty(self):
         return self.difficulty
+    
+    def set_selected_character(self, character_index):
+        self.selected_character = character_index
         
     def update(self):
         if self.current_state:
