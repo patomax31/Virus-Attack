@@ -12,13 +12,13 @@ class Tutorial:
         # Datos de pantalla
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
         font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
-        
-       
         self.state_manager = state_manager
+        character_index = self.state_manager.get_selected_character()
+        print(f"Selected character index: {character_index}")
+        self.player = Player(400, 400, character_index)
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
-        self.player = Player(400, 400)
         self.enemy = Enemy(960, 400)
         self.soap = soap(500, 400)
         self.paused = False

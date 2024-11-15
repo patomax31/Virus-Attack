@@ -7,7 +7,10 @@
     "beginner": "Principiante",
     "advanced": "Avanzado",
     "select a level": "Selecciona un nivel",
-    "select your character": "Selecciona tu personaje"
+    "select your character": "Selecciona tu personaje",
+    "pause": "Pausa",
+    "resume": "Reanudar",
+    "go out": "Salir"
   },
   "en": {
     "settings": "Settings",
@@ -17,6 +20,9 @@
     "beginner": "Beginner",
     "advanced": "Advanced",
     "select a level": "Select a level",
-    "select your character": "Select your character"
+    "select your character": "Select your character",
+    "pause": "Pause",
+    "resume": "Resume",
+    "go out": "Go out"
   }
 }
