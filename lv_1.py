@@ -87,22 +87,22 @@ class Level1:
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
         self.font = pygame.font.Font("font.ttf", 35)
         self.font2 = pygame.font.Font("font.ttf", 10)
-        self.fondo1_1= pygame.image.load("assets/sprites/fondo1_1.png")
+        self.fondo1_1= pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
         self.botonR_1 = pygame.image.load("assets/sprites/botonR.png")
         self.botonS_1 = pygame.image.load("assets/sprites/botonS.png")
 
         # Escalar los recursos
-        self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (560, 600))
+        self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (1280, 720))
         self.botonR_1 = pygame.transform.scale(self.botonR_1, (300, 70)) 
         self.botonS_1 = pygame.transform.scale(self.botonS_1, (300, 70)) 
 
         # Crear botones
         self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
         self.resume_button = Button(self.botonR_1,(642, 300), "Reanudar", self.get_font(25), "Black", "Green")
-        self.go_out_button = Button(self.botonS_1,(642, 450), "Salir", self.get_font(25), "Black", "Green")
+        self.go_out_button = Button(self.botonS_1,(642, 400), "Salir", self.get_font(25), "Black", "Green")
 
         # Texto
-        self.texto1 = self.font.render("pause", True, "white")
+        self.texto1 = self.font.render("pause", True, "black")
         self.texto1_rect = self.texto1.get_rect(center = (642, 130))  
           
     def create_enemies(self):
@@ -121,7 +121,7 @@ class Level1:
         overlay.fill((0, 0, 0))
         overlay.set_alpha(128)
         self.screen.blit(overlay, (0, 0))
-        self.screen.blit(self.fondo1_1, (365, 50))
+        self.screen.blit(self.fondo1_1, (0, 0))
         self.resume_button.update(self.screen)
         self.go_out_button.update(self.screen)
         self.screen.blit(self.texto1, self.texto1_rect)
