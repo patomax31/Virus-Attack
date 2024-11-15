@@ -77,10 +77,10 @@ class LevelSelector:
                     self.select_sound.play()
                     self.selected_level = "level2"
                     self.state_manager.set_state("level2", self.selected_level) #CAMBIAR
-                if self.level3_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 3:
+                if self.level3_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 2:
                     self.select_sound.play()
                     self.selected_level = "level3"
-                    self.state_manager.set_state("player_selector", self.selected_level)
+                    self.state_manager.set_state("level3", self.selected_level)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.select_sound.play()
                     self.state_manager.set_state("main_menu")
