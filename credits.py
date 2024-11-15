@@ -51,9 +51,9 @@ class CreditsScreen:
         ]
    
           # Imágenes para cada lista de créditos
-        self.image1 = pygame.image.load("c:\\Users\\Erick Ibarra\\OneDrive\\Imágenes\\Capturas de pantalla\\Captura de pantalla 2024-10-16 185653.png")
-        self.image2 = pygame.image.load("c:\\Users\\Erick Ibarra\\OneDrive\\Imágenes\\Capturas de pantalla\\Captura de pantalla 2024-11-12 111425.png")
-        self.image3 =pygame.image.load("c:\\Users\\Erick Ibarra\\OneDrive\\Imágenes\\Capturas de pantalla\\Captura de pantalla 2024-11-12 111442.png")
+        self.image1 = pygame.image.load("assets\sprites\Image_credits1.png")
+        self.image2 = pygame.image.load("assets\sprites\Image_credits2.png")
+        self.image3 =pygame.image.load("assets\sprites\Image_credits3.png")
         # Variables de desplazamiento del texto
         self.scroll_y = 720  # Comienza fuera de la pantalla por abajo
         self.scroll_speed = 1  # Velocidad de desplazamiento
