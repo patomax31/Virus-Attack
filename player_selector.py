@@ -92,10 +92,10 @@ class PlayerSelector:
                 if self.accept_button.checkForInput(pygame.mouse.get_pos()):
                     self.select_sound.play()
                     self.selected_level = "level1"
-                    self.state_manager.set_state("level1", self.selected_level)
+                    self.state_manager.set_state("levels", self.selected_level)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.select_sound.play()
-                    self.state_manager.set_state("levels")
+                    self.state_manager.set_state("main_menu")
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.state_manager.set_state("main_menu")

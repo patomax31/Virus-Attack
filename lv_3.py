@@ -15,7 +15,7 @@ class Level3:
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
-        self.player = Player(400, 400)
+        self.player = Player(400, 400, self.state_manager.get_selected_character())
         self.soap = soap(500, 400)
 
         self.paused = False
