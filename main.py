@@ -11,7 +11,6 @@ from win_menu import WinMenu
 from lv_2 import Level2
 from lv_3 import Level3
 from credits import CreditsScreen
-#FatimaAAAA
 
 def main():
     pygame.init()
@@ -26,7 +25,7 @@ def main():
     state_manager.add_state("settings", SettingsMenu(state_manager))
     state_manager.add_state("lose_menu", LoseMenu(state_manager))
     state_manager.add_state("win_menu", WinMenu(state_manager))
-    state_manager.add_state("credits", CreditsScreen(screen))
+    state_manager.add_state("credits", CreditsScreen(state_manager))
     
     # Cargar niveles según la dificultad
     difficulty = state_manager.get_difficulty()
