@@ -64,6 +64,7 @@ class LevelSelector:
         
 
     def update(self):
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -79,8 +80,8 @@ class LevelSelector:
                     self.state_manager.set_state("level2", self.selected_level) #CAMBIAR
                 if self.level3_button.checkForInput(pygame.mouse.get_pos()) and self.current_level >= 2:
                     self.select_sound.play()
-                    self.selected_level = "level3"
-                    self.state_manager.set_state("level3", self.selected_level)
+                    self.selected_level = "tutorial"
+                    self.state_manager.set_state("Tutorial", self.selected_level)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.select_sound.play()
                     self.state_manager.set_state("player_selector")

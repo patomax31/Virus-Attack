@@ -244,7 +244,7 @@ class Level2:
             print("No se encontró una posición válida para alejar al enemigo.")
         
     def reset_game_state(self):
-        self.player = Player(400, 400)
+        self.player = Player(400, 400, self.state_manager.get_selected_character())
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()

@@ -40,7 +40,7 @@ def main():
     
     state_manager.add_state("level1", Level1(state_manager))
     state_manager.add_state("level2", Level2(state_manager))
-    state_manager.add_state("level3", Level3(state_manager))
+    state_manager.add_state("Tutorial", Tutorial(state_manager))
     
     state_manager.set_state("main_menu")
   
