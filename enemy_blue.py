@@ -2,6 +2,7 @@ import pygame
 import random
 from settings import TILE_SIZE
 from player import Player
+import time
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -9,7 +10,7 @@ class Enemy(pygame.sprite.Sprite):
         self.y = y
         self.target_x = self.x
         self.target_y = self.y
-        self.speed = 4  # Asegúrate de que la velocidad sea un divisor exacto de TILE_SIZE
+        self.speed = 8  # Asegúrate de que la velocidad sea un divisor exacto de TILE_SIZE
         self.moving = False
         self.direction = self.get_random_direction()
         
@@ -23,52 +24,58 @@ class Enemy(pygame.sprite.Sprite):
         return random.choice(directions)
 
     def enemy_load_sprites(self):
-        self.current_sprite = pygame.image.load("assets/sprites/enemy_2.png").convert_alpha()
+        self.current_sprite = pygame.image.load("assets/sprites/VIRUSENEMIGO1.png").convert_alpha()
         self.current_sprite = pygame.transform.scale(self.current_sprite, (int(self.current_sprite.get_width() * 0.5), int(self.current_sprite.get_height() * 0.5)))
 
     def draw(self, surface):
         surface.blit(self.current_sprite, self.rect)
     
     def update(self, player_rect, obstacles):
+    
+        if not hasattr(self, 'cooldown_time'):
+            self.cooldown_time = 10000  # Por ejemplo, 1000 ms = 1 segundo de cooldown
+            self.last_direction_change = pygame.time.get_ticks()
+            self.direction = self.get_random_direction()  # Dirección inicial
+
+        # Obtener el tiempo actual
+        current_time = pygame.time.get_ticks()
         
+        # Verificar si ha pasado el tiempo de cooldown para cambiar la dirección
+        if current_time - self.last_direction_change >= self.cooldown_time:
+            self.direction = self.get_random_direction()
+            self.last_direction_change = current_time  # Actualizar el último cambio de dirección
+
         if self.direction == "UP":
             new_y = self.rect.y - self.speed
             if not self.check_collision(self.rect.x, new_y, obstacles):
                 self.rect.y = new_y
-            else:
-                self.direction = self.get_random_direction()
         elif self.direction == "DOWN":
             new_y = self.rect.y + self.speed
             if not self.check_collision(self.rect.x, new_y, obstacles):
                 self.rect.y = new_y
-            else:
-                self.direction = self.get_random_direction()
         elif self.direction == "LEFT":
             new_x = self.rect.x - self.speed
             if not self.check_collision(new_x, self.rect.y, obstacles):
                 self.rect.x = new_x
-            else:
-                self.direction = self.get_random_direction()
         elif self.direction == "RIGHT":
             new_x = self.rect.x + self.speed
             if not self.check_collision(new_x, self.rect.y, obstacles):
                 self.rect.x = new_x
-            else:
-                self.direction = self.get_random_direction()
-        
-    def move_random(self, obstacles, Player):
+            
+        self.direction = self.get_random_direction()
+
+    def player(self, obstacles, player):
         directions = [(0, -TILE_SIZE), (0, TILE_SIZE), (-TILE_SIZE, 0), (TILE_SIZE, 0)]
-        random.shuffle(directions)  # Mezcla las direcciones para intentar en orden aleatorio
         for dx, dy in directions:
             new_x = self.target_x + dx
-            new_y = self.target_y + dy
-
+            new_y = self.target_y - dy 
             if not self.check_collision(new_x, new_y, obstacles):
-                self.target_x = new_x
-                self.target_y = new_y
-                self.dx, self.dy = dx, dy
-                self.moving = False
-                break  # Sale del bucle una vez que encuentra una dirección válida
+                    self.target_x = new_x 
+                    self.target_y = new_y
+                    self.dx, self.dy = dx, dy
+                    self.moving = True    
+                    break  # Sale del bucle una vez que encuentra una dirección válida
+                 
 
     
     def move(self):
@@ -109,3 +116,15 @@ class Enemy(pygame.sprite.Sprite):
             if enemy_rect.colliderect(obstacle):
                 return True
         return False
+
+    def player(self, obstacles, player):
+        directions = [(0, -TILE_SIZE), (0, TILE_SIZE), (-TILE_SIZE, 0), (TILE_SIZE, 0)]
+        for dx, dy in directions:
+            new_x = self.target_x - dx - player.x
+            new_y = self.target_y - dy - player.y
+            if not self.check_collision(new_x, new_y, obstacles):
+                    self.target_x = new_x 
+                    self.target_y = new_y - player.x
+                    self.dx, self.dy = dx, dy
+                    self.moving = True    
+                    break  # Sale del bucle una vez que encuentra una dirección válida

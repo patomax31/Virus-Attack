@@ -11,6 +11,8 @@ class Bubble(pygame.sprite.Sprite):
         self.speed = 5 # Velocidad de la burbuja
         self.direction = direction # Con esto almacenamos la direccion en la que se movera la burbuja
         self.difficulty = difficulty # Con esto almacenamos la dificultad del juego
+        self.bubble_sound = pygame.mixer.Sound("assets/sounds/burbujas.mp3")
+
         print(f"Bubble created with difficulty: {self.difficulty}")
 
     def update(self, obstacles, enemies, level):
@@ -31,6 +33,7 @@ class Bubble(pygame.sprite.Sprite):
         for obstacle in obstacles:
             if self.rect.colliderect(obstacle):
                 self.kill()
+                self.bubble_sound.play()
                 break
             
         for enemy in enemies:
@@ -47,4 +50,5 @@ class Bubble(pygame.sprite.Sprite):
                 else:
                     print("Difficulty did not match any condition")
                 self.kill()
+                self.bubble_sound.play()
                 break
