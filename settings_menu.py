@@ -45,8 +45,8 @@ class SettingsMenu:
         self.spanish_button = Button(self.mexico_flag, (390, 375), "", self.get_font(25), "White", "Green")
         self.english_button = Button(self.usa_flag, (390, 275), "", self.get_font(25), "White", "Green")
         self.volumen_button = Button(self.volumen_icon, (640, 350), "", self.get_font(25), "White", "Green")
-        self.begginer_button = Button(None, (890, 275), "Begginer", self.get_font(25), "White", "Green")
-        self.advanced_button = Button(None, (890, 325), "Advanced", self.get_font(25), "White", "Green")
+        self.begginer_button = Button(None, (820, 275), "", self.get_font(25), "White", "Green")
+        self.advanced_button = Button(None, (820, 325), "", self.get_font(25), "White", "Green")
         
         # Estado de selección del nivel
         self.selected_level = None
@@ -67,6 +67,8 @@ class SettingsMenu:
         self.language = self.get_font(40).render(localization.get_text("language"), True, (78, 248, 71))
         self.sound = self.get_font(40).render(localization.get_text("sound"), True, (78, 248, 71))
         self.difficulty_text = self.get_font(40).render(localization.get_text("difficulty"), True, (78, 248, 71))
+        self.begginer_button.update_text(localization.get_text("beginner"))
+        self.advanced_button.update_text(localization.get_text("advanced"))
         # También puedes actualizar otros botones de nivel de dificultad, si cambian con el idioma
     
     def update(self):
