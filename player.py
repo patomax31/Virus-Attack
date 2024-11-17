@@ -56,8 +56,8 @@ class Player:
             self.sprite_right = pygame.image.load("assets/sprites/MEDICORUBIODERECHA.png").convert_alpha()
         elif character_index == 3:
             self.sprite_up = pygame.image.load("assets/sprites/DOCTORAVISTAFRENTE.png").convert_alpha()
-            self.sprite_down = pygame.image.load("assets/sprites/DOCOTRAVISTAATRAS.png").convert_alpha()
-            self.sprite_left = pygame.image.load("assets/sprites/DOCTORAIZQUIERDA.png").convert_alpha()
+            self.sprite_down = pygame.image.load("assets\sprites\DOCTORAVISTAATRAS.png").convert_alpha()
+            self.sprite_left = pygame.image.load("assets\sprites\DOCTORAIZQUIERDA.png").convert_alpha()
             self.sprite_right = pygame.image.load("assets/sprites/DOCTORADERECHA.png").convert_alpha()
         else:
             raise ValueError("Invalid character index: {character_index}")
