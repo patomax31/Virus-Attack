@@ -8,6 +8,6 @@ class PauseButton:
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
-
+        
     def is_clicked(self, pos): # funcion para en caso de que se le de click al boton
         return self.rect.collidepoint(pos) # Devuelve true si el boton ha sido clickeado
