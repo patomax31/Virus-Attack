@@ -7,6 +7,7 @@ class StateManager:
         self.selected_level = None
         self.selected_character = None
         self.difficulty = "Beginner"
+        self.selected_character = 0
         
     def add_state(self, state_name, state):
         self.states[state_name] = state # Añade un estado al diccionario de estados
@@ -27,8 +28,6 @@ class StateManager:
         return self.selected_level
     
     def get_selected_character(self):
-        if self.selected_character is None:
-            return 0
         return self.selected_character
     
     def set_difficulty(self, difficulty):
