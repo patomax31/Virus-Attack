@@ -45,18 +45,18 @@ class Player:
             self.sprite_left = pygame.image.load("assets/sprites/medicLeft.png").convert_alpha()
             self.sprite_right = pygame.image.load("assets/sprites/medicRight.png").convert_alpha()
         elif character_index == 1:
-            self.sprite_up = pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png").convert_alpha()
+            self.sprite_up = pygame.image.load("assets\sprites\DOCTORACASTAÑAATRAS.png").convert_alpha()
             self.sprite_down = pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png").convert_alpha()
             self.sprite_left = pygame.image.load("assets/sprites/DOCTORACASTAÑAIZQUIERDA.png").convert_alpha()
             self.sprite_right = pygame.image.load("assets/sprites/DOCTORACASTAÑADERECHA.png").convert_alpha()
         elif character_index == 2:
-            self.sprite_up = pygame.image.load("assets/sprites/MEDICORUBIOFRENTE.png").convert_alpha()
-            self.sprite_down = pygame.image.load("assets/sprites/MEDICORUBIOATRAS.png").convert_alpha()
+            self.sprite_up = pygame.image.load("assets\sprites\MEDICORUBIOATRAS.png").convert_alpha()
+            self.sprite_down = pygame.image.load("assets/sprites/MEDICORUBIOFRENTE.png").convert_alpha()
             self.sprite_left = pygame.image.load("assets/sprites/MEDICORUBIOIZUQIERDA.png").convert_alpha()
             self.sprite_right = pygame.image.load("assets/sprites/MEDICORUBIODERECHA.png").convert_alpha()
         elif character_index == 3:
-            self.sprite_up = pygame.image.load("assets/sprites/DOCTORAVISTAFRENTE.png").convert_alpha()
-            self.sprite_down = pygame.image.load("assets\sprites\DOCTORAVISTAATRAS.png").convert_alpha()
+            self.sprite_up = pygame.image.load("assets\sprites\DOCTORAVISTAATRAS.png").convert_alpha()
+            self.sprite_down = pygame.image.load("assets/sprites/DOCTORAVISTAFRENTE.png").convert_alpha()
             self.sprite_left = pygame.image.load("assets\sprites\DOCTORAIZQUIERDA.png").convert_alpha()
             self.sprite_right = pygame.image.load("assets/sprites/DOCTORADERECHA.png").convert_alpha()
         else:

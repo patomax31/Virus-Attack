@@ -15,7 +15,11 @@ class Level1:
         self.TILE_SIZE = 32
         self.state_manager = state_manager
         self.character_index = self.state_manager.get_selected_character()
-        print(f"Selected character index: {self.character_index}")
+        if self.character_index is None:
+            print("Error: No character selected")
+            self.character_index = 0
+        else:
+            print(f"Selected character index: {self.character_index}")
         self.player = Player(400, 400, self.character_index)
         self.paused = False
         self.keys_pressed = None

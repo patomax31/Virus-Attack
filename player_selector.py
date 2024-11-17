@@ -91,8 +91,8 @@ class PlayerSelector:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.accept_button.checkForInput(pygame.mouse.get_pos()):
                     self.select_sound.play()
-                    self.selected_level = "level1"
                     self.state_manager.set_selected_character(self.current_character_index)
+                    print(f"PlayerSelector: selected_character set to {self.current_character_index}")                  
                     self.state_manager.set_state("levels")
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.select_sound.play()
