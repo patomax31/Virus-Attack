@@ -53,7 +53,7 @@ class PlayerSelector:
             pygame.transform.scale(pygame.image.load("assets/sprites/OPCIONPERSONAJEPELIRROJA.png"), (700, 400)),
         ]
         self.current_character_index = 0
-        self.update_text
+        self.update_text()
         
     def render_multiline_text(self, text, font, color):
         lines = text.split('\n')
@@ -91,7 +91,7 @@ class PlayerSelector:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.accept_button.checkForInput(pygame.mouse.get_pos()):
                     self.select_sound.play()
-                    self.state_manager.set_selected_character(self.current_character_index)
+                    self.state_manager.set_selected_character(self.current_pj_index)
                     print(f"PlayerSelector: selected_character set to {self.current_character_index}")                  
                     self.state_manager.set_state("levels")
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
@@ -101,7 +101,8 @@ class PlayerSelector:
                 if event.key == pygame.K_ESCAPE:
                     self.state_manager.set_state("main_menu")
                 elif event.key == pygame.K_RETURN:
-                    self.state_manager.set_selected_character(self.current_character_index)
+                    self.state_manager.set_selected_character(self.current_pj_index)
+                    print(f"PlayerSelector: selected_character set to {self.current_character_index}")
                     self.state_manager.set_state("levels")  # Cambia al selector de niveles
                 elif event.key == pygame.K_LEFT:
                     self.current_character_index = (self.current_character_index - 1) % len(self.character_images)
