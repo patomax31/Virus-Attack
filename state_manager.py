@@ -14,10 +14,12 @@ class StateManager:
     def change_state(self, new_state):
         self.current_state = new_state    
         
-    def set_state(self, state_name, level=None, character_index=None):
-        self.current_state = self.states[state_name]
-        if level:
-            self.selected_level = level
+    def set_state(self, state_name):
+        state_class = self.states.get(state_name)
+        if state_class:
+            self.current_state = state_class(self)
+        else:
+            print(f"State '{state_name}' not found.")
 
     def get_selected_level(self):
         return self.selected_level

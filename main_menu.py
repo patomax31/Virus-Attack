@@ -30,7 +30,7 @@ class MainMenu:
         ]
         self.current_frame = 0
         self.animation_timer = 0
-        self.animation_speed = 200  # Velocidad de la animación en milisegundos
+        self.animation_speed = 180  # Velocidad de la animación en milisegundos
         
         # Escalar los recursos
         self.play_image = pygame.transform.scale(self.play_image, (250, 250))

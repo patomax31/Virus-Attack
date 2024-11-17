@@ -18,13 +18,13 @@ def main():
     clock = pygame.time.Clock()
     
     state_manager = StateManager()
-    state_manager.add_state("main_menu", MainMenu(state_manager))
-    state_manager.add_state("player_selector", PlayerSelector(state_manager))
-    state_manager.add_state("levels", LevelSelector(state_manager))
-    state_manager.add_state("settings", SettingsMenu(state_manager))
-    state_manager.add_state("lose_menu", LoseMenu(state_manager))
-    state_manager.add_state("win_menu", WinMenu(state_manager))
-    state_manager.add_state("credits", CreditsScreen(state_manager))
+    state_manager.add_state("main_menu", MainMenu)
+    state_manager.add_state("player_selector", PlayerSelector)
+    state_manager.add_state("levels", LevelSelector)
+    state_manager.add_state("settings", SettingsMenu)
+    state_manager.add_state("lose_menu", LoseMenu)
+    state_manager.add_state("win_menu", WinMenu)
+    state_manager.add_state("credits", CreditsScreen)
     #state_manager.add_state("Tutorial", Tutorial(state_manager)) #Agrege el tutorial al state manager
     
     # Cargar niveles según la dificultad
@@ -38,9 +38,9 @@ def main():
         from lv_2_advanced import Level2
         from lv_3_advanced import Level3
     
-    state_manager.add_state("level1", Level1(state_manager))
-    state_manager.add_state("level2", Level2(state_manager))
-    state_manager.add_state("level3", Level3(state_manager))
+    state_manager.add_state("level1", Level1)
+    state_manager.add_state("level2", Level2)
+    state_manager.add_state("level3", Level3)
     
     state_manager.set_state("main_menu")
   
