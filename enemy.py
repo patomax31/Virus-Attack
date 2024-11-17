@@ -9,12 +9,12 @@ class Enemy(pygame.sprite.Sprite):
         self.y = y
         self.target_x = self.x
         self.target_y = self.y
-        self.speed = 2  # Asegúrate de que la velocidad sea un divisor exacto de TILE_SIZE
+        self.width = TILE_SIZE
+        self.height = TILE_SIZE
+        self.speed = 2
         self.moving = False
         self.direction = self.get_random_direction()
-        
         self.enemy_load_sprites()
-
         self.image = self.current_sprite
         self.rect = self.image.get_rect(center=(self.x, self.y))
         
@@ -23,32 +23,47 @@ class Enemy(pygame.sprite.Sprite):
         return random.choice(directions)
 
     def enemy_load_sprites(self):
-        self.current_sprite = pygame.image.load("assets/sprites/enemy_3.png").convert_alpha()
-        self.current_sprite = pygame.transform.scale(self.current_sprite, (int(self.current_sprite.get_width() * 0.5), int(self.current_sprite.get_height() * 0.5)))
+        self.sprite_up = pygame.image.load("assets/sprites/VIRUSENEMIGO2.png").convert_alpha()
+        self.sprite_down = pygame.image.load("assets/sprites/VIRUSENEMIGO1.png").convert_alpha()
+        self.sprite_left = pygame.image.load("assets/sprites/VIRUSENEMIGO3.png").convert_alpha()
+        self.sprite_right = pygame.image.load("assets/sprites/VIRUSENEMIGO4.png").convert_alpha()
+
+        # Escala los sprites si es necesario
+        self.sprite_up = pygame.transform.scale(self.sprite_up, (self.width, self.height))
+        self.sprite_down = pygame.transform.scale(self.sprite_down, (self.width, self.height))
+        self.sprite_left = pygame.transform.scale(self.sprite_left, (self.width, self.height))
+        self.sprite_right = pygame.transform.scale(self.sprite_right, (self.width, self.height))
+
+        # Establece el sprite inicial
+        self.current_sprite = self.sprite_down
 
     def draw(self, surface):
         surface.blit(self.current_sprite, self.rect)
     
     def update(self, player_rect, obstacles):
         if self.direction == "UP":
+            self.image = self.sprite_up
             new_y = self.rect.y - self.speed
             if not self.check_collision(self.rect.x, new_y, obstacles):
                 self.rect.y = new_y
             else:
                 self.direction = self.get_random_direction()
         elif self.direction == "DOWN":
+            self.image = self.sprite_down
             new_y = self.rect.y + self.speed
             if not self.check_collision(self.rect.x, new_y, obstacles):
                 self.rect.y = new_y
             else:
                 self.direction = self.get_random_direction()
         elif self.direction == "LEFT":
+            self.image = self.sprite_left
             new_x = self.rect.x - self.speed
             if not self.check_collision(new_x, self.rect.y, obstacles):
                 self.rect.x = new_x
             else:
                 self.direction = self.get_random_direction()
         elif self.direction == "RIGHT":
+            self.image = self.sprite_right
             new_x = self.rect.x + self.speed
             if not self.check_collision(new_x, self.rect.y, obstacles):
                 self.rect.x = new_x
