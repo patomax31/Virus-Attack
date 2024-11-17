@@ -15,14 +15,18 @@ class MainMenu:
         self.play_image = pygame.image.load("assets/sprites/play.png")
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
+        self.credits_image = pygame.image.load("assets/sprites/boton_crditos.png")
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
-
 
         # Carga de imágenes de la animación del título
         self.title_frames = [
-            pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE3.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE5.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE7.png"), (900, 500))
+            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO1.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO2.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO3.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO4.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO5.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO6.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO7.png"), (900, 500))            
         ]
         self.current_frame = 0
         self.animation_timer = 0
@@ -32,17 +36,18 @@ class MainMenu:
         self.play_image = pygame.transform.scale(self.play_image, (250, 250))
         self.quit_image = pygame.transform.scale(self.quit_image, (200, 200))
         self.options_image = pygame.transform.scale(self.options_image, (200, 200))
+        self.credits_image = pygame.transform.scale(self.credits_image, (200, 150))
                 
         # Creacion de los btones
         self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
         self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
-        self.credits_button = Button(None, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
+        self.credits_button = Button(self.credits_image, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
         
         # Inicializacion de la futura msica
         
     def get_font(self, size):
-        return pygame.font.Font("font.ttf", size) # Devuelve la fuente de texto con el tamaño especificado
+        return pygame.font.Font("assets/fonts/GAME.TTF", size) # Devuelve la fuente de texto con el tamaño especificado
     
     def update_animation(self, dt):
         self.animation_timer += dt
@@ -75,7 +80,7 @@ class MainMenu:
         screen.blit(self.background, (0, 0))
         # Dibujar el frame actual de la animación del título
         title_image = self.title_frames[self.current_frame]
-        title_rect = title_image.get_rect(center=(640, 240))
+        title_rect = title_image.get_rect(center=(640, 280))
         self.screen.blit(title_image, title_rect)
         self.play_button.update(screen)
         self.options_button.update(screen)

@@ -128,7 +128,7 @@ class Level1:
         self.all_enemies.add(enemy)    
         
     def get_font(self, size):
-        return pygame.font.Font("font.ttf", size)
+        return pygame.font.Font("assets/fonts/GAME.TTF", size)
     
     def draw_overlay(self):
         overlay = pygame.Surface((1280, 720))
