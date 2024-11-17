@@ -21,6 +21,7 @@ class WinMenu:
         self.copa = pygame.image.load("assets/sprites/win.png")
         self.boton = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
+        self.reinicio = pygame.image.load("assets/sprites/BOTONreinicio.png")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
         font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
         
@@ -37,6 +38,7 @@ class WinMenu:
         self.copa = pygame.transform.scale(self.copa, (100, 100))
         self.boton = pygame.transform.scale(self.boton, (110, 110))
         self.back_image = pygame.transform.scale(self.back_image, (110, 110))
+        self.reinicio = pygame.transform.scale(self.reinicio, (110, 110))
         # Efecto espejo
         self.back_image = pygame.transform.flip(self.back_image, True, False)
         # Crear btnes 
@@ -71,6 +73,7 @@ class WinMenu:
         self.screen.blit(self.copa, (600, 200))
         self.screen.blit(self.boton,(1050, 580 ))
         self.screen.blit(self.back_image, (150, 580))
+        self.screen.blit(self.reinicio, (610, 580))
         # Dibujar botones
         
         # Dibujar texto
