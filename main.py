@@ -18,7 +18,6 @@ def main():
     clock = pygame.time.Clock()
     
     state_manager = StateManager()
-    state_manager.add_state("Tutorial", Tutorial(state_manager)) #Agrege el tutorial al state manager
     state_manager.add_state("main_menu", MainMenu(state_manager))
     state_manager.add_state("player_selector", PlayerSelector(state_manager))
     state_manager.add_state("levels", LevelSelector(state_manager))
@@ -26,6 +25,7 @@ def main():
     state_manager.add_state("lose_menu", LoseMenu(state_manager))
     state_manager.add_state("win_menu", WinMenu(state_manager))
     state_manager.add_state("credits", CreditsScreen(state_manager))
+    #state_manager.add_state("Tutorial", Tutorial(state_manager)) #Agrege el tutorial al state manager
     
     # Cargar niveles según la dificultad
     difficulty = state_manager.get_difficulty()
