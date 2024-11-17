@@ -9,7 +9,7 @@ class Enemy(pygame.sprite.Sprite):
         self.y = y
         self.target_x = self.x
         self.target_y = self.y
-        self.speed = 1  # Asegúrate de que la velocidad sea un divisor exacto de TILE_SIZE
+        self.speed = 2  # Asegúrate de que la velocidad sea un divisor exacto de TILE_SIZE
         self.moving = False
         self.direction = self.get_random_direction()
         

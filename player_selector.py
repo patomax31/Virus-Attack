@@ -12,6 +12,7 @@ class PlayerSelector:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         
         # Carga de recursos
+        self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
         font_screen = pygame.font.Font("assets/fonts/SCREEN.TTF", 65)
         # Carga de imagenes
@@ -89,9 +90,12 @@ class PlayerSelector:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.accept_button.checkForInput(pygame.mouse.get_pos()):
+                    self.select_sound.play()
+                    self.selected_level = "level1"
                     self.state_manager.set_selected_character(self.current_character_index)
-                    self.state_manager.set_state("levels")  # Cambia al selector de niveles
+                    self.state_manager.set_state("levels")
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
+                    self.select_sound.play()
                     self.state_manager.set_state("main_menu")
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:

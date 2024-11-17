@@ -15,7 +15,9 @@ class MainMenu:
         self.play_image = pygame.image.load("assets/sprites/play.png")
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
-        
+        self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
+
+
         # Carga de imágenes de la animación del título
         self.title_frames = [
             pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE3.png"), (900, 500)),
@@ -57,14 +59,18 @@ class MainMenu:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN: # Si se presiona el mouse
                 if self.play_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("levels") # Cambia el estado a levels
+                    self.select_sound.play()        
                     self.state_manager.set_state("player_selector") # Cambia el estado a levels
                 if self.quit_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.quit()
                     sys.exit()
                 if self.options_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("settings")
+                    self.select_sound.play()
                 if self.credits_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("credits")   
+                    self.select_sound.play()
                     
     def draw(self, screen):
         screen.blit(self.background, (0, 0))

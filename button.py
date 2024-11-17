@@ -27,3 +27,8 @@ class Button():
 			self.text = self.font.render(self.text_input, True, self.hovering_color)
 		else:
 			self.text = self.font.render(self.text_input, True, self.base_color)
+	
+	def update_text(self, new_text):
+        #"""Método para actualizar el texto del botón"""
+		self.text_input = new_text
+		self.text = self.font.render(self.text_input, True, self.base_color)

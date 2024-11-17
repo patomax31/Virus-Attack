@@ -63,7 +63,8 @@ class Player:
             raise ValueError("Invalid character index: {character_index}")
 
         # Establecemos el sprite actual y el rectángulo de colisión
-        self.image = self.sprite_down  # sprite inicial 
+        self.image = self.sprite_down  # sprite inicial
+        print(f"Successfully loaded sprites for character {character_index}") 
         self.sprite_up = pygame.transform.scale(self.sprite_up, (int(self.sprite_up.get_width() * 0.5), int(self.sprite_up.get_height() * 0.5)))
         self.sprite_down = pygame.transform.scale(self.sprite_down, (int(self.sprite_down.get_width() * 0.5), int(self.sprite_down.get_height() * 0.5)))
         self.sprite_left = pygame.transform.scale(self.sprite_left, (int(self.sprite_left.get_width() * 0.5), int(self.sprite_left.get_height() * 0.5)))
