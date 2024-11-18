@@ -114,9 +114,9 @@ class Level1:
         self.texto1 = self.font.render("pause", True, "black")
         self.texto1_rect = self.texto1.get_rect(center = (642, 130))
         self.resume_texto =  self.font.render("resume", True, "white")
-        self.resume_texto_rect = self.resume_texto.get_rect(center = (634,250))  
+        self.resume_texto_rect = self.resume_texto.get_rect(center = (648,250))  
         self.go_out_texto =  self.font.render("go out", True, "white")
-        self.go_out_texto_rect = self.go_out_texto.get_rect(center = (675, 370)) 
+        self.go_out_texto_rect = self.go_out_texto.get_rect(center = (690, 370)) 
 
 
     def create_enemies(self):
