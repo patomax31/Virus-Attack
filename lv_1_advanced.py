@@ -41,8 +41,10 @@ class Level1:
         # Ajustar puntos por enemigo según la dificultad
         if self.difficulty == "Beginner":
             self.points_per_enemy = 5
+            self.player.health = 10
         elif self.difficulty == "Advanced":
             self.points_per_enemy = 15
+            self.player.health = 3
 
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
