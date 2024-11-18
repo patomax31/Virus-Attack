@@ -25,6 +25,7 @@ class SettingsMenu:
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
         font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
+        self.difficulty_image = pygame.image.load("assets/sprites/boton_crditos.png")
 
         # Carga de texto
         self.name = font_game.render("Settings", True, (59, 170, 143))
@@ -37,6 +38,7 @@ class SettingsMenu:
         self.dock = pygame.transform.scale(self.dock, (1280, 720))
         self.back_image = pygame.transform.scale(self.back_image, (110, 110))
         self.volumen_icon = pygame.transform.scale(self.volumen_icon, (200, 200))
+        self.difficulty_image = pygame.transform.scale(self.difficulty_image, (200, 150))
         
         # Efecto espejo
         self.back_image = pygame.transform.flip(self.back_image, True, False)
@@ -46,8 +48,8 @@ class SettingsMenu:
         self.spanish_button = Button(self.mexico_flag, (390, 375), "", self.get_font(25), "White", "Green")
         self.english_button = Button(self.usa_flag, (390, 275), "", self.get_font(25), "White", "Green")
         self.volumen_button = Button(self.volumen_icon, (640, 350), "", self.get_font(25), "White", "Green")
-        self.beginner_button = Button(None, (820, 275), "", self.get_font(25), "White", "Green")
-        self.advanced_button = Button(None, (820, 325), "", self.get_font(25), "White", "Green")
+        self.beginner_button = Button(self.difficulty_image, (920, 275), "", self.get_font(25), "White", "Green")
+        self.advanced_button = Button(self.difficulty_image, (920, 325), "", self.get_font(25), "White", "Green")
         
         # Estado de selección del nivel
         self.selected_level = None
