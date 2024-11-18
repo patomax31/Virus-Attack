@@ -48,8 +48,15 @@ class SettingsMenu:
         self.spanish_button = Button(self.mexico_flag, (390, 375), "", self.get_font(25), "White", "Green")
         self.english_button = Button(self.usa_flag, (390, 275), "", self.get_font(25), "White", "Green")
         self.volumen_button = Button(self.volumen_icon, (640, 350), "", self.get_font(25), "White", "Green")
-        self.beginner_button = Button(self.difficulty_image, (920, 275), "", self.get_font(25), "White", "Green")
-        self.advanced_button = Button(self.difficulty_image, (920, 325), "", self.get_font(25), "White", "Green")
+        self.beginner_button = Button(
+            self.difficulty_image, (890, 275), localization.get_text("beginner"),
+            self.get_font(25), "White", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
+        )
+
+        self.advanced_button = Button(
+            self.difficulty_image, (890, 325), localization.get_text("advanced"),
+            self.get_font(25), "White", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
+        )
         
         # Estado de selección del nivel
         self.selected_level = None

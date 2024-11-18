@@ -1,5 +1,5 @@
 class Button():
-	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
+	def __init__(self, image, pos, text_input, font, base_color, hovering_color, text_offset=(0, 0)):
 		self.image = image
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
@@ -7,6 +7,8 @@ class Button():
 		self.base_color, self.hovering_color = base_color, hovering_color
 		self.text_input = text_input
 		self.text = self.font.render(self.text_input, True, self.base_color)
+		self.text_offset = text_offset  # Nueva propiedad para desplazar el texto
+
 		if self.image is None:
 			self.image = self.text
 		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
@@ -29,6 +31,11 @@ class Button():
 			self.text = self.font.render(self.text_input, True, self.base_color)
 	
 	def update_text(self, new_text):
-        #"""Método para actualizar el texto del botón"""
+        #Método para actualizar el texto del botón
 		self.text_input = new_text
 		self.text = self.font.render(self.text_input, True, self.base_color)
+		 #Actualiza el rectángulo del texto si cambia el texto
+		self.text_rect = self.text.get_rect(center=(
+            self.x_pos + self.text_offset[0], 
+            self.y_pos + self.text_offset[1]
+        ))
