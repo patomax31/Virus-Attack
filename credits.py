@@ -86,7 +86,7 @@ class CreditsScreen:
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
-                    self.state_manager.set_state("main_menu", level=None, character_index=None)
+                    self.state_manager.set_state("main_menu")
         self.update_texts()
 
          # Actualiza la posición de desplazamiento del texto
