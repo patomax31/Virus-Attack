@@ -6,7 +6,7 @@ from button import Button
 from contador import tiempo
 import random
 from progress import set_current_level
-
+from Localization_manager import localization
 class Level1:
     def __init__(self, state_manager):
         # Datos de pantalla
@@ -14,9 +14,13 @@ class Level1:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
         self.state_manager = state_manager
-        character_index = self.state_manager.get_selected_character()
-        print(f"Selected character index: {character_index}")
-        self.player = Player(400, 400, character_index)
+        self.character_index = self.state_manager.get_selected_character()
+        if self.character_index is None:
+            print("Error: No character selected")
+            self.character_index = 0
+        else:
+            print(f"Selected character index: {self.character_index}")
+        self.player = Player(400, 400, self.character_index)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -25,6 +29,10 @@ class Level1:
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
         self.score = 0
+        self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
+        self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
+        self.enemy_hurt_sound = pygame.mixer.Sound("assets/sounds/enemy_hurt.mp3")
+        self.win_sound = pygame.mixer.Sound("assets/sounds/victoria.mp3")
 
          # Obtener la dificultad del state_manager
         self.difficulty = self.state_manager.get_difficulty()
@@ -82,31 +90,35 @@ class Level1:
 
 
         # Carga de sonidos
-        self.walk_sound = pygame.mixer.Sound("assets/sounds/walk.mp3")
-
+        self.enemy_sound = pygame.mixer.Sound("assets/sounds/hit_hurt-3.mp3")
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/level1.png")
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
         self.font = pygame.font.Font("font.ttf", 35)
         self.font2 = pygame.font.Font("font.ttf", 10)
-        self.fondo1_1= pygame.image.load("assets/sprites/fondo1_1.png")
-        self.botonR_1 = pygame.image.load("assets/sprites/botonR.png")
-        self.botonS_1 = pygame.image.load("assets/sprites/botonS.png")
+        self.fondo1_1= pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
+        self.botonR_1 = pygame.image.load("assets/sprites/boton_crditos.png")
+        self.botonS_1 = pygame.image.load("assets/sprites/boton_crditos.png")
 
         # Escalar los recursos
-        self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (560, 600))
-        self.botonR_1 = pygame.transform.scale(self.botonR_1, (300, 70)) 
-        self.botonS_1 = pygame.transform.scale(self.botonS_1, (300, 70)) 
+        self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (1280, 720 ))
+        self.botonR_1 = pygame.transform.scale(self.botonR_1, (370, 250)) 
+        self.botonS_1 = pygame.transform.scale(self.botonS_1, (370, 250)) 
 
         # Crear botones
-        self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
-        self.resume_button = Button(self.botonR_1,(642, 300), "Reanudar", self.get_font(25), "Black", "Green")
-        self.go_out_button = Button(self.botonS_1,(642, 450), "Salir", self.get_font(25), "Black", "Green")
+        self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "black", "Green")
+        self.resume_button = Button(self.botonR_1,(642, 250), "", self.get_font(15), "Black", "Green")
+        self.go_out_button = Button(self.botonS_1,(642, 370), "", self.get_font(15), "Black", "Green")
 
         # Texto
-        self.texto1 = self.font.render("pause", True, "white")
-        self.texto1_rect = self.texto1.get_rect(center = (642, 130))  
-          
+        self.texto1 = self.font.render("pause", True, "black")
+        self.texto1_rect = self.texto1.get_rect(center = (642, 130))
+        self.resume_texto =  self.font.render("resume", True, "white")
+        self.resume_texto_rect = self.resume_texto.get_rect(center = (634,250))  
+        self.go_out_texto =  self.font.render("go out", True, "white")
+        self.go_out_texto_rect = self.go_out_texto.get_rect(center = (675, 370)) 
+
+
     def create_enemies(self):
         self.all_enemies.empty()  # Vacía el grupo de enemigos
         for pos in self.enemy_positions:
@@ -116,20 +128,27 @@ class Level1:
         self.all_enemies.add(enemy)    
         
     def get_font(self, size):
-        return pygame.font.Font("font.ttf", size)
+        return pygame.font.Font("assets/fonts/GAME.TTF", size)
     
     def draw_overlay(self):
         overlay = pygame.Surface((1280, 720))
         overlay.fill((0, 0, 0))
         overlay.set_alpha(128)
         self.screen.blit(overlay, (0, 0))
-        self.screen.blit(self.fondo1_1, (365, 50))
+        self.screen.blit(self.fondo1_1, (0, 0))
         self.resume_button.update(self.screen)
         self.go_out_button.update(self.screen)
         self.screen.blit(self.texto1, self.texto1_rect)
+        self.screen.blit(self.resume_texto, self.resume_texto_rect)
+        self.screen.blit(self.go_out_texto, self.go_out_texto_rect)
         self.pause_button.update(self.screen)
         pygame.display.flip()
     
+    def update_text(self):
+        self.texto1 = self.get_font(40).render(localization.get_text("pause"), True,"black")
+        self.resume_texto = self.get_font(30).render(localization.get_text("resume"), True,"white")
+        self.go_out_texto = self.get_font(30).render(localization.get_text("go out"), True,"white")
+
     def update(self):
         self.check_collision()
         if not self.paused:
@@ -144,6 +163,7 @@ class Level1:
                     if self.pause_button.checkForInput(pygame.mouse.get_pos()):
                         self.paused = True
                         self.pause_start_time = pygame.time.get_ticks()
+                        self.select_sound.play()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.paused = True
@@ -160,6 +180,9 @@ class Level1:
                         self.player.change_health()
                     elif event.key == pygame.K_j:
                         self.player.shoot(self.all_bubbles, self.difficulty)
+                    elif event.key == pygame.K_l:
+                        print(f"character_index: {self.player.character_index}")
+                self.update_text()
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
@@ -185,9 +208,11 @@ class Level1:
             
         if self.time_left == 0 or self.player.is_dead:
             self.state_manager.set_state("lose_menu")
-            
+            self.lose_sound.play()
+
         if len(self.all_enemies) == 0:
             self.state_manager.set_state("win_menu")
+            self.win_sound.play()
             set_current_level(2)
 
         if self.paused:
@@ -202,13 +227,18 @@ class Level1:
                         if self.pause_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
+                            self.select_sound.play()
+
                         elif self.resume_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
+                            self.select_sound.play()
+                        
                         elif self.go_out_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.reset_game_state()
                             self.state_manager.set_state("levels")    
+                            self.select_sound.play()
                             
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
@@ -228,6 +258,7 @@ class Level1:
             if self.player.rect.colliderect(enemy.rect):
                 self.player.change_health(-1)
                 self.move_enemy_away(enemy)
+                self.enemy_sound.play()
                 
     def move_enemy_away(self, enemy):
         max_attempts = 100  # Número máximo de intentos para encontrar una posición válida
@@ -246,7 +277,7 @@ class Level1:
             print("No se encontró una posición válida para alejar al enemigo.")
         
     def reset_game_state(self):
-        self.player = Player(400, 400)
+        self.player = Player(400, 400, self.character_index)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -262,6 +293,7 @@ class Level1:
             enemy_hit_list = pygame.sprite.spritecollide(bubble, self.all_enemies, True)
             if enemy_hit_list:
                 bubble.kill()
+                self.enemy_hurt_sound.play()
                 for enemy in enemy_hit_list:
                     self.enemy_count -= 1
                     self.score += self.points_per_enemy
