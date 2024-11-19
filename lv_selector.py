@@ -16,11 +16,12 @@ class LevelSelector:
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
         self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
         self.dock = pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
-        self.level1_image = pygame.image.load("assets/sprites/level1.png")
-        self.level2_image = pygame.image.load("assets/sprites/level2.png")
-        self.level3_image = pygame.image.load("assets/sprites/level3.png")
+        self.level1_image = pygame.image.load("assets/sprites/level1_icon.png")
+        self.level2_image = pygame.image.load("assets/sprites/level2_icon.png")
+        self.level3_image = pygame.image.load("assets/sprites/level3_icon.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
+        self.font = pygame.font.Font("assets/fonts/SCREEN.TTF", 50)
 
         
         # Carga de texto
@@ -38,9 +39,9 @@ class LevelSelector:
         self.back_image = pygame.transform.flip(self.back_image, True, False)
         
         # Crear btnes
-        self.level1_button = Button(self.level1_image, (390, 300), "", self.get_font(25), "Black", "Green")
-        self.level2_button = Button(self.level2_image, (650, 300), "", self.get_font(25), "Black", "Green")
-        self.level3_button = Button(self.level3_image, (910, 300), "", self.get_font(25), "Black", "Green")
+        self.level1_button = Button(self.level1_image, (390, 280), "", self.get_font(25), "Black", "Green")
+        self.level2_button = Button(self.level2_image, (650, 280), "", self.get_font(25), "Black", "Green")
+        self.level3_button = Button(self.level3_image, (910, 280), "", self.get_font(25), "Black", "Green")
         self.back_button = Button(self.back_image, (190, 620), "", self.get_font(25), "White", "Green")   
         
         # Estado de selección del nivel
@@ -100,6 +101,31 @@ class LevelSelector:
         self.level1_button.update(screen)
         self.level2_button.update(screen)
         self.level3_button.update(screen)
+        
+        # Renderizar los textos
+        text1 = self.font.render("1", True, (78, 248, 71))
+        text2 = self.font.render("2", True, (78, 248, 71))
+        text3 = self.font.render("3", True, (78, 248, 71))
+
+        # Calcular las posiciones para el texto debajo de cada botón
+        text_pos1 = (
+            self.level1_button.rect.centerx - text1.get_width() // 2,
+            self.level1_button.rect.bottom + 10
+        )
+        text_pos2 = (
+            self.level2_button.rect.centerx - text2.get_width() // 2,
+            self.level2_button.rect.bottom + 10
+        )
+        text_pos3 = (
+            self.level3_button.rect.centerx - text3.get_width() // 2,
+            self.level3_button.rect.bottom + 10
+        )
+
+        # Dibujar los textos en la pantalla
+        screen.blit(text1, text_pos1)
+        screen.blit(text2, text_pos2)
+        screen.blit(text3, text_pos3)
+        
         self.back_button.update(screen)
         # Dibujar texto
         self.screen.blit(self.name, self.name.get_rect(center=(640, 50)))
