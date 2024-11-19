@@ -15,7 +15,7 @@ class MainMenu:
         self.play_image = pygame.image.load("assets/sprites/play.png")
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
-        self.credits_image = pygame.image.load("assets/sprites/boton_crditos.png")
+        self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
 
         # Carga de imágenes de la animación del título

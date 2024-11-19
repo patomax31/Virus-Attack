@@ -41,11 +41,8 @@ class Level1:
         # Ajustar puntos por enemigo según la dificultad
         if self.difficulty == "Beginner":
             self.points_per_enemy = 5
-            self.player.health = 10
         elif self.difficulty == "Advanced":
             self.points_per_enemy = 15
-            self.player.health = 3
-        print(f"health: {self.player.health}")
 
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
@@ -100,8 +97,8 @@ class Level1:
         self.font = pygame.font.Font("font.ttf", 35)
         self.font2 = pygame.font.Font("font.ttf", 10)
         self.fondo1_1= pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
-        self.botonR_1 = pygame.image.load("assets/sprites/boton_crditos.png")
-        self.botonS_1 = pygame.image.load("assets/sprites/boton_crditos.png")
+        self.botonR_1 = pygame.image.load("assets/sprites/boton_crditos1.png")
+        self.botonS_1 = pygame.image.load("assets/sprites/boton_crditos1.png")
 
         # Escalar los recursos
         self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (1280, 720 ))

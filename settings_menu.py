@@ -25,7 +25,7 @@ class SettingsMenu:
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
         font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
-        self.difficulty_image = pygame.image.load("assets/sprites/boton_crditos.png")
+        self.difficulty_image = pygame.image.load("assets/sprites/boton_crditos1.png")
 
         # Carga de texto
         self.name = font_game.render("Settings", True, (59, 170, 143))
