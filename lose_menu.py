@@ -12,8 +12,6 @@ class LoseMenu:
 
         # Carga de recursos
         self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
-        self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
-        self.dock = pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
         self.boton = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
@@ -39,7 +37,7 @@ class LoseMenu:
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
         self.boton = pygame.transform.scale(self.boton, (110, 110))
         self.back_image = pygame.transform.scale(self.back_image, (110, 110))
-        self.dock = pygame.transform.scale(self.dock, (1280, 720))
+        
         self.reinicio = pygame.transform.scale(self.reinicio, (110, 110))
         
         
@@ -69,10 +67,12 @@ class LoseMenu:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-                
+                            
     def draw(self, screen):
-        self.screen.blit(self.background, (0, 0))
-        self.screen.blit(self.dock, (0, 0))
+        
+        loser_image = self.lose_frames[self.current_frame]
+        loser_rect = loser_image.get_rect(center=(660, 390))
+        self.screen.blit(loser_image, loser_rect)
         self.screen.blit(self.boton,(1050, 580 ))
         self.screen.blit(self.back_image, (150, 580))
         self.screen.blit(self.reinicio, (610, 580))
