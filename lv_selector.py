@@ -17,6 +17,8 @@ class LevelSelector:
         self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
         self.dock = pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
+        self.level2_image = pygame.image.load("assets/sprites/level2.png")
+        self.level3_image = pygame.image.load("assets/sprites/level3.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
 
@@ -27,6 +29,8 @@ class LevelSelector:
         
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
+        self.level2_image = pygame.transform.scale(self.level2_image, (200, 200))
+        self.level3_image = pygame.transform.scale(self.level3_image, (200, 200))
         self.dock = pygame.transform.scale(self.dock, (1280, 720))
         self.back_image = pygame.transform.scale(self.back_image, (110, 110))
         
@@ -35,8 +39,8 @@ class LevelSelector:
         
         # Crear btnes
         self.level1_button = Button(self.level1_image, (390, 300), "", self.get_font(25), "Black", "Green")
-        self.level2_button = Button(self.level1_image, (650, 300), "", self.get_font(25), "Black", "Green")
-        self.level3_button = Button(self.level1_image, (910, 300), "", self.get_font(25), "Black", "Green")
+        self.level2_button = Button(self.level2_image, (650, 300), "", self.get_font(25), "Black", "Green")
+        self.level3_button = Button(self.level3_image, (910, 300), "", self.get_font(25), "Black", "Green")
         self.back_button = Button(self.back_image, (190, 620), "", self.get_font(25), "White", "Green")   
         
         # Estado de selección del nivel
