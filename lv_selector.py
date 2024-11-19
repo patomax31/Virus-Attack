@@ -88,6 +88,10 @@ class LevelSelector:
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.select_sound.play()
                     self.state_manager.set_state("player_selector")
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.select_sound.play()
+                    self.state_manager.set_state("player_selector")
             self.update_texts()  
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
