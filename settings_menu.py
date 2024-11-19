@@ -54,7 +54,7 @@ class SettingsMenu:
         )
 
         self.advanced_button = Button(
-            self.difficulty_image, (890, 325), localization.get_text("advanced"),
+            self.difficulty_image, (890, 375), localization.get_text("advanced"),
             self.get_font(25), "White", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
         )
         
@@ -91,21 +91,30 @@ class SettingsMenu:
                     self.difficulty = "Beginner"
                     self.select_sound.play()
                     self.state_manager.set_difficulty(self.difficulty)
+                    print(self.difficulty)
                     
                 if self.advanced_button.checkForInput(pygame.mouse.get_pos()):
                     self.difficulty = "Advanced"
-                    print(self.difficulty)
+                    self.select_sound.play()
                     self.state_manager.set_difficulty(self.difficulty)
+                    print(self.difficulty)
                     
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
+                    self.select_sound.play()
                     self.state_manager.set_state("main_menu")
                 elif self.english_button.checkForInput(pygame.mouse.get_pos()):
+                    self.select_sound.play()
                     localization.set_language("en")
                     self.update_texts()  # Actualizar los textos al cambiar de idioma
                     
                 elif self.spanish_button.checkForInput(pygame.mouse.get_pos()):
                     localization.set_language("es")
                     self.update_texts()  # Actualizar los textos al cambiar de idioma
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.select_sound.play()
+                    self.state_manager.set_state("main_menu")
+                    
                   
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
