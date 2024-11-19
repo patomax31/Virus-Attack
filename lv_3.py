@@ -1,23 +1,26 @@
 import pygame
 import sys
 from player import Player
-from enemy_blue import Enemy
+from enemy import Enemy
 from button import Button
 from contador import tiempo
 import random
 from progress import set_current_level
-from objects import soap
-
+from Localization_manager import localization
 class Level3:
     def __init__(self, state_manager):
         # Datos de pantalla
-        self.state_manager = state_manager
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
-        self.player = Player(400, 400, self.state_manager.get_selected_character())
-        self.soap = soap(500, 400)
-
+        self.state_manager = state_manager
+        self.character_index = self.state_manager.get_selected_character()
+        if self.character_index is None:
+            print("Error: No character selected")
+            self.character_index = 0
+        else:
+            print(f"Selected character index: {self.character_index}")
+        self.player = Player(400, 400, self.character_index)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -89,28 +92,33 @@ class Level3:
         # Carga de sonidos
         self.enemy_sound = pygame.mixer.Sound("assets/sounds/hit_hurt-3.mp3")
         # Carga de recursos
-        self.background = pygame.image.load("assets/sprites/level1.png")
+        self.background = pygame.image.load("assets/sprites/level3.png")
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
         self.font = pygame.font.Font("font.ttf", 35)
         self.font2 = pygame.font.Font("font.ttf", 10)
-        self.fondo1_1= pygame.image.load("assets/sprites/fondo1_1.png")
-        self.botonR_1 = pygame.image.load("assets/sprites/botonR.png")
-        self.botonS_1 = pygame.image.load("assets/sprites/botonS.png")
+        self.fondo1_1= pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
+        self.botonR_1 = pygame.image.load("assets/sprites/boton_crditos1.png")
+        self.botonS_1 = pygame.image.load("assets/sprites/boton_crditos1.png")
 
         # Escalar los recursos
-        self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (560, 600))
-        self.botonR_1 = pygame.transform.scale(self.botonR_1, (300, 70)) 
-        self.botonS_1 = pygame.transform.scale(self.botonS_1, (300, 70)) 
+        self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (1280, 720 ))
+        self.botonR_1 = pygame.transform.scale(self.botonR_1, (370, 250)) 
+        self.botonS_1 = pygame.transform.scale(self.botonS_1, (370, 250)) 
 
         # Crear botones
-        self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "Black", "Green")
-        self.resume_button = Button(self.botonR_1,(642, 300), "Reanudar", self.get_font(25), "Black", "Green")
-        self.go_out_button = Button(self.botonS_1,(642, 450), "Salir", self.get_font(25), "Black", "Green")
+        self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "black", "Green")
+        self.resume_button = Button(self.botonR_1,(642, 250), "", self.get_font(15), "Black", "Green")
+        self.go_out_button = Button(self.botonS_1,(642, 370), "", self.get_font(15), "Black", "Green")
 
         # Texto
-        self.texto1 = self.font.render("pause", True, "white")
-        self.texto1_rect = self.texto1.get_rect(center = (642, 130))  
-          
+        self.texto1 = self.font.render("pause", True, "black")
+        self.texto1_rect = self.texto1.get_rect(center = (642, 130))
+        self.resume_texto =  self.font.render("resume", True, "white")
+        self.resume_texto_rect = self.resume_texto.get_rect(center = (634,250))  
+        self.go_out_texto =  self.font.render("go out", True, "white")
+        self.go_out_texto_rect = self.go_out_texto.get_rect(center = (675, 370)) 
+
+
     def create_enemies(self):
         self.all_enemies.empty()  # Vacía el grupo de enemigos
         for pos in self.enemy_positions:
@@ -120,20 +128,27 @@ class Level3:
         self.all_enemies.add(enemy)    
         
     def get_font(self, size):
-        return pygame.font.Font("font.ttf", size)
+        return pygame.font.Font("assets/fonts/GAME.TTF", size)
     
     def draw_overlay(self):
         overlay = pygame.Surface((1280, 720))
         overlay.fill((0, 0, 0))
         overlay.set_alpha(128)
         self.screen.blit(overlay, (0, 0))
-        self.screen.blit(self.fondo1_1, (365, 50))
+        self.screen.blit(self.fondo1_1, (0, 0))
         self.resume_button.update(self.screen)
         self.go_out_button.update(self.screen)
         self.screen.blit(self.texto1, self.texto1_rect)
+        self.screen.blit(self.resume_texto, self.resume_texto_rect)
+        self.screen.blit(self.go_out_texto, self.go_out_texto_rect)
         self.pause_button.update(self.screen)
         pygame.display.flip()
     
+    def update_text(self):
+        self.texto1 = self.get_font(40).render(localization.get_text("pause"), True,"black")
+        self.resume_texto = self.get_font(30).render(localization.get_text("resume"), True,"white")
+        self.go_out_texto = self.get_font(30).render(localization.get_text("go out"), True,"white")
+
     def update(self):
         self.check_collision()
         if not self.paused:
@@ -165,6 +180,9 @@ class Level3:
                         self.player.change_health()
                     elif event.key == pygame.K_j:
                         self.player.shoot(self.all_bubbles, self.difficulty)
+                    elif event.key == pygame.K_l:
+                        print(f"character_index: {self.player.character_index}")
+                self.update_text()
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_w]:
@@ -181,7 +199,6 @@ class Level3:
             self.player.update()
             self.check_collision()
             self.check_player_enemy_collision()
-            self.soap.check_object_collision(self.obstacles, self.player.rect)
 
             for enemy in self.all_enemies:
                 enemy.update(self.player.rect, self.obstacles)
@@ -260,7 +277,7 @@ class Level3:
             print("No se encontró una posición válida para alejar al enemigo.")
         
     def reset_game_state(self):
-        self.player = Player(400, 400, self.state_manager.get_selected_character())
+        self.player = Player(400, 400, self.character_index)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -290,8 +307,7 @@ class Level3:
         self.all_bubbles.draw(screen)
         tiempo.draw_timer(screen, self.time_left)
         self.pause_button.update(screen)
-        self.soap.draw(screen)        
-
+        
         self.enemy_count_text = self.font2.render(f"Enemigos: {self.enemy_count}", True, "white")
         self.screen.blit(self.enemy_count_text, (1140, 50))
         

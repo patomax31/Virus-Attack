@@ -207,24 +207,17 @@ class Tutorial:
             self.player.update()
             self.check_collision()
             self.check_player_enemy_collision()
-            self.soap.check_object_collision(self.obstacles, self.player.rect)
-            
-            for enemy in self.all_enemies:
-                enemy.update(self.player.rect, self.obstacles)
-            self.all_bubbles.update(self.obstacles, self.all_enemies, self)
+#       if    self.soap.check_object_collision(self.obstacles, self.player.rect):
+#            self.screen.blit(self.d, (250, 250))
         
-            pygame.display.flip()
+        for enemy in self.all_enemies:
+            enemy.update(self.player.rect, self.obstacles)
+        self.all_bubbles.update(self.obstacles, self.all_enemies, self)
+        
+        pygame.display.flip()
 
             
-            
-        #Moverse al jabon
-        
-        #Disparar al enemigo
-        
-        #Salir del mapa
-        #PAUSA
-
-
+  
         if self.paused:
             self.draw_overlay()
             pygame.display.flip()
@@ -319,10 +312,12 @@ class Tutorial:
         self.screen.blit(self.space, (100, 300))
         self.screen.blit(self.difficulty, self.difficulty.get_rect(center=(120, 160)))      
         self.pause_button.update(screen)
-        self.soap.draw(screen)        
+ 
         self.player.draw(screen)  
-       # self.enemy.draw(screen)
+        self.enemy.draw(screen)
         self.all_bubbles.draw(screen)
-   
+        if self.soap.check_object_collision(self.obstacles, self.player):
+            self.screen.blit(self.d,(350, 400))
+            self.soap.draw(screen)==False
                # tiempo.draw_timer(screen, self.time_left)
  

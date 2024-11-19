@@ -30,18 +30,14 @@ class soap(pygame.sprite.Sprite):
         soap_rect = pygame.Rect(self.x, self.y, self.width, self.height)
         for obstacle in obstacles:
             if soap_rect.colliderect(Player_rect):
-                #soap.remove(self)
-                print("Colision")
-                return True
-            
+                return True            
         return False
     
     def update(self):
         pass
 
     def draw(self, surface):
-        # Dibuja al jugasdor
         surface.blit(self.image, self.rect)
-    
+        return True
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
