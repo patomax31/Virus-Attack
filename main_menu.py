@@ -1,7 +1,7 @@
 import pygame
 import sys
 from button import Button
-
+from settings_menu import Button
 class MainMenu:
     
     def __init__(self, state_manager):
@@ -16,8 +16,12 @@ class MainMenu:
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
         self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
+        
+        #Musica y sonidos
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
-
+        self.main_music = pygame.mixer.music.load("assets/sounds/MENUMUSICA.mp3")
+        pygame.mixer_music.play(-1)
+     
         # Carga de imágenes de la animación del título
         self.title_frames = [
             pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO1.png"), (900, 500)),
@@ -58,24 +62,29 @@ class MainMenu:
     def update(self):
         dt = self.clock.tick(60)
         self.update_animation(dt)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN: # Si se presiona el mouse
                 if self.play_button.checkForInput(pygame.mouse.get_pos()):
-                    self.select_sound.play()        
                     self.state_manager.set_state("player_selector") # Cambia el estado a levels
+                    self.select_sound.play()        
+
                 if self.quit_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.quit()
                     sys.exit()
+                    
                 if self.options_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("settings")
                     self.select_sound.play()
-                if self.credits_button.checkForInput(pygame.mouse.get_pos()):
-                    self.state_manager.set_state("credits")   
-                    self.select_sound.play()
                     
+                if self.credits_button.checkForInput(pygame.mouse.get_pos()):
+                    pygame.mixer.music.pause()                       
+                    self.state_manager.set_state("credits")
+                    self.select_sound.play()
+
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
         # Dibujar el frame actual de la animación del título
@@ -86,4 +95,5 @@ class MainMenu:
         self.options_button.update(screen)
         self.quit_button.update(screen)
         self.credits_button.update(screen)
+
         pygame.display.flip()

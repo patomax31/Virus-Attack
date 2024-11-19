@@ -15,7 +15,9 @@ class soap(pygame.sprite.Sprite):
         self.width = TILE_SIZE
         self.height = TILE_SIZE
         # Cargar las imágenes (sprites)
-        
+        #borrar = (0, 0, 0, 0)
+
+
         self.load_sprites()
         
         self.image = self.sprite_soap
@@ -29,15 +31,19 @@ class soap(pygame.sprite.Sprite):
         # COmprueba si la nueva colision que se registre choca con algun obstaculo
         soap_rect = pygame.Rect(self.x, self.y, self.width, self.height)
         for obstacle in obstacles:
-            if soap_rect.colliderect(Player_rect):
-                return True            
+            if soap_rect.colliderect(Player_rect):  
+                
+                return True     
+       
         return False
     
     def update(self):
         pass
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
-        return True
+  #      surface.blit(self.image, self.rect)
+        if True:
+            surface.blit(self.image, self.rect)
+ 
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)

@@ -31,12 +31,16 @@ class Tutorial:
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
         self.all_enemies.add(self.enemy)
+        self.score = 0
+
         # Carga de sonidos
         self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
         self.enemy_hurt_sound = pygame.mixer.Sound("assets/sounds/enemy_hurt.mp3")
         self.win_sound = pygame.mixer.Sound("assets/sounds/victoria.mp3")
         self.enemy_sound = pygame.mixer.Sound("assets/sounds/hit_hurt-3.mp3")
+        delete = (0, 0, 0, 0)
+
 
          # Obtener la dificultad del state_manager
         self.difficulty = self.state_manager.get_difficulty()
@@ -108,9 +112,10 @@ class Tutorial:
         self.fondo1_1= pygame.image.load("assets/sprites/fondo1_1.png")
         self.botonR_1 = pygame.image.load("assets/sprites/botonR.png")
         self.botonS_1 = pygame.image.load("assets/sprites/botonS.png")
-
+        
+        self.instrucciones_1 = font_screen_title.render("Presiona las teclas para moverte hacia el jabon", True, (78, 248, 71))
+        self.instrucciones_2 = font_screen_title.render("Bien hecho!, ahora usa la tecla espacio para lanzar burbujas", True, (78, 248, 71))
         # Escalar los recursos
-        self.difficulty = font_screen_title.render("Press to move", True, (78, 248, 71))
         self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (560, 600))
         self.botonR_1 = pygame.transform.scale(self.botonR_1, (300, 70)) 
         self.botonS_1 = pygame.transform.scale(self.botonS_1, (300, 70)) 
@@ -207,9 +212,9 @@ class Tutorial:
             self.player.update()
             self.check_collision()
             self.check_player_enemy_collision()
-#       if    self.soap.check_object_collision(self.obstacles, self.player.rect):
-#            self.screen.blit(self.d, (250, 250))
-        
+        if    self.soap.check_object_collision(self.obstacles, self.player.rect):
+            self.screen.blit(self.d, (250, 250))
+
         for enemy in self.all_enemies:
             enemy.update(self.player.rect, self.obstacles)
         self.all_bubbles.update(self.obstacles, self.all_enemies, self)
@@ -288,7 +293,7 @@ class Tutorial:
         self.start_time = pygame.time.get_ticks()
         self.time_left = 100
         self.all_bubbles.empty()
-        self.screen.fill((0, 0, 0))  # Limpiar la pantalla al resetear el estado
+      #  self.screen.fill((0, 0, 0))  # Limpiar la pantalla al resetear el estado
         pygame.display.flip()
         
     def check_collision(self):
@@ -310,14 +315,17 @@ class Tutorial:
         self.screen.blit(self.s, (100, 250))
         self.screen.blit(self.d, (150, 250))
         self.screen.blit(self.space, (100, 300))
-        self.screen.blit(self.difficulty, self.difficulty.get_rect(center=(120, 160)))      
+        self.screen.blit(self.instrucciones_1, self.instrucciones_1.get_rect(center=(650, 660)))      
         self.pause_button.update(screen)
  
         self.player.draw(screen)  
         self.enemy.draw(screen)
         self.all_bubbles.draw(screen)
-        if self.soap.check_object_collision(self.obstacles, self.player):
-            self.screen.blit(self.d,(350, 400))
+
+        if self.soap.check_object_collision(self.obstacles, self.player)==False:
             self.soap.draw(screen)==False
-               # tiempo.draw_timer(screen, self.time_left)
+            #self.soap.draw.fill((0, 0, 0))
+
+
+         # tiempo.draw_timer(screen, self.time_left)
  
