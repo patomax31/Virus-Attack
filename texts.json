@@ -28,7 +28,8 @@
     "final_message2": "y aprendizaje a los jugadores. Gracias por jugar Virus Attack.",
     "licenses_and_rights": "Licencias y derechos",
     "license": "MIT License",
-    "lose_text": "El exito toma mas de un intento"
+    "lose_text": "El exito toma mas de un intento",
+    "win_text": "Bien hecho"
   },
   "en": {
     "settings": "Settings",
@@ -59,7 +60,8 @@
     "final_message2": "and learning to players. Thank you for playing Virus Attack.",
     "licenses_and_rights": "Licenses and Rights",
     "license": "MIT License",
-    "lose_text": "Success takes more than one try"
+    "lose_text": "Success takes more than one try",
+    "win_text": "Well done"
     
   }
 }
