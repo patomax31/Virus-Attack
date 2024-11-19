@@ -1,6 +1,7 @@
 import pygame
 import sys
 from button import Button
+from Localization_manager import localization
 
 class WinMenu:
     def __init__(self, state_manager):
@@ -26,7 +27,7 @@ class WinMenu:
         font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
         
         # Carga de texto
-        self.name = font_game.render("Bien hecho!", True, (59, 170, 143))
+        self.name = font_game.render("win_text", True, (59, 170, 143))
         
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
@@ -50,6 +51,9 @@ class WinMenu:
     def get_font(self, size):
         return pygame.font.Font("assets/fonts/GAME.TTF", size)
     
+    def update_text(self):
+        self.name = self.get_font(50).render(localization.get_text("win_text"), True, (59, 170, 143))
+    
     def update(self):
         for event in pygame.event.get():
             
@@ -62,6 +66,7 @@ class WinMenu:
                     self.state_manager.set_state("level2", self.selected_level)
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("levels")
+        self.update_text()
                     
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))

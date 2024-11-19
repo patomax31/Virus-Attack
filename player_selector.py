@@ -26,7 +26,7 @@ class PlayerSelector:
         self.current_pj_index = 0
         self.pj = self.render_multiline_text(self.pj_text[self.current_pj_index], font_screen, (78, 248, 71))
         # Rectangulo del texto
-        self.name_rect = self.name.get_rect(center=(595, 50))
+        self.name_rect = self.name.get_rect(center=(680, 50))
         self.pj_rect = self.pj.get_rect(center=(490, 330))
         
         # Escalar los recursos
@@ -68,7 +68,7 @@ class PlayerSelector:
         return text_surface
     
     def get_font(self, size):
-        return pygame.font.Font("font.ttf", size)
+        return pygame.font.Font("assets/fonts/GAME.TTF", size)
     
     def update_text(self):
         font_screen = pygame.font.Font("assets/fonts/SCREEN.TTF", 65)

@@ -2,6 +2,7 @@ import pygame
 import sys
 from button import Button
 from settings_menu import Button
+from Localization_manager import localization
 class MainMenu:
     
     def __init__(self, state_manager):
@@ -25,13 +26,13 @@ class MainMenu:
      
         # Carga de imágenes de la animación del título
         self.title_frames = [
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO1.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO2.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO3.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO4.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO5.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO6.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO7.png"), (900, 500))            
+            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO1.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO2.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO3.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO4.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO5.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO6.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO7.png"), (900, 500))            
         ]
         self.current_frame = 0
         self.animation_timer = 0
@@ -49,8 +50,7 @@ class MainMenu:
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
         self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
         self.credits_button = Button(self.credits_image, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
-        self.tutorial_button = Button(self.tutorial_image, (640, 400), "", self.get_font(25), "Black", "Green")
-
+        
         # Inicializacion de la futura msica
         
     def get_font(self, size):
