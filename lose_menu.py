@@ -80,7 +80,6 @@ class LoseMenu:
         loser_image = self.lose_frames[self.current_frame]
         loser_rect = loser_image.get_rect(center=(660, 390))
         self.screen.blit(loser_image, loser_rect)
-        self.screen.blit(self.boton,(1050, 580 ))
         self.screen.blit(self.back_image, (150, 580))
         self.screen.blit(self.reinicio, (610, 580))
 
