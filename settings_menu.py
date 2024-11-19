@@ -23,7 +23,7 @@ class SettingsMenu:
         self.usa_flag = pygame.image.load("assets/sprites/UnitedStatesFlag.png")
         self.volumen_icon = pygame.image.load("assets/sprites/Volume.png")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
-        font_screen_title = pygame.font.Font("assets/fonts/SCREEN.TTF", 40)
+        font_screen_title = pygame.font.Font("assets/fonts/GAME.TTF", 40)
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
         self.difficulty_image = pygame.image.load("assets/sprites/boton_crditos1.png")
 

@@ -29,7 +29,8 @@
     "licenses_and_rights": "Licencias y derechos",
     "license": "MIT License",
     "lose_text": "El exito toma mas de un intento",
-    "win_text": "Bien hecho"
+    "win_text": "Bien hecho",
+    "credits": "Creditos"
   },
   "en": {
     "settings": "Settings",
@@ -61,7 +62,8 @@
     "licenses_and_rights": "Licenses and Rights",
     "license": "MIT License",
     "lose_text": "Success takes more than one try",
-    "win_text": "Well done"
+    "win_text": "Well done",
+    "credits": "Credits"
     
   }
 }
