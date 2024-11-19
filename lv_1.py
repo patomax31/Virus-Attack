@@ -34,10 +34,12 @@ class Level1:
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
         self.score = 0
+        # Carga de sonidos
         self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
         self.enemy_hurt_sound = pygame.mixer.Sound("assets/sounds/enemy_hurt.mp3")
         self.win_sound = pygame.mixer.Sound("assets/sounds/victoria.mp3")
+        self.enemy_sound = pygame.mixer.Sound("assets/sounds/hit_hurt-3.mp3")
 
         
         # Ajustar puntos por enemigo según la dificultad
@@ -91,8 +93,7 @@ class Level1:
                     self.obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
 
 
-        # Carga de sonidos
-        self.enemy_sound = pygame.mixer.Sound("assets/sounds/hit_hurt-3.mp3")
+
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/level1.png")
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
