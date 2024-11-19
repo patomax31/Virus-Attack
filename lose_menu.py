@@ -33,7 +33,7 @@ class LoseMenu:
         self.animation_timer = 0
         self.animation_speed = 200  # Velocidad de la animación en milisegundos
         # Carga de texto
-        self.name = font_game.render("Perdiste", True, (59, 170, 143))
+        self.name = font_game.render("El exito toma mas de un intento.", True, (59, 170, 143))
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
         self.boton = pygame.transform.scale(self.boton, (110, 110))
