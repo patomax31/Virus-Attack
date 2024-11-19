@@ -3,9 +3,9 @@ import time
 from settings import SCREEN_WIDTH
 class tiempo():
     def draw_timer(surface, time_left):
-        font = pygame.font.SysFont(None, 48)
-        timer_text = font.render(f"{time_left // 60}:{time_left % 60:02d}", True, (255, 255, 255)) # Texto del temporizador
-        surface.blit(timer_text,(SCREEN_WIDTH - 120, 10)) # Dibuja el temporizador
+        font = pygame.font.Font("assets/fonts/SCREEN.TTF", 25)  # Use custom font GAME.TTF
+        timer_text = font.render(f"{time_left // 60}:{time_left % 60:02d}", True, (255, 0, 0)) # Texto del temporizador
+        surface.blit(timer_text,(1200, 25)) # Dibuja el temporizador
 
 
 """ Traceback (most recent call last):
