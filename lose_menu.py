@@ -11,6 +11,7 @@ class LoseMenu:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
 
         # Carga de recursos
+        self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
         self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
@@ -69,7 +70,7 @@ class LoseMenu:
                 sys.exit()
                             
     def draw(self, screen):
-        
+        self.screen.blit(self.background, (0, 0))
         loser_image = self.lose_frames[self.current_frame]
         loser_rect = loser_image.get_rect(center=(660, 390))
         self.screen.blit(loser_image, loser_rect)
