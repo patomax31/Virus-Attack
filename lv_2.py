@@ -1,7 +1,7 @@
 import pygame
 import sys
 from player import Player
-from enemy import Enemy
+from enemy_yellow import Enemy
 from button import Button
 from contador import tiempo
 import random

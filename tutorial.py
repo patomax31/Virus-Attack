@@ -39,8 +39,8 @@ class Tutorial:
         self.enemy_hurt_sound = pygame.mixer.Sound("assets/sounds/enemy_hurt.mp3")
         self.win_sound = pygame.mixer.Sound("assets/sounds/victoria.mp3")
         self.enemy_sound = pygame.mixer.Sound("assets/sounds/hit_hurt-3.mp3")
-        delete = (0, 0, 0, 0)
-
+        self.music = pygame.mixer.music.load("assets/sounds/musiclevel1y2.mp3")
+        pygame.mixer.music.play(-1)
 
          # Obtener la dificultad del state_manager
         self.difficulty = self.state_manager.get_difficulty()
@@ -114,7 +114,8 @@ class Tutorial:
         self.botonS_1 = pygame.image.load("assets/sprites/botonS.png")
         
         self.instrucciones_1 = font_screen_title.render("Presiona las teclas para moverte hacia el jabon", True, (78, 248, 71))
-        self.instrucciones_2 = font_screen_title.render("Bien hecho!, ahora usa la tecla espacio para lanzar burbujas", True, (78, 248, 71))
+        self.instrucciones_2 = font_screen_title.render("¡Bien hecho!, ahora usa la tecla ESPACIO para lanzar burbujas al enemigo", True, (78, 248, 71))
+        self.instrucciones_3 = font_screen_title.render("h", True, (78, 248, 71))
         # Escalar los recursos
         self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (560, 600))
         self.botonR_1 = pygame.transform.scale(self.botonR_1, (300, 70)) 
@@ -173,8 +174,6 @@ class Tutorial:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-            
-            
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.pause_button.checkForInput(pygame.mouse.get_pos()):
@@ -212,9 +211,8 @@ class Tutorial:
             self.player.update()
             self.check_collision()
             self.check_player_enemy_collision()
-        if    self.soap.check_object_collision(self.obstacles, self.player.rect):
-            self.screen.blit(self.d, (250, 250))
-
+        if self.soap.check_object_collision(self.obstacles, self.player)==False:
+            self.soap.kill()
         for enemy in self.all_enemies:
             enemy.update(self.player.rect, self.obstacles)
         self.all_bubbles.update(self.obstacles, self.all_enemies, self)
@@ -315,15 +313,20 @@ class Tutorial:
         self.screen.blit(self.s, (100, 250))
         self.screen.blit(self.d, (150, 250))
         self.screen.blit(self.space, (100, 300))
-        self.screen.blit(self.instrucciones_1, self.instrucciones_1.get_rect(center=(650, 660)))      
         self.pause_button.update(screen)
  
         self.player.draw(screen)  
         self.enemy.draw(screen)
         self.all_bubbles.draw(screen)
+        self.soap.draw(screen)
 
         if self.soap.check_object_collision(self.obstacles, self.player)==False:
-            self.soap.draw(screen)==False
+                soap.kill(self)
+                print("hola")    
+               # self.soap.draw(screen)
+    #        self.screen.blit(self.instrucciones_1, self.instrucciones_1.get_rect(center=(650, 660)))      
+      #      self.soap.kill()
+
             #self.soap.draw.fill((0, 0, 0))
 
 
