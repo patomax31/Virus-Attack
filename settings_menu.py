@@ -53,7 +53,7 @@ class SettingsMenu:
         )
 
         self.advanced_button = Button(
-            self.difficulty_image, (890, 325), localization.get_text("advanced"),
+            self.difficulty_image, (890, 375), localization.get_text("advanced"),
             self.get_font(25), "White", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
         )
         
@@ -89,32 +89,20 @@ class SettingsMenu:
                 if self.beginner_button.checkForInput(pygame.mouse.get_pos()):
                     self.difficulty = "Beginner"
                     self.state_manager.set_difficulty(self.difficulty)
-                    self.select_sound.play()
-
+                    print(self.difficulty)
                     
                 if self.advanced_button.checkForInput(pygame.mouse.get_pos()):
                     self.difficulty = "Advanced"
-                    print(self.difficulty)
                     self.select_sound.play()
-
                     self.state_manager.set_difficulty(self.difficulty)
-                    
-                if self.volumen_button.checkForInput(pygame.mouse.get_pos()):
-                    self.sound_on = not self.sound_on  # Alternar estado
-                    if self.sound_on:
-                        pygame.mixer.music.set_volume(1.0)  # Activar sonido
-                        self.select_sound.set_volume(1.0)
-                        print("volumen = 1")
-                    else:
-                        pygame.mixer.music.set_volume(0.0)  # Silenciar
-                        self.select_sound.set_volume(0.0)
-                        print("volumen = 0")
-                    
+                    print(self.difficulty)
                     
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
+                    self.select_sound.play()
                     self.state_manager.set_state("main_menu")
                     self.select_sound.play()
                 elif self.english_button.checkForInput(pygame.mouse.get_pos()):
+                    self.select_sound.play()
                     localization.set_language("en")
                     self.update_texts()  # Actualizar los textos al cambiar de idioma
                     self.select_sound.play()
@@ -122,7 +110,11 @@ class SettingsMenu:
                 elif self.spanish_button.checkForInput(pygame.mouse.get_pos()):
                     localization.set_language("es")
                     self.update_texts()  # Actualizar los textos al cambiar de idioma
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
                     self.select_sound.play()
+                    self.state_manager.set_state("main_menu")
+                    
                   
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))

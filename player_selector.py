@@ -99,6 +99,7 @@ class PlayerSelector:
                     self.state_manager.set_state("main_menu")
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    self.select_sound.play()
                     self.state_manager.set_state("main_menu")
                 elif event.key == pygame.K_RETURN:
                     self.state_manager.set_selected_character(self.current_pj_index)

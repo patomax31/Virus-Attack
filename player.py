@@ -6,7 +6,7 @@ from bubble import Bubble
 
 # Clase Player para manejar al jugadorr
 class Player:
-    def __init__(self, x, y, character_index):
+    def __init__(self, x, y, character_index, difficulty):
         super().__init__()
         # Inicializa las propiedades del jugador
         self.x = x # Posicion actual del jugador en el eje x
@@ -20,7 +20,8 @@ class Player:
         self.direction = "DOWN"
         self.shoot_cooldown = 800 # Cooldonn wn milisegundoss
         self.last_shot_time = pygame.time.get_ticks() # Registra el ultimo tiempo de disparo
-        self.health = 3 # Vida del jugador
+        self.difficulty = difficulty
+        self.health = 10 if difficulty == "Beginner" else 3
         self.last_position = (self.x // TILE_SIZE, self.y // TILE_SIZE) # Posicion anterior del jugador
         self.is_dead = False
         
@@ -71,15 +72,20 @@ class Player:
         self.sprite_right = pygame.transform.scale(self.sprite_right, (int(self.sprite_right.get_width() * 0.5), int(self.sprite_right.get_height() * 0.5)))
 
     def load_health_sprites(self):
-        self.health_images = [
-            pygame.image.load("assets/sprites/health_3.png").convert_alpha(),
-            pygame.image.load("assets/sprites/health_2.png").convert_alpha(),
-            pygame.image.load("assets/sprites/health_1.png").convert_alpha()
-        ]
+        if self.difficulty == "Beginner":
+            self.health_images = [
+                pygame.image.load(f"assets/sprites/BARRADEVIDA{i}.png").convert_alpha()
+                for i in range(10, 0, -1)
+            ]
+        elif self.difficulty == "Advanced":
+            self.health_images = [
+                pygame.image.load(f"assets/sprites/health_{i}.png").convert_alpha()
+                for i in range(3, 0, -1)
+            ]
 
-    def change_health(self, amount): # Metodo para cambiar la vida del jugador
+    def change_health(self, amount):
         self.health += amount
-        self.health = max(0, min(self.health, 3))
+        self.health = max(0, min(self.health, 10))
         self.update_health_sprite()
         if self.health < 1:
             self.is_dead = True
