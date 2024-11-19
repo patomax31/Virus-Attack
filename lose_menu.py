@@ -1,6 +1,7 @@
 import pygame
 import sys
 from button import Button
+from Localization_manager import localization
 
 class LoseMenu:
     def __init__(self, state_manager):
@@ -11,6 +12,7 @@ class LoseMenu:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
 
         # Carga de recursos
+        self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
         self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
@@ -32,7 +34,7 @@ class LoseMenu:
         self.animation_timer = 0
         self.animation_speed = 200  # Velocidad de la animación en milisegundos
         # Carga de texto
-        self.name = font_game.render("Perdiste", True, (59, 170, 143))
+        self.name = font_game.render("loae_text", True, (59, 170, 143))
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
         self.boton = pygame.transform.scale(self.boton, (110, 110))
@@ -54,6 +56,9 @@ class LoseMenu:
     def get_font(self, size):
         return pygame.font.Font("assets/fonts/GAME.TTF", size)
     
+    def update_text(self):
+        self.name = self.get_font(50).render(localization.get_text("lose_text"), True, (59, 170, 143))
+    
     def update_animation(self, dt):
         self.animation_timer += dt
         if self.animation_timer >= self.animation_speed:
@@ -67,9 +72,11 @@ class LoseMenu:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-                            
+
+        self.update_text()         
+
     def draw(self, screen):
-        
+        self.screen.blit(self.background, (0, 0))
         loser_image = self.lose_frames[self.current_frame]
         loser_rect = loser_image.get_rect(center=(660, 390))
         self.screen.blit(loser_image, loser_rect)

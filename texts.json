@@ -27,8 +27,8 @@
     "final_message": "Este juego fue hecho con dedicacion para llevar diversion",
     "final_message2": "y aprendizaje a los jugadores. Gracias por jugar Virus Attack.",
     "licenses_and_rights": "Licencias y derechos",
-    "license": "MIT License"
-    
+    "license": "MIT License",
+    "lose_text": "El exito toma mas de un intento"
   },
   "en": {
     "settings": "Settings",
@@ -58,7 +58,8 @@
     "final_message": "This game was made with dedication to bring fun",
     "final_message2": "and learning to players. Thank you for playing Virus Attack.",
     "licenses_and_rights": "Licenses and Rights",
-    "license": "MIT License"
+    "license": "MIT License",
+    "lose_text": "Success takes more than one try"
     
   }
 }
