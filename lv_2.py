@@ -1,7 +1,7 @@
 import pygame
 import sys
 from player import Player
-from enemy import Enemy
+from enemy_yellow import Enemy
 from button import Button
 from contador import tiempo
 import random
@@ -38,6 +38,8 @@ class Level2:
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
         self.enemy_hurt_sound = pygame.mixer.Sound("assets/sounds/enemy_hurt.mp3")
         self.win_sound = pygame.mixer.Sound("assets/sounds/victoria.mp3")
+        self.music = pygame.mixer.music.load("assets/sounds/musiclevel1y2.mp3")
+        pygame.mixer.music.play(-1)
 
         
         # Ajustar puntos por enemigo según la dificultad
@@ -218,14 +220,17 @@ class Level2:
         if self.time_left == 0 or self.player.is_dead:
             self.state_manager.set_state("lose_menu")
             self.lose_sound.play()
+            pygame.mixer.music.pause()
 
         if len(self.all_enemies) == 0:
             self.state_manager.set_state("win_menu")
             self.win_sound.play()
             set_current_level(2)
+            pygame.mixer.music.pause()
 
         if self.paused:
             self.draw_overlay()
+            pygame.mixer.music.pause()
             pygame.display.flip()
             while self.paused:
                 for event in pygame.event.get():
@@ -237,26 +242,27 @@ class Level2:
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
                             self.select_sound.play()
-
+                            pygame.mixer.music.unpause()
+                            
                         elif self.resume_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
                             self.select_sound.play()
+                            pygame.mixer.music.unpause()
                         
                         elif self.go_out_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.reset_game_state()
                             self.state_manager.set_state("levels")    
                             self.select_sound.play()
+                            pygame.mixer.music.unpause()
                             
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
-                        elif event.key == pygame.K_p:
-                            self.paused = False
-                            self.reset_game_state()
-                            self.state_manager.set_state("levels")
+                            pygame.mixer.music.unpause()
+
                 self.clock.tick(60)
 
         pygame.display.flip()
