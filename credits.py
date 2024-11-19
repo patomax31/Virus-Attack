@@ -15,6 +15,8 @@ class CreditsScreen:
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONCONTINUAR.png")
+        self.music = pygame.mixer.music.load("assets/sounds/creditos.mp3")
+        pygame.mixer.music.play(-1)
         # Escalar los recursos y efecto espejo
         self.back_image = pygame.transform.flip(self.back_image, True, False)
         

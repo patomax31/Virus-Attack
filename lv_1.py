@@ -20,7 +20,12 @@ class Level1:
             self.character_index = 0
         else:
             print(f"Selected character index: {self.character_index}")
-        self.player = Player(400, 400, self.character_index)
+        
+         # Obtener la dificultad del state_manager
+        self.difficulty = self.state_manager.get_difficulty()
+        print(f"Level1 initialized with difficulty: {self.difficulty}")  # Añade esta línea para depurar
+        
+        self.player = Player(400, 400, self.character_index, self.difficulty)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -29,11 +34,14 @@ class Level1:
         self.all_bubbles = pygame.sprite.Group()
         self.all_enemies = pygame.sprite.Group()
         self.score = 0
+        # Carga de sonidos
         self.lose_sound = pygame.mixer.Sound("assets/sounds/perder.mp3")
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
         self.enemy_hurt_sound = pygame.mixer.Sound("assets/sounds/enemy_hurt.mp3")
         self.win_sound = pygame.mixer.Sound("assets/sounds/victoria.mp3")
-
+        self.enemy_sound = pygame.mixer.Sound("assets/sounds/hit_hurt-3.mp3")
+        self.music = pygame.mixer.music.load("assets/sounds/musiclevel1y2.mp3")
+        pygame.mixer.music.play(-1)
          # Obtener la dificultad del state_manager
         self.difficulty = self.state_manager.get_difficulty()
         print(f"Level1 initialized with difficulty: {self.difficulty}")  # Añade esta línea para depurar
@@ -88,25 +96,28 @@ class Level1:
                     obstacle_rect = pygame.Rect(col_idx * self.TILE_SIZE, row_idx * self.TILE_SIZE, self.TILE_SIZE, self.TILE_SIZE) # Crea el rectangulo para el obstaculo
                     self.obstacles.append(obstacle_rect) # Con esto añadimos el rectangulo a la lista
 
-
-        # Carga de sonidos
-        self.enemy_sound = pygame.mixer.Sound("assets/sounds/hit_hurt-3.mp3")
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/level1.png")
         self.pause_image = pygame.image.load("assets/sprites/pauseButton.png")
         self.font = pygame.font.Font("font.ttf", 35)
-        self.font2 = pygame.font.Font("font.ttf", 10)
+        self.font2 = pygame.font.Font("assets/fonts/SCREEN.TTF", 25)
         self.fondo1_1= pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
         self.botonR_1 = pygame.image.load("assets/sprites/boton_crditos1.png")
         self.botonS_1 = pygame.image.load("assets/sprites/boton_crditos1.png")
+        self.reloj = pygame.image.load("assets/sprites/reloj.png")
+        self.viruscount = pygame.image.load("assets/sprites/virus-count.png")
+        self.score_image = pygame.image.load("assets/sprites/score.png")
 
         # Escalar los recursos
         self.fondo1_1 = pygame.transform.scale(self.fondo1_1, (1280, 720 ))
         self.botonR_1 = pygame.transform.scale(self.botonR_1, (370, 250)) 
-        self.botonS_1 = pygame.transform.scale(self.botonS_1, (370, 250)) 
+        self.botonS_1 = pygame.transform.scale(self.botonS_1, (370, 250))
+        self.viruscount = pygame.transform.scale(self.viruscount, (154, 54)) 
+        self.reloj = pygame.transform.scale(self.reloj, (154, 54))
+        self.score_image = pygame.transform.scale(self.score_image, (154, 54))
 
         # Crear botones
-        self.pause_button = Button(self.pause_image, (self.screen.get_width()//2, 50), "", self.get_font(25), "black", "Green")
+        self.pause_button = Button(self.pause_image, (640, 40), "", self.get_font(25), "black", "Green")
         self.resume_button = Button(self.botonR_1,(642, 250), "", self.get_font(15), "Black", "Green")
         self.go_out_button = Button(self.botonS_1,(642, 370), "", self.get_font(15), "Black", "Green")
 
@@ -150,7 +161,7 @@ class Level1:
         self.go_out_texto = self.get_font(30).render(localization.get_text("go out"), True,"white")
 
     def update(self):
-        self.check_collision()
+        self.check_collision()        
         if not self.paused:
             elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000
             self.time_left = max(0, 100 - elapsed_time)
@@ -209,13 +220,17 @@ class Level1:
         if self.time_left == 0 or self.player.is_dead:
             self.state_manager.set_state("lose_menu")
             self.lose_sound.play()
+            pygame.mixer.music.pause()
 
         if len(self.all_enemies) == 0:
             self.state_manager.set_state("win_menu")
             self.win_sound.play()
+            pygame.mixer.music.pause()
+
             set_current_level(2)
 
         if self.paused:
+            pygame.mixer.music.pause() #Pausa la musica
             self.draw_overlay()
             pygame.display.flip()
             while self.paused:
@@ -228,26 +243,27 @@ class Level1:
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
                             self.select_sound.play()
+                            pygame.mixer.music.unpause()
 
                         elif self.resume_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
                             self.select_sound.play()
-                        
+                            pygame.mixer.music.unpause()
+                            
                         elif self.go_out_button.checkForInput(pygame.mouse.get_pos()):
                             self.paused = False
                             self.reset_game_state()
                             self.state_manager.set_state("levels")    
                             self.select_sound.play()
+                            pygame.mixer.music.unpause()
                             
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_ESCAPE:
                             self.paused = False
                             self.start_time += pygame.time.get_ticks() - self.pause_start_time
-                        elif event.key == pygame.K_p:
-                            self.paused = False
-                            self.reset_game_state()
-                            self.state_manager.set_state("levels")
+                            pygame.mixer.music.unpause()
+
                 self.clock.tick(60)
 
         pygame.display.flip()
@@ -277,7 +293,7 @@ class Level1:
             print("No se encontró una posición válida para alejar al enemigo.")
         
     def reset_game_state(self):
-        self.player = Player(400, 400, self.character_index)
+        self.player = Player(400, 400, self.character_index, self.difficulty)
         self.paused = False
         self.keys_pressed = None
         self.timer = tiempo()
@@ -305,13 +321,19 @@ class Level1:
         self.player.draw(screen)
         self.all_enemies.draw(screen)
         self.all_bubbles.draw(screen)
-        tiempo.draw_timer(screen, self.time_left)
+
         self.pause_button.update(screen)
         
-        self.enemy_count_text = self.font2.render(f"Enemigos: {self.enemy_count}", True, "white")
-        self.screen.blit(self.enemy_count_text, (1140, 50))
+        self.screen.blit(self.reloj, (1120, 10))
+        self.screen.blit(self.viruscount, (1120, 64))
+        self.screen.blit(self.score_image, (1120, 118))
         
-        self.score_text = self.font2.render(f"Puntaje: {self.score}", True, "white")
-        self.screen.blit(self.score_text, (1140, 80))
+        tiempo.draw_timer(screen, self.time_left)
+        
+        self.enemy_count_text = self.font2.render(f"{self.enemy_count}", True, "black")
+        self.screen.blit(self.enemy_count_text, (1210, 80))
+        
+        self.score_text = self.font2.render(f"{self.score}", True, "black")
+        self.screen.blit(self.score_text, (1210, 135))
         
         #tiren paro

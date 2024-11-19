@@ -1,6 +1,7 @@
 import pygame
 import sys
 from button import Button
+from settings_menu import Button
 from Localization_manager import localization
 class MainMenu:
     
@@ -16,8 +17,13 @@ class MainMenu:
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
         self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
-        self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
+        self.tutorial_image = pygame.image.load("assets/sprites/play.png")
 
+        #Musica y sonidos
+        self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
+        self.main_music = pygame.mixer.music.load("assets/sounds/MENUMUSICA.mp3")
+        pygame.mixer_music.play(-1)
+     
         # Carga de imágenes de la animación del título
         self.title_frames = [
             pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO1.png"), (900, 500)),
@@ -37,15 +43,14 @@ class MainMenu:
         self.quit_image = pygame.transform.scale(self.quit_image, (200, 200))
         self.options_image = pygame.transform.scale(self.options_image, (200, 200))
         self.credits_image = pygame.transform.scale(self.credits_image, (200, 150))
+        self.tutorial_image = pygame.transform.scale(self.tutorial_image, (250, 150))
                 
         # Creacion de los btones
         self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
         self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
-        self.credits_button = Button(
-            self.credits_image, (1180, 680), localization.get_text("credits"),
-            self.get_font(20), "Black", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
-        )
+        self.credits_button = Button(self.credits_image, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
+        
         # Inicializacion de la futura msica
         
     def get_font(self, size):
@@ -60,24 +65,33 @@ class MainMenu:
     def update(self):
         dt = self.clock.tick(60)
         self.update_animation(dt)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN: # Si se presiona el mouse
                 if self.play_button.checkForInput(pygame.mouse.get_pos()):
-                    self.select_sound.play()        
                     self.state_manager.set_state("player_selector") # Cambia el estado a levels
+                    self.select_sound.play()      
+                      
+                if self.tutorial_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("Tutorial") # Cambia el estado al tutorial
+                    self.select_sound.play()   
+                    
                 if self.quit_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.quit()
                     sys.exit()
+                    
                 if self.options_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("settings")
                     self.select_sound.play()
-                if self.credits_button.checkForInput(pygame.mouse.get_pos()):
-                    self.state_manager.set_state("credits")   
-                    self.select_sound.play()
                     
+                if self.credits_button.checkForInput(pygame.mouse.get_pos()):
+                    pygame.mixer.music.pause()                       
+                    self.state_manager.set_state("credits")
+                    self.select_sound.play()
+
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
         # Dibujar el frame actual de la animación del título
@@ -88,4 +102,5 @@ class MainMenu:
         self.options_button.update(screen)
         self.quit_button.update(screen)
         self.credits_button.update(screen)
+        #self.tutorial_button.update(screen)
         pygame.display.flip()
