@@ -1,7 +1,7 @@
 import pygame
 import sys
 from player import Player
-from enemy import Enemy
+from enemy_blue import Enemy
 from button import Button
 from contador import tiempo
 import random
@@ -55,7 +55,26 @@ class Level3:
             (900, 400),
             (960, 400),
             (1060, 400),
-            (1160, 400)
+            (1160, 400),
+            (1160, 400),
+            (1160, 400),
+            (1160, 400),
+            (1160, 400),
+            (1160, 400),
+            (1160, 400),
+            (1160, 600),
+            (1160, 600),
+            (1160, 600),
+            (1160, 600),
+            (1160, 600),
+            (1160, 600),
+            (1160, 600),
+            (1160, 600),
+            (1000, 660),
+            (1000, 660),
+            (1000, 660),
+            (1000, 660),
+            (1000, 660)
         ]
         self.create_enemies()
         self.enemy_count = len(self.all_enemies)

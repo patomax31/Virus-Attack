@@ -13,7 +13,7 @@ class ControlsScreen:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         
         # Carga de recursos
-        
+        self.background = pygame.image.load("Manual.jpg")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 27)
         self.back_image = pygame.image.load("assets/sprites/BOTONCONTINUAR.png")
         #Textos

@@ -17,7 +17,7 @@ class MainMenu:
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
         self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
-        self.tutorial_image = pygame.image.load("assets/sprites/play.png")
+        self.tutorial_image = pygame.image.load("assets/sprites/boton_crditos1.png")
         self.controls_image = pygame.image.load("assets/sprites/boton_crditos1.png")
 
         #Musica y sonidos
@@ -27,13 +27,13 @@ class MainMenu:
      
         # Carga de imágenes de la animación del título
         self.title_frames = [
-            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO1.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO2.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO3.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO4.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO5.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO6.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\\sprites\\TITULOREDISEÑO7.png"), (900, 500))            
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO1.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO2.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO3.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO4.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO5.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO6.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO7.png"), (900, 500))            
         ]
         self.current_frame = 0
         self.animation_timer = 0
@@ -44,6 +44,8 @@ class MainMenu:
         self.quit_image = pygame.transform.scale(self.quit_image, (200, 200))
         self.options_image = pygame.transform.scale(self.options_image, (200, 200))
         self.credits_image = pygame.transform.scale(self.credits_image, (200, 150))
+        self.tutorial_image = pygame.transform.scale(self.tutorial_image, (200, 150))
+                
         self.tutorial_image = pygame.transform.scale(self.tutorial_image, (250, 150))
         self.controls_image = pygame.transform.scale(self.controls_image, (200, 150))
 
@@ -51,6 +53,9 @@ class MainMenu:
         self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
         self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
+        self.credits_button = Button(self.credits_image, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
+        self.tutorial_button = Button(self.tutorial_image, (100, 680), "Tutorial", self.get_font(20), "Black", "Green")
+        
         self.credits_button = Button(
             self.credits_image, (1180, 680), localization.get_text("credits"),
             self.get_font(20), "Black", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
@@ -118,6 +123,7 @@ class MainMenu:
         self.options_button.update(screen)
         self.quit_button.update(screen)
         self.credits_button.update(screen)
+        self.tutorial_button.update(screen)
         self.controls_button.update(screen)
         #self.tutorial_button.update(screen)
         pygame.display.flip()
