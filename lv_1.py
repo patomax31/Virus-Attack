@@ -118,17 +118,23 @@ class Level1:
 
         # Crear botones
         self.pause_button = Button(self.pause_image, (640, 40), "", self.get_font(25), "black", "Green")
-        self.resume_button = Button(self.botonR_1,(642, 250), "", self.get_font(15), "Black", "Green")
-        self.go_out_button = Button(self.botonS_1,(642, 370), "", self.get_font(15), "Black", "Green")
+        self.resume_button = Button(
+            self.botonR_1, (642, 250), localization.get_text("resume"),
+            self.get_font(25), "White", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
+        )
+        
+        self.go_out_button = Button(
+            self.botonS_1, (642, 400), localization.get_text("go out"),
+            self.get_font(25), "White", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
+        )
 
         # Texto
         self.texto1 = self.font.render("pause", True, "black")
         self.texto1_rect = self.texto1.get_rect(center = (642, 130))
-        self.resume_texto =  self.font.render("resume", True, "white")
-        self.resume_texto_rect = self.resume_texto.get_rect(center = (648,250))  
-        self.go_out_texto =  self.font.render("go out", True, "white")
-        self.go_out_texto_rect = self.go_out_texto.get_rect(center = (690, 370)) 
-
+        
+        self.resume_button_rect = self.botonR_1.get_rect(topleft=(642,250))  # Ajusta la posición
+        self.go_out_button_rect = self.botonS_1.get_rect(topleft=(642,370))  # Ajusta la posición
+        
 
     def create_enemies(self):
         self.all_enemies.empty()  # Vacía el grupo de enemigos
@@ -150,15 +156,12 @@ class Level1:
         self.resume_button.update(self.screen)
         self.go_out_button.update(self.screen)
         self.screen.blit(self.texto1, self.texto1_rect)
-        self.screen.blit(self.resume_texto, self.resume_texto_rect)
-        self.screen.blit(self.go_out_texto, self.go_out_texto_rect)
         self.pause_button.update(self.screen)
         pygame.display.flip()
     
     def update_text(self):
         self.texto1 = self.get_font(40).render(localization.get_text("pause"), True,"black")
-        self.resume_texto = self.get_font(30).render(localization.get_text("resume"), True,"white")
-        self.go_out_texto = self.get_font(30).render(localization.get_text("go out"), True,"white")
+       
 
     def update(self):
         self.check_collision()        
