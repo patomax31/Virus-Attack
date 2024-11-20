@@ -60,7 +60,7 @@ class LevelSelector:
             self.level3_button.disabled = True
         
     def get_font(self, size):
-        return pygame.font.Font("font.ttf", size)
+        return pygame.font.Font("assets/fonts/GAME.TTF", size)
     
     def update_texts(self):
         # Actualizar el texto del título según el idioma

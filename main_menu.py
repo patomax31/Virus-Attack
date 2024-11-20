@@ -2,6 +2,7 @@ import pygame
 import sys
 from button import Button
 from settings_menu import Button
+from Localization_manager import localization
 class MainMenu:
     
     def __init__(self, state_manager):
@@ -49,8 +50,7 @@ class MainMenu:
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
         self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
         self.credits_button = Button(self.credits_image, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
-        self.tutorial_button = Button(self.tutorial_image, (640, 400), "", self.get_font(25), "Black", "Green")
-
+        
         # Inicializacion de la futura msica
         
     def get_font(self, size):

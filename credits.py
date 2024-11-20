@@ -40,7 +40,7 @@ class CreditsScreen:
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/Play.png"), (100, 100)), "pos": (200, 2400)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/Quit.png"), (100, 100)), "pos": (300, 2400)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/win.png"), (100, 100)), "pos": (1150, 2400)},
-            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE3.png"), (500, 500)), "pos": (400, 400)},
+            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE3.png"), (500, 450)), "pos": (400, 400)},
 
         ]
 
