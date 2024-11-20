@@ -27,14 +27,12 @@ class soap(pygame.sprite.Sprite):
         self.sprite_soap= pygame.image.load("assets/sprites/soap.png").convert_alpha()
         self.sprite_soap = pygame.transform.scale(self.sprite_soap, (int(self.sprite_soap.get_width() * 0.1), int(self.sprite_soap.get_height() * 0.1)))
 
-    def check_object_collision(self, obstacles, Player_rect):
-        # COmprueba si la nueva colision que se registre choca con algun obstaculo
-        soap_rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        for obstacle in obstacles:
-            if soap_rect.colliderect(Player_rect):  
-                soap.kill(self)
-                print("hola")
-                return True            
+    def check_object_collision(self, player):
+        # Verificar colisión entre el jabón y el jugador
+        if self.rect.colliderect(player.rect):
+            self.kill()  # Elimina el jabón del juego
+            print("El jugador ha recogido el jabón")
+            return True
         return False
     
     def update(self):

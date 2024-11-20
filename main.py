@@ -3,7 +3,7 @@ from state_manager import StateManager
 from main_menu import MainMenu
 from lv_selector import LevelSelector
 from lv_1 import Level1
-from tutorial import Tutorial
+from new_tutorial import Tutorial
 from settings_menu import SettingsMenu
 from player_selector import PlayerSelector
 from lose_menu import LoseMenu
