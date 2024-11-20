@@ -152,7 +152,7 @@ class Level1:
         self.screen.blit(self.texto1, self.texto1_rect)
         self.screen.blit(self.resume_texto, self.resume_texto_rect)
         self.screen.blit(self.go_out_texto, self.go_out_texto_rect)
-        self.pause_button.update(self.screen)
+        self.pause_button.update
         pygame.display.flip()
     
     def update_text(self):
