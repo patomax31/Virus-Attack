@@ -57,7 +57,7 @@ class MainMenu:
         )
 
         self.controls_button = Button(
-            self.controls_image, (1180, 280), localization.get_text("controls"),
+            self.controls_image, (1180, 50), localization.get_text("controls"),
             self.get_font(20), "Black", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
         )
 
