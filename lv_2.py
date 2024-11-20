@@ -50,14 +50,14 @@ class Level2:
 
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
-            (900, 400),
-            (960, 560),
-            (1060, 450),
-            (1060, 500),
-            (800, 500),
-            (860, 400),
-            (960, 460),
-            (1060, 500)
+            (900, 450),
+            (960, 580),
+            (660, 480),
+            (250, 500),
+            (350, 450),
+            (360, 550),
+            (460, 360),
+            (1020, 500)
         ]
         self.create_enemies()
         self.enemy_count = len(self.all_enemies)
@@ -156,7 +156,7 @@ class Level2:
         self.screen.blit(self.texto1, self.texto1_rect)
         self.screen.blit(self.resume_texto, self.resume_texto_rect)
         self.screen.blit(self.go_out_texto, self.go_out_texto_rect)
-        self.pause_button.update(self.screen)
+        self.pause_button.update
         pygame.display.flip()
     
     def update_text(self):
