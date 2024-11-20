@@ -90,9 +90,9 @@ class MainMenu:
                     self.state_manager.set_state("player_selector") # Cambia el estado a levels
                     self.select_sound.play()      
                       
-                #if self.tutorial_button.checkForInput(pygame.mouse.get_pos()):
-                    #self.state_manager.set_state("Tutorial") # Cambia el estado al tutorial
-                   # self.select_sound.play()   
+                if self.tutorial_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("Tutorial") # Cambia el estado al tutorial
+                    self.select_sound.play()   
                     
                 if self.quit_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.quit()
