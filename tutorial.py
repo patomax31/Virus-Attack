@@ -17,7 +17,7 @@ class Tutorial:
         self.state_manager = state_manager
         character_index = self.state_manager.get_selected_character()
         print(f"Selected character index: {character_index}")
-        self.player = Player(400, 400, character_index)
+        self.player = Player(400, 400, character_index, self.state_manager.get_difficulty())        
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         self.TILE_SIZE = 32
@@ -211,6 +211,7 @@ class Tutorial:
             self.player.update()
             self.check_collision()
             self.check_player_enemy_collision()
+            self.soap.check_object_collision(self.player)
         if self.soap.check_object_collision(self.obstacles, self.player)==False:
             self.soap.kill()
         for enemy in self.all_enemies:
@@ -305,6 +306,13 @@ class Tutorial:
                     self.score += self.points_per_enemy
                     self.all_enemies.remove(enemy)
                     self.screen.blit(self.background, enemy.rect, enemy.rect)
+                    
+    def check_object_collision(self, player):
+        if self.rect.colliderect(player.rect):
+            self.kill()  # Elimina el jabón del juego
+            print("El jugador ha recogido el jabón")
+            return True
+        return False
             
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
@@ -320,9 +328,7 @@ class Tutorial:
         self.all_bubbles.draw(screen)
         self.soap.draw(screen)
 
-        if self.soap.check_object_collision(self.obstacles, self.player)==False:
-                soap.kill(self)
-                print("hola")    
+
                # self.soap.draw(screen)
     #        self.screen.blit(self.instrucciones_1, self.instrucciones_1.get_rect(center=(650, 660)))      
       #      self.soap.kill()
