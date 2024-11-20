@@ -30,7 +30,16 @@
     "license": "MIT License",
     "lose_text": "El exito toma mas de un intento",
     "win_text": "Bien hecho",
-    "credits": "Creditos"
+    "credits": "Creditos",
+    "controls": "Controles",
+    "w_text": "Moverse hacia arriba",
+    "a_text": "Moverse hacia la izquierda",
+    "s_text": "Moverse hacia abajo",
+    "d_text": "Moverse hacia la derecha",
+    "spacebar_text": "Arrojar burbujas",
+    "how_to_play": "Como jugar?",
+    "how_to_win": "Como ganar?",
+    "how_to_lose": "Como perder?"
   },
   "en": {
     "settings": "Settings",
@@ -63,7 +72,16 @@
     "license": "MIT License",
     "lose_text": "Success takes more than one try",
     "win_text": "Well done",
-    "credits": "Credits"
+    "credits": "Credits",
+    "controls": "Controls",
+    "w_text": "Move up",
+    "a_text": "Move to the left",
+    "s_text": "Move to the down",
+    "d_text": "Move to the right",
+    "spacebar_text": "Throw bubbles",
+    "how_to_play": "How to play?",
+    "how_to_win": "How to win?",
+    "how_to_lose": "How to lose?"
     
   }
 }
