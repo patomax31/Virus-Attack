@@ -17,7 +17,7 @@ class MainMenu:
         self.quit_image = pygame.image.load("assets/sprites/quit.png")
         self.options_image = pygame.image.load("assets/sprites/options.png")
         self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
-        self.tutorial_image = pygame.image.load("assets/sprites/play.png")
+        self.tutorial_image = pygame.image.load("assets/sprites/boton_crditos1.png")
 
         #Musica y sonidos
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
@@ -43,13 +43,14 @@ class MainMenu:
         self.quit_image = pygame.transform.scale(self.quit_image, (200, 200))
         self.options_image = pygame.transform.scale(self.options_image, (200, 200))
         self.credits_image = pygame.transform.scale(self.credits_image, (200, 150))
-        self.tutorial_image = pygame.transform.scale(self.tutorial_image, (250, 150))
+        self.tutorial_image = pygame.transform.scale(self.tutorial_image, (200, 150))
                 
         # Creacion de los btones
         self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
         self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
         self.credits_button = Button(self.credits_image, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
+        self.tutorial_button = Button(self.tutorial_image, (100, 680), "Tutorial", self.get_font(20), "Black", "Green")
         
         # Inicializacion de la futura msica
         
@@ -75,9 +76,9 @@ class MainMenu:
                     self.state_manager.set_state("player_selector") # Cambia el estado a levels
                     self.select_sound.play()      
                       
-                #if self.tutorial_button.checkForInput(pygame.mouse.get_pos()):
-                    #self.state_manager.set_state("Tutorial") # Cambia el estado al tutorial
-                    #self.select_sound.play()   
+                if self.tutorial_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("Tutorial") # Cambia el estado al tutorial
+                    self.select_sound.play()   
                     
                 if self.quit_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.quit()
@@ -102,5 +103,5 @@ class MainMenu:
         self.options_button.update(screen)
         self.quit_button.update(screen)
         self.credits_button.update(screen)
-        #self.tutorial_button.update(screen)
+        self.tutorial_button.update(screen)
         pygame.display.flip()
