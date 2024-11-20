@@ -1,7 +1,7 @@
 import pygame
 import sys
 from player import Player
-from enemy_yellow import Enemy
+from enemy_purple import Enemy
 from button import Button
 from contador import tiempo
 import random
@@ -51,9 +51,13 @@ class Level2:
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
             (900, 400),
-            (960, 400),
-            (1060, 400),
-            (1160, 400)
+            (960, 560),
+            (1060, 450),
+            (1060, 500),
+            (800, 500),
+            (860, 400),
+            (960, 460),
+            (1060, 500)
         ]
         self.create_enemies()
         self.enemy_count = len(self.all_enemies)

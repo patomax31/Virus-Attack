@@ -25,13 +25,13 @@ class MainMenu:
      
         # Carga de imágenes de la animación del título
         self.title_frames = [
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO1.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO2.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO3.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO4.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO5.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO6.png"), (900, 500)),
-            pygame.transform.scale(pygame.image.load("assets\sprites\TITULOREDISEÑO7.png"), (900, 500))            
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO1.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO2.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO3.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO4.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO5.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO6.png"), (900, 500)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/TITULOREDISEÑO7.png"), (900, 500))            
         ]
         self.current_frame = 0
         self.animation_timer = 0
