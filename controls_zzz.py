@@ -50,9 +50,9 @@ class ControlsScreen:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            #if event.type == pygame.MOUSEBUTTONDOWN:
-                #if self.back_button.checkForInput(pygame.mouse.get_pos()):
-                    #self.state_manager.set_state("main_menu")
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.back_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("main_menu")
   
     def show_controls_screen(self, duration=3000):
         start_time = pygame.time.get_ticks()
@@ -69,7 +69,7 @@ class ControlsScreen:
         self.screen.blit(self.background, (0, 0))
 
         # Dibujar botón de regreso
-        #self.back_button.update(screen)
+        self.back_button.update(screen)
         
         self.screen.blit(self.howtoplay_text, self.howtoplay_text.get_rect(center=(660, 30)))
         

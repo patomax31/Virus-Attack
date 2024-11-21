@@ -8,13 +8,21 @@ import random
 from progress import set_current_level
 from Localization_manager import localization
 from objects import soap
+from controls import ControlsScreen
+
 class Tutorial:
     def __init__(self, state_manager):
         # Datos de pantalla
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
-        self.TILE_SIZE = 32
+
         self.state_manager = state_manager
+        
+        # Mostrar pantalla de controles antes de iniciar el nivel
+        controls_screen = ControlsScreen(self.state_manager)
+        controls_screen.show_controls_screen()         
+        
+        self.TILE_SIZE = 32
         self.character_index = self.state_manager.get_selected_character()
         if self.character_index is None:
             print("Error: No character selected")
@@ -295,7 +303,7 @@ class Tutorial:
             pygame.mixer.music.pause()
 
         if len(self.all_enemies) == 0:
-            self.state_manager.set_state("win_menu")
+            self.state_manager.set_state("win_menu_tutorial")
             self.win_sound.play()
             pygame.mixer.music.pause()
 

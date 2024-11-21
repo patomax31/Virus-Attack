@@ -18,8 +18,13 @@ class StateManager:
         state_class = self.states.get(state_name)
         if state_class:
             self.current_state = state_class(self)
+            if state_name.startswith("level") and state_name.replace("level", "").isdigit():
+                self.current_level = int(state_name.replace("level", ""))
         else:
             print(f"State '{state_name}' not found.")
+            
+    def get_current_level(self):
+        return self.current_level
 
     def get_selected_level(self):
         return self.selected_level
