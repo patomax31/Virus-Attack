@@ -12,6 +12,7 @@ from lv_2 import Level2
 from lv_3 import Level3
 from credits import CreditsScreen
 from controls import ControlsScreen
+from tutorial_win import WinMenu_Tutorial
 
 def main():
     pygame.init()
@@ -28,6 +29,7 @@ def main():
     state_manager.add_state("credits", CreditsScreen)
     state_manager.add_state("Tutorial", Tutorial) #Agrege el tutorial al state manager
     state_manager.add_state("controls", ControlsScreen)
+    state_manager.add_state("win_menu_tutorial", WinMenu_Tutorial) #Agregue el win_menu_tutorial al state manager
     # Cargar niveles según la dificultad
     difficulty = state_manager.get_difficulty()
     if difficulty == "Beginner":

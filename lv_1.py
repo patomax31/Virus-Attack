@@ -164,6 +164,7 @@ class Level1:
        
 
     def update(self):
+        
         self.check_collision()        
         if not self.paused:
             elapsed_time = (pygame.time.get_ticks() - self.start_time) // 1000

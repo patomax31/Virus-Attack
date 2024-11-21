@@ -295,7 +295,7 @@ class Tutorial:
             pygame.mixer.music.pause()
 
         if len(self.all_enemies) == 0:
-            self.state_manager.set_state("win_menu")
+            self.state_manager.set_state("win_menu_tutorial")
             self.win_sound.play()
             pygame.mixer.music.pause()
 
