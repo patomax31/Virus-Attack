@@ -1,4 +1,4 @@
-import pygame
+import pygame 
 import sys
 from button import Button
 from settings_menu import Button
@@ -13,9 +13,9 @@ class MainMenu:
         
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/Fondo.jpeg")
-        self.play_image = pygame.image.load("assets/sprites/play.png")
-        self.quit_image = pygame.image.load("assets/sprites/quit.png")
-        self.options_image = pygame.image.load("assets/sprites/options.png")
+        self.play_image = pygame.image.load("assets/sprites/BOTON_VERDE.png")
+        self.quit_image = pygame.image.load("assets/sprites/BOTON_ROJO.png")
+        self.options_image = pygame.image.load("assets/sprites/BOTON_AJUSTES.png")
         self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
         self.tutorial_image = pygame.image.load("assets/sprites/boton_crditos1.png")
         self.controls_image = pygame.image.load("assets/sprites/boton_crditos1.png")
@@ -40,9 +40,9 @@ class MainMenu:
         self.animation_speed = 180  # Velocidad de la animación en milisegundos
         
         # Escalar los recursos
-        self.play_image = pygame.transform.scale(self.play_image, (250, 250))
-        self.quit_image = pygame.transform.scale(self.quit_image, (200, 200))
-        self.options_image = pygame.transform.scale(self.options_image, (200, 200))
+        self.play_image = pygame.transform.scale(self.play_image, (200, 200))
+        self.quit_image = pygame.transform.scale(self.quit_image, (170, 170))
+        self.options_image = pygame.transform.scale(self.options_image, (170, 170))
         self.credits_image = pygame.transform.scale(self.credits_image, (200, 150))
         self.tutorial_image = pygame.transform.scale(self.tutorial_image, (200, 150))
                 

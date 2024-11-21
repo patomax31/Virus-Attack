@@ -52,29 +52,29 @@ class Level3:
 
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
-            (900, 400),
-            (960, 400),
-            (1060, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
+            (900, 300),
+            (960, 430),
+            (360, 400),
+            (560, 350),
+            (460, 300),
+            (260, 600),
+            (590, 430),
+            (600, 440),
+            (800, 420),
+            (160, 400),
+            (190, 600),
+            (110, 600),
             (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1000, 660),
-            (1000, 660),
-            (1000, 660),
-            (1000, 660),
-            (1000, 660)
+            (1030, 600),
+            (190, 600),
+            (1026, 500),
+            (1068, 600),
+            (190, 420),
+            (350, 350),
+            (300, 450),
+            (236, 600),
+            (350, 405),
+            (490, 450)
         ]
         self.create_enemies()
         self.enemy_count = len(self.all_enemies)
@@ -174,7 +174,7 @@ class Level3:
         self.screen.blit(self.texto1, self.texto1_rect)
         self.screen.blit(self.resume_texto, self.resume_texto_rect)
         self.screen.blit(self.go_out_texto, self.go_out_texto_rect)
-        self.pause_button.update(self.screen)
+        self.pause_button.update
         pygame.display.flip()
     
     def update_text(self):

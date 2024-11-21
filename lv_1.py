@@ -155,8 +155,7 @@ class Level1:
         self.screen.blit(self.fondo1_1, (0, 0))
         self.resume_button.update(self.screen)
         self.go_out_button.update(self.screen)
-        self.screen.blit(self.texto1, self.texto1_rect)
-        self.pause_button.update(self.screen)
+     
         pygame.display.flip()
     
     def update_text(self):
