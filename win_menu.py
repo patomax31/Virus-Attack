@@ -43,11 +43,12 @@ class WinMenu:
         self.copa = pygame.transform.scale(self.copa, (100, 100))
         self.boton = pygame.transform.scale(self.boton, (110, 110))
         self.back_image = pygame.transform.scale(self.back_image, (110, 110))
-        self.reinicio = pygame.transform.scale(self.reinicio, (110, 110))
         # Efecto espejo
         self.back_image = pygame.transform.flip(self.back_image, True, False)
         # Crear btnes 
-        self.back_button = Button(self.back_image, (190, 620), "", self.get_font(25), "White", "Green") 
+        self.back_button = Button(self.back_image, (190, 620), "", self.get_font(25), "White", "Green")
+        self.button_reinicio = Button(self.reinicio, (260, 650), "", self.get_font(25), "White", "Green")
+        
         # Estado de selección del nivel
         
         # Crear boton de avanzar si no es el ultimo nivel
@@ -89,6 +90,9 @@ class WinMenu:
                             self.accept_button = None
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("levels")
+                if self.button_reinicio.checkForInput(pygame.mouse.get_pos()):
+                    current_level = self.state_manager.get_current_level()
+                    self.state_manager.set_state(f"level{current_level}")
         self.update_text()
                     
     def draw(self, screen):
@@ -105,6 +109,7 @@ class WinMenu:
         if self.accept_button:
             self.accept_button.update(self.screen)
         self.back_button.update(self.screen)
+        self.button_reinicio.update(self.screen)
         
         # Dibujar texto
         self.screen.blit(self.name, self.name.get_rect(center=(640, 50)))        

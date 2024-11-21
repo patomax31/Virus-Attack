@@ -54,6 +54,16 @@ class ControlsScreen:
                 if self.back_button.checkForInput(pygame.mouse.get_pos()):
                     self.state_manager.set_state("main_menu")
   
+    def show_controls_screen(self, duration=3000):
+        start_time = pygame.time.get_ticks()
+        while pygame.time.get_ticks() - start_time < duration:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            self.draw(self.screen)
+            pygame.display.flip()
+            self.clock.tick(60)        
         
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
