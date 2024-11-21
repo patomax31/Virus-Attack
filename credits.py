@@ -28,20 +28,23 @@ class CreditsScreen:
         
         # Variables de desplazamiento del texto
         self.scroll_y = 720  # Comienza fuera de la pantalla por abajo
-        self.scroll_speed = 5  # Velocidad de desplazamiento
+        self.scroll_speed = 9  # Velocidad de desplazamiento
 
      # Cargar sprites
         self.sprites = [
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/bubble1.png"), (100, 100)), "pos": (100, 400)},
-            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png"), (100, 100)), "pos": (1100, 600)},
+            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png"), (100, 100)), "pos": (600, 2550)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/health_1.png"), (200, 100)), "pos": (300, 1000)},
-            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/MEDICORUBIOFRENTE.png"), (100, 100)), "pos": (570, 1900)},
+            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/MEDICORUBIOFRENTE.png"), (100, 100)), "pos": (230, 2550)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/Options.png"), (100, 100)), "pos": (100, 2400)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/Play.png"), (100, 100)), "pos": (200, 2400)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/Quit.png"), (100, 100)), "pos": (300, 2400)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/win.png"), (100, 100)), "pos": (1150, 2400)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE3.png"), (500, 450)), "pos": (400, 400)},
-             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/alpha_logic.png"), (400, 400)), "pos": (430, 2550)},
+             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/alpha_logic.png"), (400, 400)), "pos": (430, 3550)},
+             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORAVISTAFRENTE.png"), (100, 100)), "pos": (430, 2550)},
+             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/medicdown.png"), (100, 100)), "pos": (730, 2550)},
+
         ]
 
 
