@@ -187,11 +187,11 @@ class Tutorial:
     
     def update_instruction_text(self):
         if self.tutorial_step == 0:
-            self.instruction_text = "Usa WASD para moverte hacia el jabon."
+            self.instruction_text = localization.get_text("instruction1")
         elif self.tutorial_step == 1:
-            self.instruction_text = "Bien hecho. Ahora, presiona ESPACIO para arrojar burbujas al enemigo."
+            self.instruction_text = localization.get_text("instruction2")
         elif self.tutorial_step == 2:
-            self.instruction_text = "¡Excelente! Has completado el tutorial."
+            self.instruction_text = localization.get_text("instrucion3")
 
     def create_enemies(self):
         self.all_enemies.empty()  # Vacía el grupo de enemigos

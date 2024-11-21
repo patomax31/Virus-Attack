@@ -39,7 +39,11 @@
     "spacebar_text": "Arrojar burbujas",
     "how_to_play": "Como jugar?",
     "how_to_win": "Como ganar?",
-    "how_to_lose": "Como perder?"
+    "how_to_lose": "Como perder?",
+    "instruction1": "Usa WASD para avanzar hacia el jabon.",
+    "instruction2": "Bien hecho. Ahora, presiona ESPACIO para lanzar burbujas al enemigo.",
+    "instruction3": "¡Excelente! Has completado el tutorial."
+
   },
   "en": {
     "settings": "Settings",
@@ -81,7 +85,10 @@
     "spacebar_text": "Throw bubbles",
     "how_to_play": "How to play?",
     "how_to_win": "How to win?",
-    "how_to_lose": "How to lose?"
+    "how_to_lose": "How to lose?",
+    "instruction1":"Use WASD to move towards the soap",
+    "instruction2": "Well done. Now, press SPACE to throw bubbles at the enemy",
+    "instruction3": "Excellent! You have completed the tutorial"
     
   }
 }
