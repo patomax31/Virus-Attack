@@ -109,7 +109,7 @@ class MainMenu:
 
                 if self.controls_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.mixer.music.pause()
-                    self.state_manager.set_state("controls")
+                    self.state_manager.set_state("controls_zzz")
                     self.select_sound.play()
 
 
