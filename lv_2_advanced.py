@@ -198,7 +198,7 @@ class Level2:
                         self.player.move('RIGHT', self.obstacles)
                     elif event.key == pygame.K_z:
                         self.player.change_health()
-                    elif event.key == pygame.K_j:
+                    elif event.key == pygame.K_SPACE:
                         self.player.shoot(self.all_bubbles, self.difficulty)
                     elif event.key == pygame.K_l:
                         print(f"character_index: {self.player.character_index}")

@@ -11,7 +11,8 @@ class Video:
         self.video = cv2.VideoCapture("assets/VID/VIDEOVIRUSATTACK.mp4")
         self.playing = True
         self.start_time = pygame.time.get_ticks()
-
+        self.music = pygame.mixer.music.load("assets/sounds/MUSICAVIRUSATTACK.mp3")
+        pygame.mixer.music.play(-1)
     def update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
