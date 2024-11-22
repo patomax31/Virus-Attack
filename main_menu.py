@@ -18,7 +18,7 @@ class MainMenu:
         self.options_image = pygame.image.load("assets/sprites/BOTON_AJUSTES.png")
         self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
         self.tutorial_image = pygame.image.load("assets/sprites/boton_crditos1.png")
-        self.controls_image = pygame.image.load("assets/sprites/boton_crditos1.png")
+        self.controls_image = pygame.image.load("assets/sprites/controles.png")
 
         #Musica y sonidos
         self.select_sound = pygame.mixer.Sound("assets/sounds/select.mp3")
@@ -47,22 +47,18 @@ class MainMenu:
         self.tutorial_image = pygame.transform.scale(self.tutorial_image, (200, 150))
                 
         self.tutorial_image = pygame.transform.scale(self.tutorial_image, (250, 150))
-        self.controls_image = pygame.transform.scale(self.controls_image, (200, 150))
+        self.controls_image = pygame.transform.scale(self.controls_image, (100, 100))
 
         # Creacion de los btones
         self.play_button = Button(self.play_image, (640, 615), "", self.get_font(25), "Black", "Green")
         self.options_button = Button(self.options_image, (440, 615), "", self.get_font(25), "Black", "Green")
         self.quit_button = Button(self.quit_image, (840, 615), "", self.get_font(25), "Black", "Green")
         self.credits_button = Button(self.credits_image, (1180, 680), "Credits", self.get_font(20), "Black", "Green")
-        self.tutorial_button = Button(self.tutorial_image, (100, 680), "Tutorial", self.get_font(20), "Black", "Green")
+        self.tutorial_button = Button(self.tutorial_image, (120, 680), "Tutorial", self.get_font(20), "Black", "Green")
+        self.controls_button = Button(self.controls_image, (1220, 40), "", self.get_font(20), "Black", "Green")
         
         self.credits_button = Button(
             self.credits_image, (1180, 680), localization.get_text("credits"),
-            self.get_font(20), "Black", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
-        )
-
-        self.controls_button = Button(
-            self.controls_image, (1180, 50), localization.get_text("controls"),
             self.get_font(20), "Black", "Green", text_offset=(0, 0)  # Texto desplazado hacia arriba
         )
 
