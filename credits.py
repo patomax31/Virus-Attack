@@ -28,19 +28,21 @@ class CreditsScreen:
         
         # Variables de desplazamiento del texto
         self.scroll_y = 720  # Comienza fuera de la pantalla por abajo
-        self.scroll_speed = 9  # Velocidad de desplazamiento
+        self.scroll_speed = 5  # Velocidad de desplazamiento
 
      # Cargar sprites
         self.sprites = [
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/bubble1.png"), (100, 100)), "pos": (100, 400)},
+            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/bubble1.png"), (100, 100)), "pos": (1000, 400)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png"), (100, 100)), "pos": (500, 2550)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/creditos1.png"), (500, 300)), "pos": (100, 1100)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/MEDICORUBIOFRENTE.png"), (100, 100)), "pos": (350, 2550)},
-            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/win.png"), (100, 100)), "pos": (1150, 2400)},
+            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/win.png"), (100, 100)), "pos": (600, 2700)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE3.png"), (500, 450)), "pos": (400, 400)},
              {"image": pygame.transform.scale(pygame.image.load("assets/sprites/alpha_logic.png"), (400, 400)), "pos": (430, 3550)},
              {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORAVISTAFRENTE.png"), (100, 100)), "pos": (650, 2550)},
              {"image": pygame.transform.scale(pygame.image.load("assets/sprites/medicdown.png"), (100, 100)), "pos": (830, 2550)},
+             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/Alpha_logic_logo.png"), (500, 600)), "pos": (400, 2600)},
 
         ]
 
@@ -70,8 +72,6 @@ class CreditsScreen:
             {"type": "text", "content": "Erick - " + localization.get_text('credits_language_switch'), "align": "left"},
             {"type": "text", "content": "" + localization.get_text(''), "align": "left"},
             {"type": "text", "content": "" + localization.get_text(''), "align": "left"},    
-            {"type": "text", "content": localization.get_text('quality_assurance'), "align": "center"},
-            {"type": "text", "content": localization.get_text('players_and_testers'), "align": "center"},
             {"type": "text", "content": localization.get_text('final_message'), "align": "center"},
             {"type": "text", "content": localization.get_text('final_message2'), "align": "center"},
             {"type": "text", "content": localization.get_text('licenses_and_rights'), "align": "center"},
