@@ -181,7 +181,7 @@ class Level3:
                         self.player.move('RIGHT', self.obstacles)
                     elif event.key == pygame.K_z:
                         self.player.change_health()
-                    elif event.key == pygame.K_j:
+                    elif event.key == pygame.K_SPACE:
                         self.player.shoot(self.all_bubbles, self.difficulty)
 
             keys = pygame.key.get_pressed()
