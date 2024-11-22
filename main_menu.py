@@ -13,8 +13,8 @@ class MainMenu:
         
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/Fondo.jpeg")
-        self.play_image = pygame.image.load("assets/sprites/BOTON_VERDE.png")
-        self.quit_image = pygame.image.load("assets/sprites/BOTON_ROJO.png")
+        self.play_image = pygame.image.load("assets/sprites/BOTON_VERDE2.png")
+        self.quit_image = pygame.image.load("assets/sprites/BOTON_ROJO2.png")
         self.options_image = pygame.image.load("assets/sprites/BOTON_AJUSTES.png")
         self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
         self.tutorial_image = pygame.image.load("assets/sprites/boton_crditos1.png")
@@ -109,7 +109,7 @@ class MainMenu:
 
                 if self.controls_button.checkForInput(pygame.mouse.get_pos()):
                     pygame.mixer.music.pause()
-                    self.state_manager.set_state("controls")
+                    self.state_manager.set_state("controls_zzz")
                     self.select_sound.play()
 
 
