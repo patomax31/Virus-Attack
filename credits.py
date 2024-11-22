@@ -13,7 +13,7 @@ class CreditsScreen:
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
         
         # Carga de recursos
-        self.background = pygame.image.load("assets/sprites/FONDOSELECCIONPERSONAJE1.png")
+        self.background = pygame.image.load("assets/sprites/credits.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONCONTINUAR.png")
         self.music = pygame.mixer.music.load("assets/sounds/creditos.mp3")
         pygame.mixer.music.play(-1)
@@ -21,28 +21,28 @@ class CreditsScreen:
         self.back_image = pygame.transform.flip(self.back_image, True, False)
         
         # Crear botones
-        self.back_button = Button(self.back_image, (100, 650), "", self.get_font(20), "Black", "Green")
+        self.back_button = Button(self.back_image, (100, 650), "", self.get_font(20), "White", "Green")
         
         # Carga de texto
         self.font = self.get_font(25)
         
         # Variables de desplazamiento del texto
         self.scroll_y = 720  # Comienza fuera de la pantalla por abajo
-        self.scroll_speed = 5  # Velocidad de desplazamiento
+        self.scroll_speed = 4  # Velocidad de desplazamiento
 
      # Cargar sprites
         self.sprites = [
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/bubble1.png"), (100, 100)), "pos": (100, 400)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/bubble1.png"), (100, 100)), "pos": (1000, 400)},
-            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png"), (100, 100)), "pos": (500, 2550)},
+            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORACASTAÑAFRENTE.png"), (100, 100)), "pos": (500, 2450)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/creditos1.png"), (500, 300)), "pos": (100, 1100)},
-            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/MEDICORUBIOFRENTE.png"), (100, 100)), "pos": (350, 2550)},
-            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/win.png"), (100, 100)), "pos": (600, 2700)},
+            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/MEDICORUBIOFRENTE.png"), (100, 100)), "pos": (350, 2450)},
+            {"image": pygame.transform.scale(pygame.image.load("assets/sprites/win.png"), (100, 100)), "pos": (600, 2600)},
             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/VIRUSTITLE3.png"), (500, 450)), "pos": (400, 400)},
              {"image": pygame.transform.scale(pygame.image.load("assets/sprites/alpha_logic.png"), (400, 400)), "pos": (430, 3550)},
-             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORAVISTAFRENTE.png"), (100, 100)), "pos": (650, 2550)},
-             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/medicdown.png"), (100, 100)), "pos": (830, 2550)},
-             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/Alpha_logic_logo.png"), (500, 600)), "pos": (400, 2600)},
+             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/DOCTORAVISTAFRENTE.png"), (100, 100)), "pos": (650, 2450)},
+             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/medicdown.png"), (100, 100)), "pos": (830, 2450)},
+             {"image": pygame.transform.scale(pygame.image.load("assets/sprites/Alpha_logic_logo.png"), (500, 600)), "pos": (400, 2500)},
 
         ]
 
@@ -109,7 +109,7 @@ class CreditsScreen:
 
         for i, element in enumerate(self.credits):
             y_position = self.scroll_y + i * 80
-            text = self.font.render(element["content"], True, (0, 0, 0))
+            text = self.font.render(element["content"], True, (191, 216, 255))
             text_rect = text.get_rect()
 
             if element["align"] == "center":
