@@ -66,7 +66,7 @@ class Tutorial:
 
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
-            (914, 560)
+            (914, 500)
         ]
         self.create_enemies()
         self.enemy_count = len(self.all_enemies)

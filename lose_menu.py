@@ -50,6 +50,7 @@ class LoseMenu:
         # Crear btnes 
         self.accept_button = Button(self.boton, (1110, 620), "", self.get_font(25), "White", "Green")
         self.back_button = Button(self.back_image, (190, 620), "", self.get_font(25), "White", "Green")
+        self.reiniciar_button = Button(self.reinicio, (660, 630), "", self.get_font(25), "White", "Green")
         # Estado de selección del nivel
         self.selected_level = None
     
@@ -72,6 +73,12 @@ class LoseMenu:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.back_button.checkForInput(pygame.mouse.get_pos()):
+                    self.state_manager.set_state("levels")
+                if self.reiniciar_button.checkForInput(pygame.mouse.get_pos()):
+                    current_level = self.state_manager.get_current_level()
+                    self.state_manager.set_state(f"level{current_level}")
 
         self.update_text()         
 
@@ -80,8 +87,8 @@ class LoseMenu:
         loser_image = self.lose_frames[self.current_frame]
         loser_rect = loser_image.get_rect(center=(660, 390))
         self.screen.blit(loser_image, loser_rect)
-        self.screen.blit(self.back_image, (150, 580))
-        self.screen.blit(self.reinicio, (610, 580))
+        self.back_button.update(screen)
+        self.reiniciar_button.update(screen)
 
         # Dibujar botones
         
