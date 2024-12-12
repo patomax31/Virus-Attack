@@ -13,11 +13,11 @@ class MainMenu:
         
         # Carga de recursos
         self.background = pygame.image.load("assets/sprites/Fondo.jpeg")
-        self.play_image = pygame.image.load("assets/sprites/BOTON_VERDE2.png")
-        self.quit_image = pygame.image.load("assets/sprites/BOTON_ROJO2.png")
-        self.options_image = pygame.image.load("assets/sprites/BOTON_AJUSTES.png")
-        self.credits_image = pygame.image.load("assets/sprites/boton_crditos1.png")
-        self.tutorial_image = pygame.image.load("assets/sprites/boton_crditos1.png")
+        self.play_image = pygame.image.load("assets/sprites/botones/BOTON_VERDE3.png")
+        self.quit_image = pygame.image.load("assets/sprites/botones/BOTON_ROJO3.png")
+        self.options_image = pygame.image.load("assets/sprites/botones/BOTON_AJUSTES3.png")
+        self.credits_image = pygame.image.load("assets/sprites/botones/boton_crditos3.png")
+        self.tutorial_image = pygame.image.load("assets/sprites/botones/boton_crditos3.png")
         self.controls_image = pygame.image.load("assets/sprites/controles.png")
 
         #Musica y sonidos
