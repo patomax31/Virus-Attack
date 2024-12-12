@@ -6,6 +6,7 @@ from button import Button
 from contador import tiempo
 import random
 from progress import set_current_level
+from controls import ControlsScreen
 
 class Level3:
     def __init__(self, state_manager):
@@ -13,6 +14,11 @@ class Level3:
         self.state_manager = state_manager
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
+        
+        # Mostrar pantalla de controles antes de iniciar el nivel
+        controls_screen = ControlsScreen(self.state_manager)
+        controls_screen.show_controls_screen()        
+        
         self.TILE_SIZE = 32
         self.player = Player(400, 400, self.state_manager.get_selected_character())
         self.paused = False
@@ -175,7 +181,7 @@ class Level3:
                         self.player.move('RIGHT', self.obstacles)
                     elif event.key == pygame.K_z:
                         self.player.change_health()
-                    elif event.key == pygame.K_j:
+                    elif event.key == pygame.K_SPACE:
                         self.player.shoot(self.all_bubbles, self.difficulty)
 
             keys = pygame.key.get_pressed()

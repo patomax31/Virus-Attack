@@ -7,13 +7,20 @@ from contador import tiempo
 import random
 from progress import set_current_level
 from Localization_manager import localization
+from controls import ControlsScreen
 class Level2:
     def __init__(self, state_manager):
         # Datos de pantalla
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
-        self.TILE_SIZE = 32
+
         self.state_manager = state_manager
+        
+        # Mostrar pantalla de controles antes de iniciar el nivel
+        controls_screen = ControlsScreen(self.state_manager)
+        controls_screen.show_controls_screen()        
+        
+        self.TILE_SIZE = 32
         self.character_index = self.state_manager.get_selected_character()
         if self.character_index is None:
             print("Error: No character selected")
@@ -191,7 +198,7 @@ class Level2:
                         self.player.move('RIGHT', self.obstacles)
                     elif event.key == pygame.K_z:
                         self.player.change_health()
-                    elif event.key == pygame.K_j:
+                    elif event.key == pygame.K_SPACE:
                         self.player.shoot(self.all_bubbles, self.difficulty)
                     elif event.key == pygame.K_l:
                         print(f"character_index: {self.player.character_index}")

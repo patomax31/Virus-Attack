@@ -7,13 +7,20 @@ from contador import tiempo
 import random
 from progress import set_current_level
 from Localization_manager import localization
+from controls import ControlsScreen
 class Level3:
     def __init__(self, state_manager):
         # Datos de pantalla
         self.screen = pygame.display.set_mode((1280, 720))  # Creamos la ventana con sus medidas
         self.clock = pygame.time.Clock() # Reloj para controlar los FPS
-        self.TILE_SIZE = 32
+
         self.state_manager = state_manager
+        
+        # Mostrar pantalla de controles antes de iniciar el nivel
+        controls_screen = ControlsScreen(self.state_manager)
+        controls_screen.show_controls_screen()        
+        
+        self.TILE_SIZE = 32
         self.character_index = self.state_manager.get_selected_character()
         if self.character_index is None:
             print("Error: No character selected")
@@ -52,29 +59,29 @@ class Level3:
 
         # Posiciones iniciales de los enemigos
         self.enemy_positions = [
-            (900, 400),
-            (960, 400),
-            (1060, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
-            (1160, 400),
+            (900, 300),
+            (960, 430),
+            (360, 400),
+            (560, 350),
+            (460, 300),
+            (260, 600),
+            (590, 430),
+            (600, 440),
+            (800, 420),
+            (160, 400),
+            (190, 600),
+            (110, 600),
             (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1160, 600),
-            (1000, 660),
-            (1000, 660),
-            (1000, 660),
-            (1000, 660),
-            (1000, 660)
+            (1030, 600),
+            (190, 600),
+            (1026, 500),
+            (1068, 600),
+            (190, 420),
+            (350, 350),
+            (300, 450),
+            (236, 600),
+            (350, 405),
+            (490, 450)
         ]
         self.create_enemies()
         self.enemy_count = len(self.all_enemies)
@@ -174,7 +181,7 @@ class Level3:
         self.screen.blit(self.texto1, self.texto1_rect)
         self.screen.blit(self.resume_texto, self.resume_texto_rect)
         self.screen.blit(self.go_out_texto, self.go_out_texto_rect)
-        self.pause_button.update(self.screen)
+        self.pause_button.update
         pygame.display.flip()
     
     def update_text(self):
@@ -211,7 +218,7 @@ class Level3:
                         self.player.move('RIGHT', self.obstacles)
                     elif event.key == pygame.K_z:
                         self.player.change_health()
-                    elif event.key == pygame.K_j:
+                    elif event.key == pygame.K_SPACE:
                         self.player.shoot(self.all_bubbles, self.difficulty)
                     elif event.key == pygame.K_l:
                         print(f"character_index: {self.player.character_index}")
