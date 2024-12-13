@@ -4,6 +4,40 @@ from button import Button
 from Localization_manager import localization
 from progress import get_current_level
 
+class Button:
+    def __init__(self, image, pos, text_input, font, base_color, hovering_color, text_offset=(0, 0)):
+        self.original_image = image
+        self.image = image
+        self.hover_image = pygame.transform.scale(image, (int(image.get_width() * 1.2), int(image.get_height() * 1.2)))  # Ajustar el tamaño de la imagen al pasar el mouse
+        self.x_pos = pos[0]
+        self.y_pos = pos[1]
+        self.font = font
+        self.base_color = base_color
+        self.hovering_color = hovering_color
+        self.text_input = text_input
+        self.text_offset = text_offset
+        self.text = self.font.render(self.text_input, True, self.base_color)
+        if self.image is None:
+            self.image = self.text
+        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
+        self.text_rect = self.text.get_rect(center=(self.x_pos + self.text_offset[0], self.y_pos + self.text_offset[1]))
+
+    def update(self, screen):
+        screen.blit(self.image, self.rect)
+        screen.blit(self.text, self.text_rect)
+
+    def checkForInput(self, position):
+        return self.rect.collidepoint(position)
+
+    def changeImage(self, position):
+        if self.checkForInput(position):
+            self.image = self.hover_image
+            self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))  # Actualizar la posición del rectángulo
+            self.text = self.font.render(self.text_input, True, self.hovering_color)
+        else:
+            self.image = self.original_image
+            self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))  # Actualizar la posición del rectángulo
+            self.text = self.font.render(self.text_input, True, self.base_color)
 class LevelSelector:
     def __init__(self, state_manager):
         # Datos de pantalla
@@ -23,53 +57,47 @@ class LevelSelector:
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
         self.font = pygame.font.Font("assets/fonts/SCREEN.TTF", 50)
 
-        
         # Carga de texto
         self.name = font_game.render(localization.get_text("Select a level"), True, (59, 170, 143))
-        
-        
+
         # Escalar los recursos
         self.level1_image = pygame.transform.scale(self.level1_image, (200, 200))
         self.level2_image = pygame.transform.scale(self.level2_image, (200, 200))
         self.level3_image = pygame.transform.scale(self.level3_image, (200, 200))
         self.dock = pygame.transform.scale(self.dock, (1280, 720))
         self.back_image = pygame.transform.scale(self.back_image, (110, 110))
-        
+
         # Efecto espejo
         self.back_image = pygame.transform.flip(self.back_image, True, False)
-        
-        # Crear btnes
+
+        # Crear botones
         self.level1_button = Button(self.level1_image, (390, 280), "", self.get_font(25), "Black", "Green")
         self.level2_button = Button(self.level2_image, (650, 280), "", self.get_font(25), "Black", "Green")
         self.level3_button = Button(self.level3_image, (910, 280), "", self.get_font(25), "Black", "Green")
-        self.back_button = Button(self.back_image, (190, 620), "", self.get_font(25), "White", "Green")   
-        
+        self.back_button = Button(self.back_image, (190, 620), "", self.get_font(25), "White", "Green")
+
         # Estado de selección del nivel
         self.selected_level = None
-        
         self.update_texts()
-        
-        # Desbloquear niveles segun progreso
+
+        # Desbloquear niveles según progreso
         self.current_level = get_current_level()
         self.update_level_buttons()
-        
+
     def update_level_buttons(self):
         if self.current_level < 2:
             self.level2_button.disabled = True
         if self.current_level < 3:
             self.level3_button.disabled = True
-        
+
     def get_font(self, size):
         return pygame.font.Font("assets/fonts/GAME.TTF", size)
-    
+
     def update_texts(self):
         # Actualizar el texto del título según el idioma
         self.name = self.get_font(45).render(localization.get_text("select a level"), True, (59, 170, 143))
 
-        
-
     def update(self):
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -94,7 +122,15 @@ class LevelSelector:
                 if event.key == pygame.K_ESCAPE:
                     self.select_sound.play()
                     self.state_manager.set_state("player_selector")
-            self.update_texts()  
+            self.update_texts()
+
+        # Cambio de tamaño de los botones al pasar el mouse por encima
+        mouse_pos = pygame.mouse.get_pos()
+        self.level1_button.changeImage(mouse_pos)
+        self.level2_button.changeImage(mouse_pos)
+        self.level3_button.changeImage(mouse_pos)
+        self.back_button.changeImage(mouse_pos)
+
     def draw(self, screen):
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.dock, (0, 0))
@@ -102,7 +138,7 @@ class LevelSelector:
         self.level1_button.update(screen)
         self.level2_button.update(screen)
         self.level3_button.update(screen)
-        
+
         # Renderizar los textos
         text1 = self.font.render("1", True, (78, 248, 71))
         text2 = self.font.render("2", True, (78, 248, 71))
@@ -126,9 +162,8 @@ class LevelSelector:
         screen.blit(text1, text_pos1)
         screen.blit(text2, text_pos2)
         screen.blit(text3, text_pos3)
-        
+
         self.back_button.update(screen)
         # Dibujar texto
         self.screen.blit(self.name, self.name.get_rect(center=(640, 50)))
-        
         pygame.display.flip()
