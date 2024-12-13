@@ -19,7 +19,7 @@ class SettingsMenu:
         self.dock = pygame.image.load("assets/sprites/PANTALLASELECCIONPERSONAJE1.png")
         self.level1_image = pygame.image.load("assets/sprites/level1.png")
         self.back_image = pygame.image.load("assets/sprites/BOTONSIGUIENTE.png")
-        self.mexico_flag = pygame.image.load("assets/sprites/MexicanFlag.png")
+        self.mexico_flag = pygame.image.load("assets/sprites/españa.png")
         self.usa_flag = pygame.image.load("assets/sprites/UnitedStatesFlag.png")
         self.volumen_icon = pygame.image.load("assets/sprites/Volume.png")
         font_game = pygame.font.Font("assets/fonts/GAME.TTF", 50)
