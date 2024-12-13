@@ -112,5 +112,5 @@ class WinMenu:
         self.button_reinicio.update(self.screen)
         
         # Dibujar texto
-        self.screen.blit(self.name, self.name.get_rect(center=(640, 50)))        
+        self.screen.blit(self.name, self.name.get_rect(center=(640, 70)))        
         pygame.display.flip()
