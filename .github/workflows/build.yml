@@ -40,21 +40,22 @@ jobs:
         run: python -m PyInstaller VirusAttack.spec --clean -y
 
       - name: Verify build output
+        shell: pwsh
         run: |
-          echo "=== Contents of dist directory ==="
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            ls dist/
-          else
-            ls -lah dist/
-          fi
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            ls dist/VirusAttack
-          else
-            s -lah dist/VirusAttack/ || echo "VirusAttack folder not found!"
-          fi
-          echo ""
-          echo "=== VirusAttack folder contents ==="
-          ls -lah dist/VirusAttack/ || echo "VirusAttack folder not found!"
+          Write-Host "=== Contents of dist directory ==="
+          if ($env:RUNNER_OS -eq "Windows") {
+            Get-ChildItem -Force dist
+          } else {
+            Get-ChildItem -Force dist | Format-Table -AutoSize
+          }
+
+          Write-Host ""
+          Write-Host "=== VirusAttack folder contents ==="
+          if (Test-Path dist/VirusAttack) {
+            Get-ChildItem -Force dist/VirusAttack
+          } else {
+            Write-Host "VirusAttack folder not found!"
+          }
 
       - name: Package artifact (Linux/macOS)
         if: runner.os != 'Windows'
