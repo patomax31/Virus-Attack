@@ -1,4 +1,5 @@
 import pygame
+from resources import configure_runtime_paths, resource_path
 from state_manager import StateManager
 from main_menu import MainMenu
 from lv_selector import LevelSelector
@@ -17,8 +18,16 @@ from tutorial_win import WinMenu_Tutorial
 from video import Video
 
 def main():
+    configure_runtime_paths()
     pygame.init()
+    try:
+        app_icon = pygame.image.load(resource_path("assets", "sprites", "enemigo_enfrente_azul3.png"))
+        pygame.display.set_icon(app_icon)
+    except pygame.error:
+        pass
+
     screen = pygame.display.set_mode((1280, 720))
+    pygame.display.set_caption("Virus Attack")
     clock = pygame.time.Clock()
     
     state_manager = StateManager()

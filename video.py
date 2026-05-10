@@ -1,5 +1,6 @@
 import pygame
 import cv2
+from resources import resource_path
 
 class Video:
     def __init__(self, state_manager):
@@ -8,10 +9,10 @@ class Video:
         self.clock = pygame.time.Clock()
         
         # Carga el video usando OpenCV
-        self.video = cv2.VideoCapture("assets/VID/VIDEOVIRUSATTACK.mp4")
+        self.video = cv2.VideoCapture(resource_path("assets", "VID", "VIDEOVIRUSATTACK.mp4"))
         self.playing = True
         self.start_time = pygame.time.get_ticks()
-        self.music = pygame.mixer.music.load("assets/sounds/MUSICAVIRUSATTACK.mp3")
+        self.music = pygame.mixer.music.load(resource_path("assets", "sounds", "MUSICAVIRUSATTACK.mp3"))
         pygame.mixer.music.play(-1)
     def update(self):
         for event in pygame.event.get():

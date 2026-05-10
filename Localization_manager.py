@@ -1,9 +1,10 @@
 import json
+from resources import resource_path
 
 class Localization:
     def __init__(self, lang="es"):
         # Cargar las traducciones desde el archivo JSON
-        with open("texts.json", "r") as file:
+        with open(resource_path("texts.json"), "r", encoding="utf-8") as file:
             self.texts = json.load(file)
         self.current_language = lang
 
