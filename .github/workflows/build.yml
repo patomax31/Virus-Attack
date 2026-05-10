@@ -42,7 +42,16 @@ jobs:
       - name: Verify build output
         run: |
           echo "=== Contents of dist directory ==="
-          ls -lah dist/
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            ls dist/
+          else
+            ls -lah dist/
+          fi
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            ls dist/VirusAttack
+          else
+            s -lah dist/VirusAttack/ || echo "VirusAttack folder not found!"
+          fi
           echo ""
           echo "=== VirusAttack folder contents ==="
           ls -lah dist/VirusAttack/ || echo "VirusAttack folder not found!"
