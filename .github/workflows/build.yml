@@ -37,7 +37,7 @@ jobs:
         run: python tools/generate_app_icons.py
 
       - name: Build with PyInstaller
-        run: python -m PyInstaller VirusAttack.spec --clean
+        run: python -m PyInstaller VirusAttack.spec --clean -y
 
       - name: Package artifact (Linux/macOS)
         if: runner.os != 'Windows'
