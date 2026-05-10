@@ -37,7 +37,15 @@ jobs:
         run: python tools/generate_app_icons.py
 
       - name: Build with PyInstaller
-        run: python -m PyInstaller VirusAttack.spec --clean -y
+        run: python -m PyInstaller VirusAttack.spec --clean
+
+      - name: Verify build output
+        run: |
+          echo "=== Contents of dist directory ==="
+          ls -lah dist/
+          echo ""
+          echo "=== VirusAttack folder contents ==="
+          ls -lah dist/VirusAttack/ || echo "VirusAttack folder not found!"
 
       - name: Package artifact (Linux/macOS)
         if: runner.os != 'Windows'
@@ -49,7 +57,8 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Compress-Archive -Path dist/VirusAttack/* -DestinationPath dist/VirusAttack-Windows.zip
+          cd dist
+          Compress-Archive -Path VirusAttack -DestinationPath VirusAttack-Windows.zip -Force
 
       - name: Upload artifact (Linux/macOS)
         if: runner.os != 'Windows'
@@ -69,21 +78,40 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Download build artifacts
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: release-assets
+
+      - name: List downloaded artifacts
+        run: |
+          echo "=== Contents of release-assets ==="
+          find release-assets -type f
+          echo ""
+          echo "=== Total files found ==="
+          find release-assets -type f | wc -l
 
       - name: Flatten artifacts
         run: |
           mkdir -p release-files
           find release-assets -type f -name "*.zip" -exec cp {} release-files/ \;
-          ls -lah release-files
+          echo "=== Flattened artifacts ==="
+          ls -lah release-files/
+          echo ""
+          echo "Files ready for release:"
+          ls -1 release-files/
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: release-files/*.zip
           generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
