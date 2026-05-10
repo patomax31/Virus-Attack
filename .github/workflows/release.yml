@@ -1,10 +1,12 @@
-name: Build Executables
+name: Release Executables
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ "main", "master" ]
-  pull_request:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -79,3 +81,42 @@ jobs:
         with:
           name: VirusAttack-Windows
           path: dist/VirusAttack-Windows.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - name: List downloaded artifacts
+        run: |
+          echo "=== Contents of release-assets ==="
+          find release-assets -type f
+          echo ""
+          echo "=== Total files found ==="
+          find release-assets -type f | wc -l
+
+      - name: Flatten artifacts
+        run: |
+          mkdir -p release-files
+          find release-assets -type f -name "*.zip" -exec cp {} release-files/ \;
+          echo "=== Flattened artifacts ==="
+          ls -lah release-files/
+          echo ""
+          echo "Files ready for release:"
+          ls -1 release-files/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-files/*.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
