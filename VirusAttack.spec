@@ -42,12 +42,21 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='VirusAttack',
-)
+
+if sys.platform == 'darwin':
+    app = BUNDLE(
+        exe,
+        name='VirusAttack.app',
+        icon=icon_file,
+        bundle_identifier='com.virusattack.game',
+    )
+else:
+    coll = COLLECT(
+        exe,
+        a.binaries,
+        a.datas,
+        strip=False,
+        upx=True,
+        upx_exclude=[],
+        name='VirusAttack',
+    )

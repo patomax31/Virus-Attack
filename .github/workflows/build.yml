@@ -46,18 +46,24 @@ jobs:
           }
 
           Write-Host ""
-          Write-Host "=== VirusAttack folder contents ==="
-          if (Test-Path dist/VirusAttack) {
+          Write-Host "=== Packaged app contents ==="
+          if (Test-Path dist/VirusAttack.app) {
+            Get-ChildItem -Force dist/VirusAttack.app
+          } elseif (Test-Path dist/VirusAttack) {
             Get-ChildItem -Force dist/VirusAttack
           } else {
-            Write-Host "VirusAttack folder not found!"
+            Write-Host "VirusAttack bundle not found!"
           }
 
       - name: Package artifact (Linux/macOS)
         if: runner.os != 'Windows'
         run: |
           cd dist
-          zip -r VirusAttack-${{ runner.os }}.zip VirusAttack
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            zip -r VirusAttack-macOS.zip VirusAttack.app
+          else
+            zip -r VirusAttack-Linux.zip VirusAttack
+          fi
 
       - name: Package artifact (Windows)
         if: runner.os == 'Windows'
